@@ -12,6 +12,10 @@ main {
     height: 60px !important;
 }
 
+.auto-height {
+    height: auto !important;
+}
+
 .tyblue {
     background-color: #66ccff !important;
 }

@@ -10,7 +10,7 @@
                     <li>
                         <form>
                             <div class="input-field">
-                                <input id="search" type="search" placeholder="Search" required class="nav-height">
+                                <input id="search" type="search" placeholder="Search" required class="auto-height">
                                 <label class="label-icon" for="search"><i class="material-icons">&#xE8B6;
                                         <!--search--></i></label>
                                 <i class="material-icons">&#xE5CD;<!--close--></i>
