@@ -1,4 +1,4 @@
-<footer class="page-footer tyblue">
+<footer class="page-footer theme">
     <div class="container">
         <div class="row">
             <div class="col l6 s12">
@@ -17,7 +17,7 @@
             </div>
         </div>
     </div>
-    <div class="footer-copyright tyblue-dark">
+    <div class="footer-copyright theme-dark">
         <div class="container">
             © 2014 Copyright Text
             <a class="grey-text text-lighten-4 right" href="#!">More Links</a>
