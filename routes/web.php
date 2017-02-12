@@ -12,7 +12,17 @@
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('index');
+});
+
+//Just for view test
+Route::get('/register', function () {
+    return view('auth.register');
+});
+
+//Just for view test
+Route::get('/login', function () {
+    return view('auth.login');
 });
 
 //Send text captcha

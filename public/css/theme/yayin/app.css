@@ -1,0 +1,80 @@
+.theme {
+    /* tianyiblue */
+    background-color: #66ccff !important;
+}
+
+.theme-dark {
+    /* tianyiblue-dark */
+    background-color: #4dc4ff !important;
+}
+
+.theme-sec {
+    /* tianyihui */
+    color: #5e5e5e;
+}
+
+/* label color */
+.input-field label {
+    color: #5e5e5e;
+}
+/* label focus color */
+.input-field input[type=tel]:focus + label {
+    color: #66ccff;
+}
+/* label underline focus color */
+.input-field input[type=tel]:focus {
+    border-bottom: 1px solid #66ccff;
+    box-shadow: 0 1px 0 0 #66ccff;
+}
+/* valid color */
+.input-field input[type=tel].valid {
+    border-bottom: 1px solid #66ccff;
+    box-shadow: 0 1px 0 0 #66ccff;
+}
+/* invalid color */
+.input-field input[type=tel].invalid {
+    border-bottom: 1px solid #000;
+    box-shadow: 0 1px 0 0 #000;
+}
+/* label focus color */
+.input-field input[type=password]:focus + label {
+    color: #66ccff;
+}
+/* label underline focus color */
+.input-field input[type=password]:focus {
+    border-bottom: 1px solid #66ccff;
+    box-shadow: 0 1px 0 0 #66ccff;
+}
+/* valid color */
+.input-field input[type=password].valid {
+    border-bottom: 1px solid #66ccff;
+    box-shadow: 0 1px 0 0 #66ccff;
+}
+/* invalid color */
+.input-field input[type=password].invalid {
+    border-bottom: 1px solid #000;
+    box-shadow: 0 1px 0 0 #000;
+}
+/* label focus color */
+.input-field input[type=text]:focus + label {
+    color: #66ccff;
+}
+/* label underline focus color */
+.input-field input[type=text]:focus {
+    border-bottom: 1px solid #66ccff;
+    box-shadow: 0 1px 0 0 #66ccff;
+}
+/* valid color */
+.input-field input[type=text].valid {
+    border-bottom: 1px solid #66ccff;
+    box-shadow: 0 1px 0 0 #66ccff;
+}
+/* invalid color */
+.input-field input[type=text].invalid {
+    border-bottom: 1px solid #000;
+    box-shadow: 0 1px 0 0 #000;
+}
+/* icon prefix focus color */
+.input-field .prefix.active {
+    color: #66ccff;
+}
