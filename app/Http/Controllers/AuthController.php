@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\User;
-use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Http\Request;
 
@@ -37,7 +36,7 @@ class AuthController extends Controller
         if(!$this->geetestValidate($request))
             return redirect('/');
         //Check if tel exist
-        if(User::where('tel', Crypt::encrypt($request->tel))->count() > 0)
+        if(User::where('tel', $request->tel)->count() > 0)
             return json_encode(array('result' => 'false', 'msg' => 'telephone already exists'));
         //Generate random captcha
         $captcha = "";
@@ -65,7 +64,7 @@ class AuthController extends Controller
      */
     public function addUser(Request $request)
     {
-        //Check if tel exist
+        //Check if tel distorted
         if($request->tel != $request->session()->get('captcha.tel'))
             return json_encode(array('result' => 'false', 'msg' => 'distorted telephone'));
         if(env('APP_ENV') != 'testing') {
@@ -80,14 +79,13 @@ class AuthController extends Controller
                 return json_encode(array('result' => 'false', 'msg' => 'expired captcha'));
         }
         //Check if tel exist
-        if(User::where('tel', Crypt::encrypt($request->tel))->count() > 0)
+        if(User::where('tel', $request->tel)->count() > 0)
             return json_encode(array('result' => 'false', 'msg' => 'telephone already exists'));
         //Generate random salt
-        define("PBKDF2_SALT_BYTE_SIZE", 24);
-        $salt = base64_encode(mcrypt_create_iv(PBKDF2_SALT_BYTE_SIZE, MCRYPT_DEV_URANDOM));
+        $salt = base64_encode(random_bytes(24));
         //Construct new user
         $user = new User;
-        $user->tel = Crypt::encrypt($request->session()->get('captcha.tel'));
+        $user->tel = $request->tel;
         $user->password = Hash::make($salt . $request->password);
         $user->salt = $salt;
         $user->disable = false;
@@ -108,10 +106,10 @@ class AuthController extends Controller
      */
     public function login(Request $request)
     {
-        if(User::where('tel', Crypt::encrypt($request->tel))->count() == 0)
+        if(User::where('tel', $request->tel)->count() == 0)
             return json_encode(array('result' => 'false', 'msg' => 'wrong'));
-        $user = User::where('tel', Crypt::encrypt($request->tel));
-        if(Hash::check($user->password, $user->salt . $request->password))
+        $user = User::where('tel', $request->tel)->first();
+        if(Hash::check($user->salt . $request->password, $user->password))
         {
             //Generate and save token
             $user->token = $user->tel . strval(time());

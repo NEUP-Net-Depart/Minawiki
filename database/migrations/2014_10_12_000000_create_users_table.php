@@ -15,7 +15,8 @@ class CreateUsersTable extends Migration
     {
         Schema::create('users', function (Blueprint $table) {
             $table->increments('id');
-            $table->text('tel');
+            $table->string('tel');
+            $table->unique('tel');
             $table->string('password');
             $table->string('salt');
             $table->boolean('disable');
@@ -23,7 +24,6 @@ class CreateUsersTable extends Migration
             $table->integer('contribute_point');
             $table->tinyInteger('power');
             $table->string('admin_name');
-            $table->unique('admin_name');
             $table->string('theme');
             $table->boolean('no_disturb');
             $table->string('token');
