@@ -56,7 +56,7 @@ class AuthController extends Controller
         $data=array('text'=>$text,'apikey'=>$apikey,'mobile'=>$mobile);
         curl_setopt ($ch, CURLOPT_URL, 'https://sms.yunpian.com/v2/sms/single_send.json');
         curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($data));
-        return curl_exec($ch);
+        return strval(curl_exec($ch));
     }
 
     /**
