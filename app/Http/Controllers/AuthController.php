@@ -34,9 +34,15 @@ class AuthController extends Controller
      */
     public function sendTextCaptcha(Request $request)
     {
-        //Test Geetest status
+        //Check Geetest status
         if(!$this->geetestValidate($request))
             return redirect('/');
+        //Check last sent time
+        if($request->session()->has('captcha.timestamp'))
+        {
+            if(time() - intval($request->session()->get('captcha.timestamp')) <= 25)
+                return json_encode(array('result' => 'false', 'msg' => 'send interval too short'));
+        }
         //Check if tel exist
         if(User::where('tel', $request->tel)->count() > 0)
             return json_encode(array('result' => 'false', 'msg' => 'telephone already exists'));
