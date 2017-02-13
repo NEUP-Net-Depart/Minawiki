@@ -21,7 +21,7 @@
                         <label for="icon_pass">密码</label>
                     </div>
                 </div>
-                <a class="theme-word-dark" href="#">忘记密码了？</a>
+                <a class="theme-word-dark" href="/auth/forget">忘记密码了？</a>
                 <div class="row">
                     <center><button onclick="login()" type="button" class="waves-effect waves-light btn btn-large theme-dark">登录</button></center>
                 </div>

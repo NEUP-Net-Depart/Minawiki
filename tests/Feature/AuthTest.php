@@ -84,8 +84,17 @@ class AuthTest extends BrowserKitTestCase
             ->type('23333333333', 'tel')
             ->type('cool2645', 'password')
             ->press('登录');
+        $this->visit('/auth/login')
+            ->click('忘记密码了？')
+            ->seePageIs('/auth/forget');
         $this->withSession(['user.id' => '1'])
             ->visit('/')
-            ->see('#1');
+            ->see('#1')
+            ->click('#1');
+        $this->visit('/auth/forget')
+            ->see('重置密码')
+            ->type('23333333333', 'tel')
+            ->type('cool26452', 'password')
+            ->press('重置');
     }
 }

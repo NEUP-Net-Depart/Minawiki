@@ -20,6 +20,8 @@ class AuthController extends Controller
      */
     public function showRegisterView(Request $request)
     {
+        if($request->session()->has('user.id'))
+            return redirect('/');
         return view('auth.register');
     }
 
@@ -29,7 +31,20 @@ class AuthController extends Controller
      */
     public function showLoginView(Request $request)
     {
+        if($request->session()->has('user.id'))
+            return redirect('/');
         return view('auth.login');
+    }
+
+    /**
+     * @param Request $request
+     * @return view
+     */
+    public function showForgetView(Request $request)
+    {
+        if($request->session()->has('user.id'))
+            return redirect('/');
+        return view('auth.resetpass');
     }
 
     /**
@@ -280,6 +295,7 @@ class AuthController extends Controller
         $user->token = $user->tel . strval(time());
         //Save new user
         $user->save();
+
         $request->session()->put('user.id', $user->id);
         $request->session()->put('user.tel', $user->tel);
         $request->session()->put('user.theme', $user->theme);
