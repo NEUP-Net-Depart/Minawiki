@@ -47,6 +47,26 @@ class AuthTest extends BrowserKitTestCase
         //Test logout
         $this->visit('/auth/logout')
             ->assertSessionMissing('user.id');
+        //Test change password
+        $this->withSession(['captcha.tel' => '23333333333'])
+        ->json('POST', '/auth/forget', ['tel' => '23333333333', 'password' => 'newpassword'])
+        ->seeJson([
+            'result' => 'false',
+            'msg' => 'wrong telephone',
+        ]);
+        //dd($this->response->getContent());
+        $this->withSession(['captcha.tel' => '13333333333'])
+            ->json('POST', '/auth/forget', ['tel' => '13333333333', 'password' => 'newpassword'])
+            ->seeJson([
+                'result' => 'true',
+                'msg' => 'success',
+            ]);
+        //Test login with new password
+        $this->json('POST', '/auth/login', ['tel' => '13333333333', 'password' => 'newpassword'])
+            ->seeJson([
+                'result' => 'true',
+                'msg' => 'success',
+            ])->assertSessionHas('user.id');
     }
 
     public function testFrontend()
