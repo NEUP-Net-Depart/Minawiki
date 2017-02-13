@@ -18,7 +18,7 @@ class AuthController extends Controller
      * @param Request $request
      * @return view
      */
-    public function showRegisterView(Request $request)
+    public function showRegisterView()
     {
         return view('auth.register');
     }
@@ -27,9 +27,18 @@ class AuthController extends Controller
      * @param Request $request
      * @return view
      */
-    public function showLoginView(Request $request)
+    public function showLoginView()
     {
         return view('auth.login');
+    }
+
+    /**
+     * @param Request $request
+     * @return view
+     */
+    public function showForgetView()
+    {
+        return view('auth.resetpass');
     }
 
     /**

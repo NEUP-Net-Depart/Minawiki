@@ -22,5 +22,6 @@ Route::get('/auth/register', 'AuthController@showRegisterView');
 Route::post('/auth/login', 'AuthController@login');
 Route::get('/auth/logout', 'AuthController@logout');
 Route::get('/auth/login', 'AuthController@showLoginView');
+Route::get('/auth/forget', 'AuthController@showForgetView');
 
-Route::get('auth/geetest','AuthController@getGeetest');
+Route::get('auth/geetest', 'AuthController@getGeetest');
