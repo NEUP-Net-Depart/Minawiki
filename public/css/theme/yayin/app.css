@@ -3,19 +3,24 @@
     background-color: #66ccff !important;
 }
 
-.theme-dark {
+.theme-dark,.collection-item.active {
     /* tianyiblue-dark */
     background-color: #4dc4ff !important;
 }
 
-.theme-word-dark {
+.theme-word-dark,.theme-word-dark a {
     /* tianyiblue-dark */
-    color: #4dc4ff;
+    color: #4dc4ff !important;
 }
 
-.theme-sec {
+.theme-sec,.theme-sec span {
     /* tianyihui */
-    color: #5e5e5e;
+    color: #5e5e5e !important;
+}
+
+.theme-sec-i i {
+    /* tianyihui */
+    color: #5e5e5e !important;
 }
 
 .theme-bg-sec {
@@ -23,8 +28,8 @@
     background-color: #5e5e5e;
 }
 
-.theme-lk a {
-    color: #ffffff;
+.theme-lk a,.collection-item.active {
+    color: #ffffff !important;
 }
 
 /* label color */
