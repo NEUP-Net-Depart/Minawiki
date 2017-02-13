@@ -42,7 +42,10 @@ class AuthTest extends BrowserKitTestCase
             ->seeJson([
                 'result' => 'true',
                 'msg' => 'success',
-            ]);
+            ])->assertSessionHas('user.id');
         //dd($this->response->getContent());
+        //Test logout
+        $this->visit('/auth/logout')
+            ->assertSessionMissing('user.id');
     }
 }

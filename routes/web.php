@@ -33,3 +33,5 @@ Route::get('/auth/register', 'AuthController@addUser');
 //Try to login
 Route::post('/auth/login', 'AuthController@login');
 Route::get('/auth/login', 'AuthController@login');
+//Logout
+Route::get('/auth/logout', 'AuthController@logout');

@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Middleware\RedirectIfAuthenticated;
 use App\User;
+use Illuminate\Support\Facades\Cookie;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Http\Request;
 
@@ -111,13 +113,27 @@ class AuthController extends Controller
         $user = User::where('tel', $request->tel)->first();
         if(Hash::check($user->salt . $request->password, $user->password))
         {
-            //Generate and save token
+            //Set session
+            $request->session()->put('user.id', $user->id);
+            //Generate and save token and set cookie
             $user->token = $user->tel . strval(time());
             $user->save();
+            $cookie = Cookie::make('user.token', $user->token, 2 * 30 * 24 * 60);
             return response(json_encode(array('result' => 'true', 'msg' => 'success')))
-                ->cookie('token', $user->token, 2 * 30 * 24 * 60);
+                ->withCookie($cookie);
         }
         else
             return json_encode(array('result' => 'false', 'msg' => 'wrong'));
+    }
+
+    /**
+     * @param Request $request
+     */
+    public function logout(Request $request)
+    {
+        //Clear cookie and session
+        $cookie = Cookie::forget('user.token');
+        $request->session()->forget('user.id');
+        return redirect('/')->withCookie($cookie);
     }
 }
