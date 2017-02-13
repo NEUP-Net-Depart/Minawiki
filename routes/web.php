@@ -13,15 +13,16 @@
 
 Route::get('/', 'IndexController@index');
 
-//Send text captcha
-Route::post('/auth/register/captcha', 'AuthController@sendTextCaptcha');
-//Try to register
-Route::post('/auth/register', 'AuthController@addUser');
+Route::get('auth/geetest','AuthController@getGeetest');
+
 Route::get('/auth/register', 'AuthController@showRegisterView');
-//Try to login
+Route::post('/auth/register/captcha', 'AuthController@sendTextCaptcha');
+Route::post('/auth/register', 'AuthController@addUser');
+
+Route::get('/auth/login', 'AuthController@showLoginView');
 Route::post('/auth/login', 'AuthController@login');
 Route::get('/auth/logout', 'AuthController@logout');
-Route::get('/auth/login', 'AuthController@showLoginView');
-Route::get('/auth/forget', 'AuthController@showForgetView');
 
-Route::get('auth/geetest', 'AuthController@getGeetest');
+Route::get('/auth/forget', 'AuthController@showForgetView');
+Route::post('/auth/forget/captcha', 'AuthController@sendForgetTextCaptcha');
+Route::post('/auth/forget', 'AuthController@changePassword');

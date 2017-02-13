@@ -47,6 +47,26 @@ class AuthTest extends BrowserKitTestCase
         //Test logout
         $this->visit('/auth/logout')
             ->assertSessionMissing('user.id');
+        //Test change password
+        $this->withSession(['captcha.tel' => '23333333333'])
+        ->json('POST', '/auth/forget', ['tel' => '23333333333', 'password' => 'newpassword'])
+        ->seeJson([
+            'result' => 'false',
+            'msg' => 'wrong telephone',
+        ]);
+        //dd($this->response->getContent());
+        $this->withSession(['captcha.tel' => '13333333333'])
+            ->json('POST', '/auth/forget', ['tel' => '13333333333', 'password' => 'newpassword'])
+            ->seeJson([
+                'result' => 'true',
+                'msg' => 'success',
+            ]);
+        //Test login with new password
+        $this->json('POST', '/auth/login', ['tel' => '13333333333', 'password' => 'newpassword'])
+            ->seeJson([
+                'result' => 'true',
+                'msg' => 'success',
+            ])->assertSessionHas('user.id');
     }
 
     public function testFrontend()
@@ -64,8 +84,17 @@ class AuthTest extends BrowserKitTestCase
             ->type('23333333333', 'tel')
             ->type('cool2645', 'password')
             ->press('登录');
+        $this->visit('/auth/login')
+            ->click('忘记密码了？')
+            ->seePageIs('/auth/forget');
         $this->withSession(['user.id' => '1'])
             ->visit('/')
-            ->see('#1');
+            ->see('#1')
+            ->click('#1');
+        $this->visit('/auth/forget')
+            ->see('重置密码')
+            ->type('23333333333', 'tel')
+            ->type('cool26452', 'password')
+            ->press('重置');
     }
 }
