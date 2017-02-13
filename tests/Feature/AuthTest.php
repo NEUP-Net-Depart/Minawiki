@@ -14,7 +14,7 @@ class AuthTest extends BrowserKitTestCase
      *
      * @return void
      */
-    public function testExample()
+    public function testBackend()
     {
         //Test register
         $this->withSession(['captcha.tel' => '23333333333'])
@@ -23,22 +23,26 @@ class AuthTest extends BrowserKitTestCase
                 'result' => 'false',
                 'msg' => 'distorted telephone',
             ]);
+        //dd($this->response->getContent());
         $this->withSession(['captcha.tel' => '13333333333'])
             ->json('POST', '/auth/register', ['tel' => '13333333333', 'password' => 'cool2645'])
             ->seeJson([
                 'result' => 'true',
                 'msg' => 'success',
             ]);
+        //dd($this->response->getContent());
         //Test login
         $this->json('POST', '/auth/login', ['tel' => '13333333333', 'password' => 'wrongpwd'])
             ->seeJson([
                 'result' => 'false',
                 'msg' => 'wrong',
             ]);
+        //dd($this->response->getContent());
         $this->json('POST', '/auth/login', ['tel' => '13333333333', 'password' => 'cool2645'])
             ->seeJson([
                 'result' => 'true',
                 'msg' => 'success',
             ]);
+        //dd($this->response->getContent());
     }
 }
