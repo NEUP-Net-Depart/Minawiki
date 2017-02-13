@@ -29,7 +29,7 @@
                     </div>
                 </div>
                 <div class="row">
-                    <center><button onclick="login()" class="waves-effect waves-light btn btn-large theme-dark">登录</button></center>
+                    <center><button onclick="login()" type="button" class="waves-effect waves-light btn btn-large theme-dark">登录</button></center>
                 </div>
                 {!! csrf_field() !!}
             </form>

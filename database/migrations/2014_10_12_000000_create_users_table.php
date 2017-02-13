@@ -26,6 +26,7 @@ class CreateUsersTable extends Migration
             $table->string('theme');
             $table->boolean('no_disturb');
             $table->string('token');
+            $table->unique('token');
             $table->timestamps();
         });
     }

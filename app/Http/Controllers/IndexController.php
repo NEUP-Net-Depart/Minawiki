@@ -12,9 +12,9 @@ class IndexController extends Controller
      */
     public function index(Request $request)
     {
-        if($request->session()->has('user_id'))
+        if($request->session()->has('user.id'))
         {
-            return view('index', [ 'uid' => $request->session()->get('user_id') ]);
+            return view('index', [ 'uid' => $request->session()->get('user.id') ]);
         }
         else
         {

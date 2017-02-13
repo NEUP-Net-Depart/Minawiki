@@ -42,8 +42,11 @@ class AuthTest extends BrowserKitTestCase
             ->seeJson([
                 'result' => 'true',
                 'msg' => 'success',
-            ]);
+            ])->assertSessionHas('user.id');
         //dd($this->response->getContent());
+        //Test logout
+        $this->visit('/auth/logout')
+            ->assertSessionMissing('user.id');
     }
 
     public function testFrontend()
@@ -61,7 +64,7 @@ class AuthTest extends BrowserKitTestCase
             ->type('23333333333', 'tel')
             ->type('cool2645', 'password')
             ->press('登录');
-        $this->withSession(['user_id' => '1'])
+        $this->withSession(['user.id' => '1'])
             ->visit('/')
             ->see('#1');
     }

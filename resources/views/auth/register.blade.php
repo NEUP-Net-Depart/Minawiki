@@ -45,7 +45,7 @@
                 </div>
                 <div class="row">
                     <div class="input-field col s6">
-                        <button onclick="register()" class="waves-effect waves-light btn btn-large theme-dark">提交</button>
+                        <button onclick="register()" type="button" class="waves-effect waves-light btn btn-large theme-dark">提交</button>
                     </div>
                 </div>
                 {!! csrf_field() !!}
@@ -72,6 +72,8 @@
                     }
                     else if(dataObj.code > 0)
                         Materialize.toast('你发送的太快了，请稍后再试吧', 3000, 'theme-bg-sec');
+                    else if(dataObj.result == "false")
+                        Materialize.toast('您已注册，请直接登录', 3000, 'theme-bg-sec');
                     else
                         Materialize.toast('短信服务器出错了，请稍后再试吧', 3000, 'theme-bg-sec');
                 },

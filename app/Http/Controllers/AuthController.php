@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Middleware\RedirectIfAuthenticated;
 use App\User;
+use Illuminate\Support\Facades\Cookie;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Http\Request;
 use Germey\Geetest\GeetestCaptcha;
@@ -51,9 +53,16 @@ class AuthController extends Controller
      */
     public function sendTextCaptcha(Request $request)
     {
-        //Test Geetest status
-        if (!$this->geetestValidate($request))
-            return json_encode(array('result' => 'false', 'msg' => 'geetest invalid'));
+        //Check Geetest status
+        if(!$this->geetestValidate($request))
+            return redirect('/');
+        //Check last sent time
+        if($request->session()->has('captcha.timestamp'))
+        {
+            if(time() - intval($request->session()->get('captcha.timestamp')) <= 25)
+                return json_encode(array('result' => 'false', 'msg' => 'send interval too short'));
+        }
+
         //Check if tel exist
         if (User::where('tel', $request->tel)->count() > 0)
             return json_encode(array('result' => 'false', 'msg' => 'telephone already exists'));
@@ -76,6 +85,7 @@ class AuthController extends Controller
         curl_setopt($ch, CURLOPT_URL, 'https://sms.yunpian.com/v2/sms/single_send.json');
         curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($data));
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+
         return strval(curl_exec($ch));
     }
 
@@ -129,11 +139,11 @@ class AuthController extends Controller
         $user->token = "";
         //Save new user
         $user->save();
-        $request->session()->put('user_id', $user->id);
-        $request->session()->put('user_tel', $user->tel);
-        $request->session()->put('user_theme', $user->theme);
-        $request->session()->put('user_power', $user->power);
-        $request->session()->put('user_admin', $user->admin_name);
+        $request->session()->put('user.id', $user->id);
+        $request->session()->put('user.tel', $user->tel);
+        $request->session()->put('user.theme', $user->theme);
+        $request->session()->put('user.power', $user->power);
+        $request->session()->put('user.admin', $user->admin_name);
         return json_encode(array('result' => 'true', 'msg' => 'success'));
     }
 
@@ -149,18 +159,37 @@ class AuthController extends Controller
         if (User::where('tel', $request->tel)->count() == 0)
             return json_encode(array('result' => 'false', 'msg' => 'wrong'));
         $user = User::where('tel', $request->tel)->first();
+
         if (Hash::check($user->salt . $request->password, $user->password)) {
             //Generate and save token
             $user->token = $user->tel . strval(time());
             $user->save();
-            $request->session()->put('user_id', $user->id);
-            $request->session()->put('user_tel', $user->tel);
-            $request->session()->put('user_theme', $user->theme);
-            $request->session()->put('user_power', $user->power);
-            $request->session()->put('user_admin', $user->admin_name);
+            $request->session()->put('user.id', $user->id);
+            $request->session()->put('user.tel', $user->tel);
+            $request->session()->put('user.theme', $user->theme);
+            $request->session()->put('user.power', $user->power);
+            $request->session()->put('user.admin', $user->admin_name);
+
+            $cookie = Cookie::make('user.token', $user->token, 2 * 30 * 24 * 60);
             return response(json_encode(array('result' => 'true', 'msg' => 'success')))
-                ->cookie('token', $user->token, 2 * 30 * 24 * 60);
-        } else
+                ->withCookie($cookie);
+        }
+        else
             return json_encode(array('result' => 'false', 'msg' => 'wrong'));
+    }
+
+    /**
+     * @param Request $request
+     */
+    public function logout(Request $request)
+    {
+        //Clear cookie and session
+        $cookie = Cookie::forget('user.token');
+        $request->session()->forget('user.id');
+        $request->session()->forget('user.tel');
+        $request->session()->forget('user.theme');
+        $request->session()->forget('user.power');
+        $request->session()->forget('user.admin');
+        return redirect('/')->withCookie($cookie);
     }
 }
