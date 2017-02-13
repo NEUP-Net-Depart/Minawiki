@@ -45,4 +45,24 @@ class AuthTest extends BrowserKitTestCase
             ]);
         //dd($this->response->getContent());
     }
+
+    public function testFrontend()
+    {
+        $this->visit('/auth/register')
+            ->see('注册')
+            ->see('发送验证码')
+            ->see('提交')
+            ->type('23333333333', 'tel')
+            ->type('cool2645', 'password')
+            ->type('0000', 'captcha')
+            ->press('提交');
+        $this->visit('/auth/login')
+            ->see('登录')
+            ->type('23333333333', 'tel')
+            ->type('cool2645', 'password')
+            ->press('登录');
+        $this->withSession(['user_id' => '1'])
+            ->visit('/')
+            ->see('#1');
+    }
 }

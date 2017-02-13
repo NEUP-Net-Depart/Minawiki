@@ -11,25 +11,15 @@
 |
 */
 
-Route::get('/', function () {
-    return view('index');
-});
-
-//Just for view test
-Route::get('/register', function () {
-    return view('auth.register');
-});
-
-//Just for view test
-Route::get('/login', function () {
-    return view('auth.login');
-});
+Route::get('/', 'IndexController@index');
 
 //Send text captcha
 Route::post('/auth/register/captcha', 'AuthController@sendTextCaptcha');
 //Try to register
 Route::post('/auth/register', 'AuthController@addUser');
-Route::get('/auth/register', 'AuthController@addUser');
+Route::get('/auth/register', 'AuthController@showRegisterView');
 //Try to login
 Route::post('/auth/login', 'AuthController@login');
-Route::get('/auth/login', 'AuthController@login');
+Route::get('/auth/login', 'AuthController@showLoginView');
+
+Route::get('auth/geetest','AuthController@getGeetest');

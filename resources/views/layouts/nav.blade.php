@@ -7,7 +7,7 @@
 
             <div class="nav-wrapper theme-dark">
                 <div class="container">
-                    <a href="#" class="brand-logo">{{ env('APP_NAME', "Minawiki") }}</a>
+                    <a href="/" class="brand-logo">{{ env('APP_NAME', "Minawiki") }}</a>
                     <a href="#" data-activates="mobile-demo" class="button-collapse"><i class="material-icons">&#xE5D2;
                             <!--menu--></i></a>
                     <ul id="nav-mobile" class="right hide-on-med-and-down nav-height">
@@ -21,12 +21,20 @@
                                 </div>
                             </form>
                         </li>
-                        <li><a href="#">登录</a></li>
-                        <li><a href="#">注册</a></li>
+                        @if(isset($uid))
+                            <li><a href="#">#{{ $uid }}</a> </li>
+                        @else
+                            <li><a href="/auth/login">登录</a></li>
+                            <li><a href="/auth/register">注册</a></li>
+                        @endif
                     </ul>
                     <ul class="side-nav" id="mobile-demo">
-                        <li><a href="#">登录</a></li>
-                        <li><a href="#">注册</a></li>
+                        @if(isset($uid))
+                            <li><a href="#">#{{ $uid }}</a> </li>
+                        @else
+                            <li><a href="/auth/login">登录</a></li>
+                            <li><a href="/auth/register">注册</a></li>
+                        @endif
                     </ul>
                 </div>
             </div>

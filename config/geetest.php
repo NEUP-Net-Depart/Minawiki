@@ -41,7 +41,7 @@ return [
 	| Here you can config your geetest url for ajax validation.
 	|
 	*/
-	'geetest_url' => '/geetest',
+	'geetest_url' => '/auth/geetest',
 
 	/*
 	|--------------------------------------------------------------------------

@@ -1,5 +1,6 @@
 <html lang="zh-CN">
 <head>
+    <meta charset="utf-8">
     <!--Import Google Icon Font-->
     <link href="http://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 
@@ -13,6 +14,8 @@
 
     <!--Let browser know website is optimized for mobile-->
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+
+    <meta name="theme-color" content="#4dc4ff" />
 
     <title>@yield('title') - {{ env('APP_NAME', "Minawiki") }}</title>
 </head>
