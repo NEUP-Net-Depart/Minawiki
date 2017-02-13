@@ -296,13 +296,6 @@ class AuthController extends Controller
         //Save new user
         $user->save();
 
-        $request->session()->put('user.id', $user->id);
-        $request->session()->put('user.tel', $user->tel);
-        $request->session()->put('user.theme', $user->theme);
-        $request->session()->put('user.power', $user->power);
-        $request->session()->put('user.admin', $user->admin_name);
-        $cookie = Cookie::make('user.token', $user->token, 2 * 30 * 24 * 60);
-        return response(json_encode(array('result' => 'true', 'msg' => 'success')))
-            ->withCookie($cookie);
+        return response(json_encode(array('result' => 'true', 'msg' => 'success')));
     }
 }
