@@ -136,7 +136,7 @@ class AuthController extends Controller
         $user->admin_name = "";
         $user->theme = "yayin";
         $user->no_disturb = false;
-        $user->token = "";
+        $user->token = $user->tel . strval(time());
         //Save new user
         $user->save();
         $request->session()->put('user.id', $user->id);
@@ -144,7 +144,9 @@ class AuthController extends Controller
         $request->session()->put('user.theme', $user->theme);
         $request->session()->put('user.power', $user->power);
         $request->session()->put('user.admin', $user->admin_name);
-        return json_encode(array('result' => 'true', 'msg' => 'success'));
+        $cookie = Cookie::make('user.token', $user->token, 2 * 30 * 24 * 60);
+        return response(json_encode(array('result' => 'true', 'msg' => 'success')))
+            ->withCookie($cookie);
     }
 
     /**
