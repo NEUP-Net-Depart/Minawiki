@@ -13,6 +13,8 @@
 
 Route::get('/', 'IndexController@index');
 
+//Initialize geetest
+Route::get('auth/geetest','AuthController@getGeetest');
 //Send text captcha
 Route::post('/auth/register/captcha', 'AuthController@sendTextCaptcha');
 //Try to register
@@ -22,5 +24,7 @@ Route::get('/auth/register', 'AuthController@showRegisterView');
 Route::post('/auth/login', 'AuthController@login');
 Route::get('/auth/logout', 'AuthController@logout');
 Route::get('/auth/login', 'AuthController@showLoginView');
-
-Route::get('auth/geetest','AuthController@getGeetest');
+//Send text captcha for change password
+Route::post('/auth/forget/captcha', 'AuthController@sendForgetTextCaptcha');
+//Try to change password
+Route::post('/auth/forget', 'AuthController@changePassword');
