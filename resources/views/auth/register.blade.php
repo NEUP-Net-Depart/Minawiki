@@ -3,13 +3,6 @@
 @section('title', '加入')
 
 @section('content')
-    <style>
-        p {
-            margin-top: 2px;
-            margin-bottom: 0;
-            font-size: 21px;
-        }
-    </style>
     <div class="container">
         <div class="row">
             <form class="col m12 l8 theme-sec" id="reg_fm">
@@ -43,6 +36,7 @@
                         <a id="btn_send" class="waves-effect waves-light btn theme-dark" href="javascript: sendMsg()">发送验证码</a>
                     </div>
                 </div>
+                <p>点击提交即表示您同意<a class="theme-word-dark" href="#">隐私政策</a>和<a class="theme-word-dark" href="#">服务条款</a>。</p>
                 <div class="row">
                     <div class="input-field col s6">
                         <button onclick="register()" type="button" class="waves-effect waves-light btn btn-large theme-dark">提交</button>

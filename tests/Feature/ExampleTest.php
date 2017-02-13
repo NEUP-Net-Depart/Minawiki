@@ -19,6 +19,6 @@ class ExampleTest extends BrowserKitTestCase
     public function testBasicTest()
     {
         $this->visit('/')
-            ->see('Welcome');
+            ->see('Minawiki');
     }
 }

@@ -18,9 +18,9 @@
         </div>
     </div>
     <div class="footer-copyright theme-dark">
-        <div class="container">
-            © 2014 Copyright Text
-            <a class="grey-text text-lighten-4 right" href="#!">More Links</a>
+        <div class="container theme-lk">
+            © {{ env('APP_NAME', "Minawiki") }} 由 {{ date('Y') }} {!! env('APP_PROVIDER', "<a href='https://github.com/NEUP-Net-Depart'>NEUP-Net-Department</a>") !!} 提供. 使用 <a href="https://github.com/hudson6666/Minawiki">Minawiki</a> v{{ env('APP_VER') }}.
+            <a class="theme-lk right" href="#!">Made with love.</a>
         </div>
     </div>
 </footer>

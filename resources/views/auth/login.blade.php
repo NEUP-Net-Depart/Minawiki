@@ -3,16 +3,9 @@
 @section('title', '登录')
 
 @section('content')
-    <style>
-        p {
-            margin-top: 2px;
-            margin-bottom: 0;
-            font-size: 21px;
-        }
-    </style>
     <div class="container">
         <div class="row">
-            <form class="col m12 l8 offset-l2 theme-sec" id="login_fm">
+            <form class="col s12 m12 l8 offset-l2 theme-sec" id="login_fm">
                 <center><h2>登录</h2></center>
                 <div class="row">
                     <div class="input-field col s12">
@@ -28,6 +21,7 @@
                         <label for="icon_pass">密码</label>
                     </div>
                 </div>
+                <a class="theme-word-dark" href="#">忘记密码了？</a>
                 <div class="row">
                     <center><button onclick="login()" type="button" class="waves-effect waves-light btn btn-large theme-dark">登录</button></center>
                 </div>

@@ -8,6 +8,11 @@
     background-color: #4dc4ff !important;
 }
 
+.theme-word-dark {
+    /* tianyiblue-dark */
+    color: #4dc4ff;
+}
+
 .theme-sec {
     /* tianyihui */
     color: #5e5e5e;
@@ -16,6 +21,10 @@
 .theme-bg-sec {
     /* tianyihui */
     background-color: #5e5e5e;
+}
+
+.theme-lk a {
+    color: #ffffff;
 }
 
 /* label color */
