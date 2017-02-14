@@ -22,6 +22,7 @@ class Kernel extends HttpKernel
         \Illuminate\Session\Middleware\StartSession::class,
         \Illuminate\View\Middleware\ShareErrorsFromSession::class,
         \App\Http\Middleware\CheckSession::class,
+        \App\Http\Middleware\CheckIfInstalled::class,
     ];
 
     /**
@@ -62,5 +63,6 @@ class Kernel extends HttpKernel
         'throttle' => \Illuminate\Routing\Middleware\ThrottleRequests::class,
         'checksession' => \App\Http\Middleware\CheckSession::class,
         'checksu' => \App\Http\Middleware\CheckIfSuperAdmin::class,
+        'checkins' => \App\Http\Middleware\CheckIfInstalled::class,
     ];
 }

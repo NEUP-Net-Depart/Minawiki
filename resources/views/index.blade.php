@@ -56,20 +56,9 @@
                                     <div class="switch">
                                         <label>
                                             页面
-                                            <input id="add_page_is_folder_switch" name="is_folder" type="checkbox">
+                                            <input id="add_page_is_folder_switch" name="is_folder" type="checkbox" onchange="folderOnChange()">
                                             <span class="lever"></span>
                                             文件夹
-                                        </label>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col s12">
-                                    <div class="switch">
-                                        <label>
-                                            <input id="add_page_allow_folder_switch" name="allow_child_folder" type="checkbox">
-                                            <span class="lever"></span>
-                                            允许子目录
                                         </label>
                                     </div>
                                 </div>
@@ -190,7 +179,7 @@
             $('#add_page_is_folder_switch').removeAttr('checked');
             $('#add_page_is_notice_switch').removeAttr('checked');
             $('#add_page_protect_children_switch').removeAttr('checked');
-            $('#add_page_allow_folder_switch').removeAttr('checked');
+            $('#add_page_protect_children_switch').attr('disabled', 'disabled');
             @endif
             $('#add_page_submit').attr('href', 'javascript: addPage()');
             $('#add_page_modal').modal('open');
@@ -200,10 +189,14 @@
             $('#add_page_title_input').val($('#' + title + "_title").val());
             $('#add_page_fatherid_input').val($('#' + title + "_father_id").val());
             @if(isset($power) && $power > 1)
-            if ($('#' + title + "_is_folder").val() == "1")
+            if ($('#' + title + "_is_folder").val() == "1") {
                 $('#add_page_is_folder_switch').prop('checked', 'checked');
-            else
+                $('#add_page_protect_children_switch').removeAttr('disabled');
+            }
+            else {
                 $('#add_page_is_folder_switch').removeAttr('checked');
+                $('#add_page_protect_children_switch').attr('disabled', 'disabled');
+            }
             if ($('#' + title + "_is_notice").val() == "1")
                 $('#add_page_is_notice_switch').prop('checked', 'checked');
             else
@@ -212,10 +205,6 @@
                 $('#add_page_protect_children_switch').prop('checked', 'checked');
             else
                 $('#add_page_protect_children_switch').removeAttr('checked');
-            if ($('#' + title + "_allow_folder").val() == "1")
-                $('#add_page_allow_folder_switch').prop('checked', 'checked');
-            else
-                $('#add_page_allow_folder_switch').removeAttr('checked');
             $('#add_page_power_select').val($('#' + title + "_power").val());
             @endif
             $('#add_page_submit').attr('href', 'javascript: editPage('+ $('#' + title + "_id").val() + ')');
@@ -231,6 +220,12 @@
         function showMovePageModal(title) {
             $('#move_page_submit').attr('href', 'javascript: movePage('+ $('#' + title + "_id").val() + ')');
             $('#move_page_modal').modal('open');
+        }
+        function folderOnChange() {
+            if($('#add_page_is_folder_switch').is(":checked"))
+                $('#add_page_protect_children_switch').removeAttr('disabled');
+            else
+                $('#add_page_protect_children_switch').attr('disabled', 'disabled');
         }
         function addPage() {
             var str_data1 = $("#addPage_fm input[type!=checkbox],#addPage_fm select").map(function () {

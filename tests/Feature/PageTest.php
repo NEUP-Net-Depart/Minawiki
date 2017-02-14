@@ -20,7 +20,7 @@ class PageTest extends BrowserKitTestCase
      */
     public function testIndex()
     {
-        Page::firstOrCreate(['id' => 1, 'father_id' => 0, 'title' => "Minawikiroot", 'is_folder' => true]);
+        $this->post('/install', [ 'tel' => '12312312312', 'password' => 'admin', 'title' => 'Minawikiroot']);
 
         $this->visit('/')
             ->see(env('APP_NAME'));
@@ -80,7 +80,8 @@ class PageTest extends BrowserKitTestCase
     }
 
     public function testBackend() {
-        Page::firstOrCreate(['id' => 1, 'father_id' => 0, 'title' => "Minawikiroot", 'is_folder' => true]);
+        $this->post('/install', [ 'tel' => '12312312312', 'password' => 'admin', 'title' => 'Minawikiroot']);
+
         //Test Add
         $this->withSession(['user.power' => '3'])
             ->post('/page')

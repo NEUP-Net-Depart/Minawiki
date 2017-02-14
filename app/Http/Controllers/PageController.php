@@ -8,7 +8,7 @@ use App\Redirect;
 
 class PageController extends Controller
 {
-    protected $reserved = [ 'auth', 'page' ];
+    protected $reserved = [ 'auth', 'page', 'install' ];
     protected $restricted = [ '/', '\\', ':', '%', '&', '#', '=', '<', '>', '-', '*', '"', '\'' ];
 
     /**
@@ -108,8 +108,6 @@ class PageController extends Controller
 
         if(isset($request->is_folder))
             $page->is_folder = $request->is_folder;
-        if(isset($request->allow_child_folder))
-            $page->allow_child_folder = $request->allow_child_folder;
         if(isset($request->is_notice))
             $page->is_notice = $request->is_notice;
         if(isset($request->protect_children))
@@ -169,8 +167,6 @@ class PageController extends Controller
 
         if(isset($request->is_folder))
             $page->is_folder = $request->is_folder;
-        if(isset($request->allow_child_folder))
-            $page->allow_child_folder = $request->allow_child_folder;
         if(isset($request->is_notice))
             $page->is_notice = $request->is_notice;
         if(isset($request->protect_children))

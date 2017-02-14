@@ -33,7 +33,6 @@
 <main>
     @yield('content')
 </main>
-@include('layouts.footer')
-
+@yield('footer')
 </body>
 </html>

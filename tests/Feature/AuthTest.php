@@ -17,7 +17,8 @@ class AuthTest extends BrowserKitTestCase
      */
     public function testBackend()
     {
-        Page::firstOrCreate(['id' => 1, 'father_id' => 0, 'title' => "Minawikiroot", 'is_folder' => true]);
+        $this->post('/install', [ 'tel' => '12312312312', 'password' => 'admin', 'title' => 'Minawikiroot']);
+
         //Test register
         $this->withSession(['captcha.tel' => '23333333333'])
             ->json('POST', '/auth/register', ['tel' => '13333333333', 'password' => 'cool2645'])
@@ -73,7 +74,7 @@ class AuthTest extends BrowserKitTestCase
 
     public function testFrontend()
     {
-        Page::firstOrCreate(['id' => 1, 'father_id' => 0, 'title' => "Minawikiroot", 'is_folder' => true]);
+        $this->post('/install', [ 'tel' => '12312312312', 'password' => 'admin', 'title' => 'Minawikiroot']);
 
         $this->visit('/auth/register')
             ->see('注册')

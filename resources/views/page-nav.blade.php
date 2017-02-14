@@ -10,7 +10,6 @@
                         <input type="hidden" id="{{ $item->title }}_father_id" value="{{ $item->father_id }}">
                         <input type="hidden" id="{{ $item->title }}_is_folder" value="{{ $item->is_folder }}">
                         <input type="hidden" id="{{ $item->title }}_is_notice" value="{{ $item->is_notice }}">
-                        <input type="hidden" id="{{ $item->title }}_allow_folder" value="{{ $item->allow_folder }}">
                         <input type="hidden" id="{{ $item->title }}_protect_children" value="{{ $item->protect_children }}">
                         <input type="hidden" id="{{ $item->title }}_power" value="{{ $item->power }}">
                         <a href="javascript: showDelPageModal('{{ $item->title }}')" class="secondary-content"><i

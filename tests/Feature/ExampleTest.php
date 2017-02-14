@@ -19,7 +19,7 @@ class ExampleTest extends BrowserKitTestCase
      */
     public function testBasicTest()
     {
-        Page::firstOrCreate(['id' => 1, 'father_id' => 0, 'title' => "Minawikiroot", 'is_folder' => true]);
+        $this->post('/install', [ 'tel' => '12312312312', 'password' => 'admin', 'title' => 'Minawikiroot']);
 
         $this->visit('/')
             ->see('Minawiki');
