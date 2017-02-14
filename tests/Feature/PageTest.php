@@ -20,14 +20,7 @@ class PageTest extends BrowserKitTestCase
      */
     public function testIndex()
     {
-        if(Page::where('id', 1)->count() == 0) {
-            $root = new Page();
-            $root->id = 1;
-            $root->father_id = 0;
-            $root->title = "Minawikiroot";
-            $root->is_folder = true;
-            $root->save();
-        }
+        Page::firstOrCreate(['id' => 1, 'father_id' => 0, 'title' => "Minawikiroot", 'is_folder' => true]);
 
         $this->visit('/')
             ->see(env('APP_NAME'));

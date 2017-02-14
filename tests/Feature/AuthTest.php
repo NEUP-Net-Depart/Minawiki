@@ -17,14 +17,7 @@ class AuthTest extends BrowserKitTestCase
      */
     public function testBackend()
     {
-        if(Page::where('id', 1)->count() == 0) {
-            $root = new Page();
-            $root->id = 1;
-            $root->father_id = 0;
-            $root->title = "Minawikiroot";
-            $root->is_folder = true;
-            $root->save();
-        }
+        Page::firstOrCreate(['id' => 1, 'father_id' => 0, 'title' => "Minawikiroot", 'is_folder' => true]);
         //Test register
         $this->withSession(['captcha.tel' => '23333333333'])
             ->json('POST', '/auth/register', ['tel' => '13333333333', 'password' => 'cool2645'])
@@ -80,14 +73,8 @@ class AuthTest extends BrowserKitTestCase
 
     public function testFrontend()
     {
-        if(Page::where('id', 1)->count() == 0) {
-            $root = new Page();
-            $root->id = 1;
-            $root->father_id = 0;
-            $root->title = "Minawikiroot";
-            $root->is_folder = true;
-            $root->save();
-        }
+        Page::firstOrCreate(['id' => 1, 'father_id' => 0, 'title' => "Minawikiroot", 'is_folder' => true]);
+
         $this->visit('/auth/register')
             ->see('注册')
             ->see('发送验证码')
