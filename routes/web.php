@@ -28,3 +28,9 @@ Route::get('/auth/logout', 'AuthController@logout');
 Route::get('/auth/forget', 'AuthController@showForgetView');
 Route::post('/auth/forget/captcha', 'AuthController@sendForgetTextCaptcha');
 Route::post('/auth/forget', 'AuthController@changePassword');
+
+Route::get('/page/left-nav/{title?}', 'PageController@index');
+Route::post('/page/', 'PageController@store');
+Route::post('/page/move/{id}', 'PageController@move')->middleware('checksu');
+Route::put('/page/{id}', 'PageController@update')->middleware('checksu');
+Route::delete('/page/{id}', 'PageController@destroy')->middleware('checksu');

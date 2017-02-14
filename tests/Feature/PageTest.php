@@ -36,7 +36,7 @@ class PageTest extends BrowserKitTestCase
         $page2 = new Page();
         $page2->father_id = $page->id;
         $page2->title = "test2";
-        $page2->is_folder = true;
+        $page2->is_folder = false;
         $page2->save();
         $page3 = new Page();
         $page3->father_id = $page->id;
@@ -44,12 +44,12 @@ class PageTest extends BrowserKitTestCase
         $page3->is_folder = true;
         $page3->save();
 
-        $this->visit('/')
+        $this->visit('/page/left-nav')
             ->see('test1');
-        $this->visit('/test1')
+        $this->visit('/page/left-nav/test1')
             ->see('test2')
             ->see('test3');
-        $this->visit('test2')
+        $this->visit('/page/left-nav/test2')
             ->see('test2');
 
         //Construct new user
@@ -71,11 +71,53 @@ class PageTest extends BrowserKitTestCase
 
         $this->withSession(['user.id' => $user->id])
             ->withSession(['user.power' => $user->power])
-            ->visit('/')
+            ->visit('/page/left-nav/')
             ->see('')
-            ->visit('/test1')
+            ->visit('/page/left-nav/test1')
             ->see('test2')
             ->click('test2')
             ->seePageIs('/test2');
+    }
+
+    public function testBackend() {
+        Page::firstOrCreate(['id' => 1, 'father_id' => 0, 'title' => "Minawikiroot", 'is_folder' => true]);
+        //Test Add
+        $this->withSession(['user.power' => '3'])
+            ->json('POST', '/page', ['title' => 'testtest', 'father_id' => '1'])
+            ->seeJson([
+                'result' => 'true',
+                'msg' => 'success',
+            ]);
+        //Test Edit
+        $this->withSession(['user.power' => '3'])
+            ->json('PUT', '/page/2', ['title' => 'testtest2'])
+            ->seeJson([
+                'result' => 'true',
+                'msg' => 'success',
+            ]);
+        //Test Move
+        $this->withSession(['user.power' => '3'])
+            ->json('POST', '/page/move/2', ['father_title' => 'testtest'])
+            ->seeJson([
+                'result' => 'true',
+                'msg' => 'success',
+            ]);
+        //Test Del
+        $this->withSession(['user.power' => '3'])
+            ->json('DELETE', '/page/2')
+            ->seeJson([
+                'result' => 'true',
+                'msg' => 'success',
+            ]);
+        //Test illegal access
+        $this->visit('/auth/logout');
+        $this->json('POST', '/page', ['title' => 'testtest', 'father_id' => '1'])
+            ->assertResponseStatus(404);
+        $this->json('PUT', '/page/2', ['title' => 'testtest2'])
+            ->assertResponseStatus(404);
+        $this->json('POST', '/page/move/2', ['father_title' => 'testtest'])
+            ->assertResponseStatus(404);
+        $this->json('DELETE', '/page/2')
+            ->assertResponseStatus(404);
     }
 }
