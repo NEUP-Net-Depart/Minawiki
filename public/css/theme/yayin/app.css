@@ -28,7 +28,7 @@
     background-color: #5e5e5e;
 }
 
-.theme-lk a,.collection-item.active {
+.theme-lk,.theme-lk a,.collection-item.active {
     color: #ffffff !important;
 }
 
@@ -96,4 +96,16 @@
 /* icon prefix focus color */
 .input-field .prefix.active {
     color: #66ccff;
+}
+
+.switch label input[type=checkbox]:checked+.lever {
+    background-color: #66ccff;
+}
+
+.switch label input[type=checkbox]:checked+.lever:after {
+    background-color: #66ccff;
+}
+
+.dropdown-content li>a, .dropdown-content li>span {
+    color: #4dc4ff;
 }

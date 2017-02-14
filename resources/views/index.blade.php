@@ -105,7 +105,7 @@
                             <div class="col s12">
                                 <div class="switch">
                                     <label>
-                                        文件
+                                        页面
                                         <input type="checkbox">
                                         <span class="lever"></span>
                                         文件夹
@@ -153,7 +153,8 @@
             </form>
         </div>
         <div class="modal-footer">
-            <a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat ">确定</a>
+            <a href="#!" class="modal-action modal-close waves-effect btn-flat theme-dark theme-lk">确定</a>
+            <a href="#!" class="modal-action modal-close waves-effect btn-flat ">关闭</a>
         </div>
     </div>
     <!-- Alter Page Modal -->
@@ -170,7 +171,8 @@
             </form>
         </div>
         <div class="modal-footer">
-            <a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat ">确定</a>
+            <a href="#!" class="modal-action modal-close waves-effect btn-flat theme-dark theme-lk">确定</a>
+            <a href="#!" class="modal-action modal-close waves-effect btn-flat ">关闭</a>
         </div>
     </div>
     <!-- Move Page Modal -->
@@ -196,7 +198,8 @@
             </form>
         </div>
         <div class="modal-footer">
-            <a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat ">确定</a>
+            <a href="#!" class="modal-action modal-close waves-effect btn-flat theme-dark theme-lk">确定</a>
+            <a href="#!" class="modal-action modal-close waves-effect btn-flat ">关闭</a>
         </div>
     </div>
     <!-- Del Page Modal -->
@@ -219,7 +222,8 @@
             </form>
         </div>
         <div class="modal-footer">
-            <a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat ">我明白这样做的后果并且要删除</a>
+            <a href="#!" class="modal-action modal-close waves-effect red white-text btn-flat ">我明白这样做的后果并且要删除</a>
+            <a href="#!" class="modal-action modal-close waves-effect btn-flat ">取消</a>
         </div>
     </div>
 @endsection
