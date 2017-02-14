@@ -19,7 +19,7 @@ class CreatePagesTable extends Migration
             $table->index('father_id');
             $table->string('title');
             $table->unique('title');
-            $table->boolean('is_folder');
+            $table->boolean('is_folder')->default(false);
             $table->boolean('allow_child_folder')->default(true);
             $table->boolean('protect_children')->default(false);
             $table->tinyInteger('power')->default(0);

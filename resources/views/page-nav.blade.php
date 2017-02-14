@@ -1,4 +1,4 @@
-@if(isset($power) && $power > 0)
+@if(isset($power) && $power > 1)
     <ul class="collection theme-word-dark theme-sec-i">
         @foreach($left_data as $item)
             <li class="collection-item">

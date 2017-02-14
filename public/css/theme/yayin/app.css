@@ -13,6 +13,10 @@
     color: #4dc4ff !important;
 }
 
+.theme-border-dark {
+    border-color: #4dc4ff;
+}
+
 .theme-sec,.theme-sec span {
     /* tianyihui */
     color: #5e5e5e !important;

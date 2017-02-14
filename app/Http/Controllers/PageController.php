@@ -8,7 +8,7 @@ use App\Redirect;
 
 class PageController extends Controller
 {
-    protected $reserved = [ 'auth', 'pages' ];
+    protected $reserved = [ 'auth', 'page' ];
     protected $restricted = [ '/', '\\', ':', '%', '&', '#', '=', '<', '>', '-', '*', '"', '\'' ];
 
     /**
@@ -17,17 +17,17 @@ class PageController extends Controller
      * @return bool
      */
     private function isInString($haystack, $needles) {
-        $result = true;
+        $result = false;
         foreach ($needles as $needle) {
-            $result = $result && ( false !== strpos($haystack, $needle) );
+            $result = $result || ( false !== strpos($haystack, $needle) );
         }
         return $result;
     }
 
     private function isEqualString($haystack, $needles) {
-        $result = true;
+        $result = false;
         foreach ($needles as $needle) {
-            $result = $result && ( false !== ($haystack == $needle) );
+            $result = $result || ( false !== ($haystack == $needle) );
         }
         return $result;
     }

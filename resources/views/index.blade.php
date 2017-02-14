@@ -161,7 +161,7 @@
         function loadLeftNav() {
             $('#left-nav').html('<center>\
                 <div class="preloader-wrapper big active center" style="margin-top: 30px">\
-                <div class="spinner-layer spinner-blue-only">\
+                <div class="spinner-layer theme-border-dark">\
                 <div class="circle-clipper left">\
                 <div class="circle"></div>\
                 </div><div class="gap-patch">\
