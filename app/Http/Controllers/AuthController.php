@@ -226,7 +226,7 @@ class AuthController extends Controller
                 return json_encode(array('result' => 'false', 'msg' => 'send interval too short'));
         }
 
-        //Check if tel doesn't exist
+        //Check if tel exists
         if (User::where('tel', $request->tel)->count() == 0)
             return json_encode(array('result' => 'false', 'msg' => 'wrong telephone'));
         //Generate random captcha
@@ -282,12 +282,12 @@ class AuthController extends Controller
             )
                 return json_encode(array('result' => 'false', 'msg' => 'expired captcha'));
         }
-        //Check if tel doesn't exist
+        //Check if tel exists
         if (User::where('tel', $request->tel)->count() == 0)
             return json_encode(array('result' => 'false', 'msg' => 'wrong telephone'));
         //Generate random salt
         $salt = base64_encode(random_bytes(24));
-        //Construct new user
+        //Update user
         $user = User::where('tel', $request->tel)->first();
         $user->tel = $request->tel;
         $user->password = Hash::make($salt . $request->password);

@@ -9,42 +9,6 @@ use App\Redirect;
 class PageController extends Controller
 {
     /**
-     * @param Request $request
-     * @return Redirect
-     */
-    public function showPage(Request $request)
-    {
-        $pages = Page::all();
-        $path = collect([]);
-        //Check if title exists
-        $current_page = $pages->where('title', $request->title)->first();
-        if(!isset($current_page))
-            return redirect('/');
-        //Calculate path to root and reverse
-        else {
-            while ($current_page['id'] != 1)
-            {
-                $path->prepend($current_page['id']);
-                $current_page = $pages->where('id', $current_page['father_id'])->first();
-            }
-            $path->prepend(1);
-        }
-        //Calculate left div data
-        $current_page = $pages->where('title', $request->title)->first();
-        if(boolval($current_page['is_folder']))
-        {
-            //Get all children
-            $left_data = collect($pages->where('father_id', $current_page['id'])->all());
-        }
-        else
-        {
-            //Get all siblings
-            $left_data = collect($pages->where('father_id', $current_page['father_id'])->all());
-        }
-        //Todo
-    }
-
-    /**
      * @param $haystack
      * @param $needle
      * @return bool

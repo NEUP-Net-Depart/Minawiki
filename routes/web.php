@@ -11,7 +11,7 @@
 |
 */
 
-Route::get('/', 'IndexController@index');
+Route::get('/{title?}', 'IndexController@index');
 
 //Initialize geetest
 Route::get('auth/geetest','AuthController@getGeetest');

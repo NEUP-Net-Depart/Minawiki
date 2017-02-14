@@ -4,9 +4,9 @@
 
     <div class="nav-wrapper theme">
         <div class="container">
-            <a href="#!" class="breadcrumb">First</a>
-            <a href="#!" class="breadcrumb">Second</a>
-            <a href="#!" class="breadcrumb">Third</a>
+            @foreach($path as $page)
+            <a href="/{{ $page->title }}" class="breadcrumb">{{ $page->title }}</a>
+            @endforeach
         </div>
     </div>
 

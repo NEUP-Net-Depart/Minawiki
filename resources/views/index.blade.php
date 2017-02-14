@@ -13,62 +13,46 @@
     <div class="container">
         <div class="row">
             <div class="col m4 s12">
-                <!--Admin-->
-                <ul class="collection theme-word-dark theme-sec-i">
-                    <li class="collection-item">
-                        <div>
-                            <a href="#!">Alvin</a><a href="#del_page_modal" class="secondary-content"><i
-                                        class="material-icons">
-                                    &#xE872;<!--delete--></i></a><a href="#move_page_modal" class="secondary-content"><i
-                                        class="material-icons">&#xE89F;<!--open_with--></i></a><a
-                                    href="#edit_page_modal"
-                                    class="secondary-content"><i
-                                        class="material-icons">&#xE150;<!--create--></i></a></div>
-                    </li>
-                    <li class="collection-item">
-                        <div>
-                            <a href="#!">Alvin</a><a href="#del_page_modal" class="secondary-content"><i
-                                        class="material-icons">
-                                    &#xE872;<!--delete--></i></a><a href="#move_page_modal" class="secondary-content"><i
-                                        class="material-icons">&#xE89F;<!--open_with--></i></a><a
-                                    href="#edit_page_modal"
-                                    class="secondary-content"><i
-                                        class="material-icons">&#xE150;<!--create--></i></a></div>
-                    </li>
-                    <li class="collection-item">
-                        <div>
-                            <a href="#!">Alvin</a><a href="#del_page_modal" class="secondary-content"><i
-                                        class="material-icons">
-                                    &#xE872;<!--delete--></i></a><a href="#move_page_modal" class="secondary-content"><i
-                                        class="material-icons">&#xE89F;<!--open_with--></i></a><a
-                                    href="#edit_page_modal"
-                                    class="secondary-content"><i
-                                        class="material-icons">&#xE150;<!--create--></i></a></div>
-                    </li>
-                    <li class="collection-item">
-                        <div>
-                            <a href="#!">Alvin</a><a href="#del_page_modal" class="secondary-content"><i
-                                        class="material-icons">
-                                    &#xE872;<!--delete--></i></a><a href="#move_page_modal" class="secondary-content"><i
-                                        class="material-icons">&#xE89F;<!--open_with--></i></a><a
-                                    href="#edit_page_modal"
-                                    class="secondary-content"><i
-                                        class="material-icons">&#xE150;<!--create--></i></a></div>
-                    </li>
-                    <a href="#add_page_modal" class="collection-item modal-trigger" style="text-align: center"><i
-                                class="material-icons">
-                            &#xE147;</i></a>
-                </ul>
+                @if(isset($power) && $power > 0)
+                    <ul class="collection theme-word-dark theme-sec-i">
+                        @foreach($left_data as $item)
+                            <li class="collection-item">
+                                <div>
+                                    <a href="/{{ $item->title }}">{{ $item->title }}</a><a href="#del_page_modal"
+                                                                                           class="secondary-content"><i
+                                                class="material-icons">
+                                            &#xE872;<!--delete--></i></a><a href="#move_page_modal"
+                                                                            class="secondary-content"><i
+                                                class="material-icons">&#xE89F;<!--open_with--></i></a><a
+                                            href="#edit_page_modal"
+                                            class="secondary-content"><i
+                                                class="material-icons">&#xE150;<!--create--></i></a></div>
+                            </li>
+                        @endforeach
+                        <a href="#add_page_modal" class="collection-item modal-trigger" style="text-align: center"><i
+                                    class="material-icons">
+                                &#xE147;</i></a>
+                    </ul>
+                @else
                 <!--User-->
-                <div class="collection theme-word-dark">
-                    <a href="#!" class="collection-item"><span class="badge">1</span>Alvin</a>
-                    <a href="#!" class="collection-item"><span class="badge">1</span>Alvin</a>
-                    <a href="#!" class="collection-item active"><span class="badge">1</span>Alvin</a>
-                    <a href="#!" class="collection-item"><span class="badge">1</span>Alvin</a>
-                    <a href="#add_page_modal" class="collection-item modal-trigger" style="text-align: center"><i
-                                class="material-icons">
-                            &#xE147;</i></a>
-                </div>
+                    <div class="collection theme-word-dark">
+                        @foreach($left_data as $item)
+                            @if($item->id == $current_page->id)
+                                <a href="/{{ $item->title }}" class="collection-item active"><span
+                                            class="badge">1</span>{{ $item->title }}</a>
+                            @else
+                                <a href="/{{ $item->title }}" class="collection-item"><span
+                                            class="badge">1</span>{{ $item->title }}</a>
+                            @endif
+                        @endforeach
+                        @if(!$left_data_page->protect_children)
+                            <a href="#add_page_modal" class="collection-item modal-trigger"
+                               style="text-align: center"><i
+                                        class="material-icons">
+                                    &#xE147;</i></a>
+                        @endif
+                    </div>
+                @endif
             </div>
             <div class="col m8 s12">
                 <center><h2>Welcome</h2></center>
