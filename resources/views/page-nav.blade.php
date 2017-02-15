@@ -5,16 +5,16 @@
                 <div>
                     <form style="margin-bottom: 0">
                         <a href="/{{ $item->title }}">{{ $item->title }}</a>
-                        <input type="hidden" id="{{ $item->title }}_id" value="{{ $item->id }}">
-                        <input type="hidden" id="{{ $item->title }}_title" value="{{ $item->title }}">
-                        <input type="hidden" id="{{ $item->title }}_father_id" value="{{ $item->father_id }}">
-                        <input type="hidden" id="{{ $item->title }}_is_folder" value="{{ $item->is_folder }}">
-                        <input type="hidden" id="{{ $item->title }}_is_notice" value="{{ $item->is_notice }}">
-                        <input type="hidden" id="{{ $item->title }}_protect_children"
+                        <input type="hidden" id="{{ $item->id }}_id" value="{{ $item->id }}">
+                        <input type="hidden" id="{{ $item->id }}_title" value="{{ $item->title }}">
+                        <input type="hidden" id="{{ $item->id }}_father_id" value="{{ $item->father_id }}">
+                        <input type="hidden" id="{{ $item->id }}_is_folder" value="{{ $item->is_folder }}">
+                        <input type="hidden" id="{{ $item->id }}_is_notice" value="{{ $item->is_notice }}">
+                        <input type="hidden" id="{{ $item->id }}_protect_children"
                                value="{{ $item->protect_children }}">
-                        <input type="hidden" id="{{ $item->title }}_power" value="{{ $item->power }}">
+                        <input type="hidden" id="{{ $item->id }}_power" value="{{ $item->power }}">
                         @if(isset($realLogined) && $realLogined)
-                            <a href="javascript: showDelPageModal('{{ $item->title }}')" class="secondary-content"><i
+                            <a href="javascript: showDelPageModal('{{ $item->id }}')" class="secondary-content"><i
                                         class="material-icons">
                                     &#xE872;<!--delete--></i></a>
                         @else
@@ -22,10 +22,10 @@
                                         class="material-icons">
                                     &#xE872;<!--delete--></i></a>
                         @endif
-                        <a href="javascript: showMovePageModal('{{ $item->title }}')"
+                        <a href="javascript: showMovePageModal('{{ $item->id }}')"
                            class="secondary-content"><i
                                     class="material-icons">&#xE89F;<!--open_with--></i></a><a
-                                href="javascript: showEditPageModal('{{ $item->title }}')"
+                                href="javascript: showEditPageModal('{{ $item->id }}')"
                                 class="secondary-content"><i
                                     class="material-icons">&#xE150;<!--create--></i></a>
                     </form>
