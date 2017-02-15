@@ -29,7 +29,7 @@
 
 .theme-bg-sec {
     /* tianyihui */
-    background-color: #5e5e5e;
+    background-color: #5e5e5e !important;
 }
 
 .theme-lk,.theme-lk a,.collection-item.active {
@@ -112,4 +112,8 @@
 
 .dropdown-content li>a, .dropdown-content li>span {
     color: #4dc4ff;
+}
+
+.pagination li.active {
+    background-color: #5e5e5e !important;
 }

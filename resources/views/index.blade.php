@@ -16,7 +16,41 @@
 
             </div>
             <div class="col m8 s12">
-                <center><h2>Welcome</h2></center>
+                <center>
+                    <h2>
+                        {{ $current_page->title }}
+                        <a class="btn-floating waves-effect waves-light theme-bg-sec btn right"><i class="material-icons">&#xE889;<!--history--></i></a>
+                        <a class="btn-floating waves-effect waves-light theme-bg-sec btn right"><i class="material-icons left">&#xE3C9;<!--edit--></i></a>
+                    </h2></center>
+                <div class="row">
+                    <form class="col s12">
+                        <div class="row">
+                            <div class="input-field col s12">
+                                <textarea id="textarea1" class="materialize-textarea" disabled>我是萌萌哒的内容</textarea>
+                                <label for="textarea1">Textarea</label>
+                            </div>
+                            <div class="input-field col s12">
+                                <a class="waves-effect waves-light btn-large theme-bg-sec right">提交</a>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <ul class="collection with-header">
+                    <li class="collection-header"><h4>历史记录</h4></li>
+                    <li class="collection-item">Alvin</li>
+                    <li class="collection-item">Alvin</li>
+                    <li class="collection-item">Alvin</li>
+                    <li class="collection-item">Alvin</li>
+                </ul>
+                <ul class="pagination">
+                    <li class="disabled"><a href="#!"><i class="material-icons">chevron_left</i></a></li>
+                    <li class="active"><a href="#!">1</a></li>
+                    <li class="waves-effect"><a href="#!">2</a></li>
+                    <li class="waves-effect"><a href="#!">3</a></li>
+                    <li class="waves-effect"><a href="#!">4</a></li>
+                    <li class="waves-effect"><a href="#!">5</a></li>
+                    <li class="waves-effect"><a href="#!"><i class="material-icons">chevron_right</i></a></li>
+                </ul>
             </div>
         </div>
     </div>
