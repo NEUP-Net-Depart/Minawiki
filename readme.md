@@ -1,6 +1,8 @@
 # Minawiki
 
-![Build-Status](https://travis-ci.org/hudson6666/Minawiki.svg?branch=master)
+[![Build-Status](https://travis-ci.org/hudson6666/Minawiki.svg?branch=master)](https://travis-ci.org/hudson6666/Minawiki)
+[![GitHub tag](https://img.shields.io/github/tag/hudson6666/Minawiki.svg)](https://github.com/hudson6666/Minawiki/releases)
+[![GitHub license](https://img.shields.io/badge/license-AGPL-blue.svg)](https://raw.githubusercontent.com/hudson6666/Minawiki/master/LICENSE)
 
 # Process & To-do Lists
 
@@ -8,6 +10,7 @@
 
 ## Finally
 
+* [ ] Improve ajax load and css
 * [ ] Tips for ie users
 * [ ] Switch to local js/css
 * [ ] Upgrade to laravel 5.5 lts (We are now at laravel 5.4)
