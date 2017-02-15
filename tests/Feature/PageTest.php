@@ -72,7 +72,7 @@ class PageTest extends BrowserKitTestCase
         $this->withSession(['user.id' => $user->id])
             ->withSession(['user.power' => $user->power])
             ->visit('/page/left-nav/')
-            ->see('')
+            ->see('')
             ->visit('/page/left-nav/test1')
             ->see('test2')
             ->click('test2')

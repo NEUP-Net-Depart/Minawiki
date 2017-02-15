@@ -26,8 +26,7 @@
                            class="secondary-content"><i
                                     class="material-icons">&#xE89F;<!--open_with--></i></a><a
                                 href="javascript: showEditPageModal('{{ $item->id }}')"
-                                class="secondary-content"><i
-                                    class="material-icons">&#xE150;<!--create--></i></a>
+                                class="secondary-content"><i class="material-icons">&#xE3C9;<!--edit--></i></a>
                     </form>
                 </div>
             </li>
