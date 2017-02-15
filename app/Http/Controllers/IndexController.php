@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Page;
 use App\Redirect;
+use App\Version;
 
 class IndexController extends Controller
 {

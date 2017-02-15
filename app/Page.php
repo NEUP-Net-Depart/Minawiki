@@ -22,4 +22,9 @@ class Page extends Model
      * @var array
      */
     protected $fillable = ['father_id', 'title', 'is_folder'];
+
+    public function versions()
+    {
+        return $this->hasMany('App\Version');
+    }
 }

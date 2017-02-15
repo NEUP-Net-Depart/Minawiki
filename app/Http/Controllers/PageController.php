@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Page;
 use App\Redirect;
+use App\Version;
 
 class PageController extends Controller
 {
@@ -236,6 +237,9 @@ class PageController extends Controller
         while (!$q->isEmpty()) {
             //deque
             $page = $q->shift();
+            //delete versions
+            foreach ($page->versions as $version)
+                Version::where('id', $version->id)->delete();
             //delete page
             Page::where('id', $page['id'])->delete();
             //delete redirect
