@@ -83,91 +83,91 @@ class PageTest extends BrowserKitTestCase
         $this->post('/install', [ 'tel' => '12312312312', 'password' => 'admin', 'title' => 'Minawikiroot']);
 
         //Test Add
-        $this->withSession(['user.power' => '3'])
+        $this->withSession(['user.id' => 1, 'user.power' => '3'])
             ->post('/page')
             ->assertNotEquals(200, $this->response->status());
-        $this->withSession(['user.power' => '3'])
+        $this->withSession(['user.id' => 1, 'user.power' => '3'])
             ->json('POST', '/page', ['title' => 'testtest', 'father_id' => '1'])
             ->seeJson([
                 'result' => 'true',
                 'msg' => 'success',
             ]);
-        $this->withSession(['user.power' => '3'])
+        $this->withSession(['user.id' => 1, 'user.power' => '3'])
             ->json('POST', '/page', ['title' => 'testtest', 'father_id' => '1'])
             ->seeJson([
                 'result' => 'false',
                 'msg' => 'page already exists',
             ]);
-        $this->withSession(['user.power' => '3'])
+        $this->withSession(['user.id' => 1, 'user.power' => '3'])
             ->json('POST', '/page', ['title' => '*', 'father_id' => '1'])
             ->seeJson([
                 'result' => 'false',
                 'msg' => 'restricted',
             ]);
-        $this->withSession(['user.power' => '3'])
+        $this->withSession(['user.id' => 1, 'user.power' => '3'])
             ->json('POST', '/page', ['title' => 'page', 'father_id' => '1'])
             ->seeJson([
                 'result' => 'false',
                 'msg' => 'reserved',
             ]);
         //Test Edit
-        $this->withSession(['user.power' => '3'])
+        $this->withSession(['user.id' => 1, 'user.power' => '3'])
             ->put('/page/2')
             ->assertNotEquals(200, $this->response->status());
-        $this->withSession(['user.power' => '3'])
+        $this->withSession(['user.id' => 1, 'user.power' => '3'])
             ->json('PUT', '/page/2', ['title' => 'testtest2'])
             ->seeJson([
                 'result' => 'true',
                 'msg' => 'success',
             ]);
-        $this->withSession(['user.power' => '3'])
+        $this->withSession(['user.id' => 1, 'user.power' => '3'])
             ->json('PUT', '/page/2', ['title' => 'testtest2'])
             ->seeJson([
                 'result' => 'true',
                 'msg' => 'success',
             ]);
-        $this->withSession(['user.power' => '3'])
+        $this->withSession(['user.id' => 1, 'user.power' => '3'])
             ->json('PUT', '/page/2', ['title' => 'Minawikiroot', 'father_id' => '1'])
             ->seeJson([
                 'result' => 'false',
                 'msg' => 'page already exists',
             ]);
-        $this->withSession(['user.power' => '3'])
+        $this->withSession(['user.id' => 1, 'user.power' => '3'])
             ->json('PUT', '/page/2', ['title' => '*', 'father_id' => '1'])
             ->seeJson([
                 'result' => 'false',
                 'msg' => 'restricted',
             ]);
-        $this->withSession(['user.power' => '3'])
+        $this->withSession(['user.id' => 1, 'user.power' => '3'])
             ->json('PUT', '/page/2', ['title' => 'page', 'father_id' => '1'])
             ->seeJson([
                 'result' => 'false',
                 'msg' => 'reserved',
             ]);
         //Test Move
-        $this->withSession(['user.power' => '3'])
+        $this->withSession(['user.id' => 1, 'user.power' => '3'])
             ->post('/page/move/2')
             ->assertNotEquals(200, $this->response->status());
-        $this->withSession(['user.power' => '3'])
+        $this->withSession(['user.id' => 1, 'user.power' => '3'])
             ->json('POST', '/page/move/2', ['father_title' => 'testtest'])
             ->seeJson([
                 'result' => 'true',
                 'msg' => 'success',
             ]);
-        $this->withSession(['user.power' => '3'])
+        $this->withSession(['user.id' => 1, 'user.power' => '3'])
             ->json('POST', '/page/move/2', ['father_title' => 'testtest2'])
             ->seeJson([
                 'result' => 'false',
                 'msg' => 'improper father',
             ]);
-        $this->withSession(['user.power' => '3'])
+        $this->withSession(['user.id' => 1, 'user.power' => '3'])
             ->json('POST', '/page/move/2', ['father_title' => 'inexitfathe'])
             ->seeJson([
                 'result' => 'false',
                 'msg' => 'father not exist',
             ]);
         //Test Del
-        $this->withSession(['user.power' => '3'])
+        $this->withSession(['user.id' => 1, 'user.power' => '3', 'user.sessionReality' => true])
             ->json('DELETE', '/page/2')
             ->seeJson([
                 'result' => 'true',
@@ -181,5 +181,10 @@ class PageTest extends BrowserKitTestCase
             ->assertResponseStatus(404);
         $this->delete('/page/2')
             ->assertResponseStatus(404);
+        $this->json('POST', '/page')
+            ->assertRedirectedTo('/auth/login?continue=%2Fpage');
+        $this->withSession(['user.id' => 1, 'user.power' => '3'])
+            ->json('DELETE', '/page/2')
+            ->assertRedirectedTo('/auth/confirm?continue=%2Fpage%2F2');
     }
 }

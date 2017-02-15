@@ -91,7 +91,11 @@
                 success: function (msg) {
                     var dataObj = eval("(" + msg + ")");
                     if(dataObj.result == "true") {
-                        Materialize.toast('注册成功！撒花～～～2秒后跳转到主页……', 3000, 'theme-bg-sec');
+                        @if(isset($continue))
+                            Materialize.toast('注册成功！撒花～～～2秒后跳转回原页面……', 3000, 'theme-bg-sec');
+                        @else
+                            Materialize.toast('注册成功！撒花～～～2秒后跳转到主页……', 3000, 'theme-bg-sec');
+                        @endif
                         window.setTimeout(redirect, 2000);
 
                     }
@@ -112,7 +116,11 @@
             });
         }
         function redirect() {
-            window.location.href = "/";
+            @if(isset($continue))
+                window.location.href = "{{ $continue }}";
+            @else
+                window.location.href = "/";
+            @endif
         }
         function runCount(t){
             if(t > 0){

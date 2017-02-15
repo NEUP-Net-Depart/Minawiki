@@ -50,9 +50,11 @@ class IndexController extends Controller
 
         if ($request->session()->has('user.id')) {
             return view('index', ['path' => $path, 'current_page' => $current_page, 'left_data_page' => $left_data_page,
-                'uid' => $request->session()->get('user.id'), 'power' => $request->session()->get('user.power')]);
+                'uid' => $request->session()->get('user.id'), 'power' => $request->session()->get('user.power'),
+                'continue' => $request->getRequestUri() ]);
         } else {
-            return view('index', ['path' => $path, 'current_page' => $current_page, 'left_data_page' => $left_data_page]);
+            return view('index', ['path' => $path, 'current_page' => $current_page, 'left_data_page' => $left_data_page,
+                'continue' => $request->getRequestUri() ]);
         }
     }
 }

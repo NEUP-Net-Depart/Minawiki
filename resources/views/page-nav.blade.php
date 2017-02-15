@@ -10,12 +10,20 @@
                         <input type="hidden" id="{{ $item->title }}_father_id" value="{{ $item->father_id }}">
                         <input type="hidden" id="{{ $item->title }}_is_folder" value="{{ $item->is_folder }}">
                         <input type="hidden" id="{{ $item->title }}_is_notice" value="{{ $item->is_notice }}">
-                        <input type="hidden" id="{{ $item->title }}_protect_children" value="{{ $item->protect_children }}">
+                        <input type="hidden" id="{{ $item->title }}_protect_children"
+                               value="{{ $item->protect_children }}">
                         <input type="hidden" id="{{ $item->title }}_power" value="{{ $item->power }}">
-                        <a href="javascript: showDelPageModal('{{ $item->title }}')" class="secondary-content"><i
-                                    class="material-icons">
-                                &#xE872;<!--delete--></i></a><a href="javascript: showMovePageModal('{{ $item->title }}')"
-                                                                class="secondary-content"><i
+                        @if(isset($realLogined) && $realLogined)
+                            <a href="javascript: showDelPageModal('{{ $item->title }}')" class="secondary-content"><i
+                                        class="material-icons">
+                                    &#xE872;<!--delete--></i></a>
+                        @else
+                            <a href="/auth/confirm?continue={{ urlencode($continue) }}" class="secondary-content"><i
+                                        class="material-icons">
+                                    &#xE872;<!--delete--></i></a>
+                        @endif
+                        <a href="javascript: showMovePageModal('{{ $item->title }}')"
+                           class="secondary-content"><i
                                     class="material-icons">&#xE89F;<!--open_with--></i></a><a
                                 href="javascript: showEditPageModal('{{ $item->title }}')"
                                 class="secondary-content"><i
@@ -41,10 +49,17 @@
             @endif
         @endforeach
         @if(!$left_data_page->protect_children)
-            <a href="javascript: showAddPageModal()" class="collection-item modal-trigger"
-               style="text-align: center"><i
-                        class="material-icons">
-                    &#xE147;</i></a>
+            @if(isset($uid))
+                <a href="javascript: showAddPageModal()" class="collection-item modal-trigger"
+                   style="text-align: center"><i
+                            class="material-icons">
+                        &#xE147;</i></a>
+            @else
+                    <a href="/auth/login?continue={{ urlencode($continue) }}" class="collection-item modal-trigger"
+                       style="text-align: center"><i
+                                class="material-icons">
+                            &#xE147;</i></a>
+            @endif
         @endif
     </div>
 @endif

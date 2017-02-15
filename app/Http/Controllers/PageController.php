@@ -65,9 +65,11 @@ class PageController extends Controller
 
         if ($request->session()->has('user.id')) {
             return view('page-nav', ['left_data' => $left_data,  'current_page' => $current_page, 'left_data_page' => $left_data_page,
-                'uid' => $request->session()->get('user.id'), 'power' => $request->session()->get('user.power')]);
+                'uid' => $request->session()->get('user.id'), 'power' => $request->session()->get('user.power'), 'realLogined' => $request->session()->get('user.sessionReality'),
+                'continue' => $request->continue ]);
         } else {
-            return view('page-nav', ['left_data' => $left_data, 'current_page' => $current_page, 'left_data_page' => $left_data_page]);
+            return view('page-nav', ['left_data' => $left_data, 'current_page' => $current_page, 'left_data_page' => $left_data_page,
+                'continue' => $request->continue ]);
         }
     }
 

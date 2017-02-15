@@ -20,9 +20,16 @@ class AuthController extends Controller
      */
     public function showRegisterView(Request $request)
     {
-        if($request->session()->has('user.id'))
-            return redirect('/');
-        return view('auth.register');
+        if($request->session()->has('user.id')) {
+            if (isset($request->continue))
+                return redirect($request->continue);
+            else
+                return redirect('/');
+        }
+        if(isset($request->continue))
+            return view('auth.register', [ 'continue' => $request->continue ]);
+        else
+            return view('auth.register');
     }
 
     /**
@@ -31,9 +38,36 @@ class AuthController extends Controller
      */
     public function showLoginView(Request $request)
     {
-        if($request->session()->has('user.id'))
-            return redirect('/');
-        return view('auth.login');
+        if($request->session()->has('user.id')) {
+            if (isset($request->continue))
+                return redirect($request->continue);
+            else
+                return redirect('/');
+        }
+        if(isset($request->continue))
+            return view('auth.login', [ 'continue' => $request->continue ]);
+        else
+            return view('auth.login');
+    }
+
+    public function showConfirmView(Request $request)
+    {
+        if($request->session()->has('user.sessionReality') && $request->session()->get('user.sessionReality')) {
+            if (isset($request->continue))
+                return redirect($request->continue);
+            else
+                return redirect('/');
+        }
+        else if(!$request->session()->has('user.id')) {
+            if (isset($request->continue))
+                return redirect('/auth/login?continue=' . urlencode($request->continue));
+            else
+                return redirect('/auth/login');
+        }
+        if(isset($request->continue))
+            return view('auth.enterpass', [ 'uid' => $request->session()->get('user.id'), 'continue' => $request->continue ]);
+        else
+            return view('auth.enterpass', [ 'uid' => $request->session()->get('user.id') ]);
     }
 
     /**
@@ -42,8 +76,12 @@ class AuthController extends Controller
      */
     public function showForgetView(Request $request)
     {
-        if($request->session()->has('user.id'))
-            return redirect('/');
+        if($request->session()->has('user.id')) {
+            if (isset($request->continue))
+                return redirect($request->continue);
+            else
+                return redirect('/');
+        }
         return view('auth.resetpass');
     }
 
@@ -159,6 +197,7 @@ class AuthController extends Controller
         $request->session()->put('user.theme', $user->theme);
         $request->session()->put('user.power', $user->power);
         $request->session()->put('user.admin', $user->admin_name);
+        $request->session()->put('user.sessionReality', true);
         $cookie = Cookie::make('user.token', $user->token, 2 * 30 * 24 * 60);
         return response(json_encode(array('result' => 'true', 'msg' => 'success')))
             ->withCookie($cookie);
@@ -186,13 +225,57 @@ class AuthController extends Controller
             $request->session()->put('user.theme', $user->theme);
             $request->session()->put('user.power', $user->power);
             $request->session()->put('user.admin', $user->admin_name);
-
+            $request->session()->put('user.sessionReality', true);
             $cookie = Cookie::make('user.token', $user->token, 2 * 30 * 24 * 60);
             return response(json_encode(array('result' => 'true', 'msg' => 'success')))
                 ->withCookie($cookie);
         }
         else
             return json_encode(array('result' => 'false', 'msg' => 'wrong'));
+    }
+
+    /**
+     * @param Request $request
+     */
+    public function confirmLogin(Request $request)
+    {
+        if(!$request->session()->has('user.id')) {
+            if (isset($request->continue))
+                return redirect('/auth/login?continue=' . urlencode($request->continue) );
+            else
+                return redirect('/auth/login');
+        }
+        $this->validate($request, [
+            'password' => 'required'
+        ]);
+
+        $user = User::where('id', $request->session()->get('user.id'))->first();
+
+        if (Hash::check($user->salt . $request->password, $user->password)) {
+            //Generate and save token
+            $user->token = $user->tel . strval(time());
+            $user->save();
+            $request->session()->put('user.id', $user->id);
+            $request->session()->put('user.tel', $user->tel);
+            $request->session()->put('user.theme', $user->theme);
+            $request->session()->put('user.power', $user->power);
+            $request->session()->put('user.admin', $user->admin_name);
+            $request->session()->put('user.sessionReality', true);
+            $cookie = Cookie::make('user.token', $user->token, 2 * 30 * 24 * 60);
+            return response(json_encode(array('result' => 'true', 'msg' => 'success')))
+                ->withCookie($cookie);
+        }
+        else {
+            //Clear cookie and session
+            $cookie = Cookie::forget('user.token');
+            $request->session()->forget('user.id');
+            $request->session()->forget('user.tel');
+            $request->session()->forget('user.theme');
+            $request->session()->forget('user.power');
+            $request->session()->forget('user.admin');
+            $request->session()->forget('user.sessionReality');
+            return response(json_encode(array('result' => 'false', 'msg' => 'wrong')))->withCookie($cookie);
+        }
     }
 
     /**
@@ -207,6 +290,7 @@ class AuthController extends Controller
         $request->session()->forget('user.theme');
         $request->session()->forget('user.power');
         $request->session()->forget('user.admin');
+        $request->session()->forget('user.sessionReality');
         return redirect('/')->withCookie($cookie);
     }
 

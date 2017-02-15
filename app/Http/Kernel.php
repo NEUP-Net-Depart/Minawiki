@@ -21,8 +21,8 @@ class Kernel extends HttpKernel
         \Illuminate\Foundation\Http\Middleware\ConvertEmptyStringsToNull::class,
         \Illuminate\Session\Middleware\StartSession::class,
         \Illuminate\View\Middleware\ShareErrorsFromSession::class,
-        \App\Http\Middleware\CheckSession::class,
         \App\Http\Middleware\CheckIfInstalled::class,
+        \App\Http\Middleware\CheckSession::class,
     ];
 
     /**
@@ -61,8 +61,10 @@ class Kernel extends HttpKernel
         'can' => \Illuminate\Auth\Middleware\Authorize::class,
         'guest' => \App\Http\Middleware\RedirectIfAuthenticated::class,
         'throttle' => \Illuminate\Routing\Middleware\ThrottleRequests::class,
+        'checkins' => \App\Http\Middleware\CheckIfInstalled::class,
         'checksession' => \App\Http\Middleware\CheckSession::class,
         'checksu' => \App\Http\Middleware\CheckIfSuperAdmin::class,
-        'checkins' => \App\Http\Middleware\CheckIfInstalled::class,
+        'checklogin' => \App\Http\Middleware\CheckLogin::class,
+        'checkrel' => \App\Http\Middleware\CheckSessionReality::class,
     ];
 }

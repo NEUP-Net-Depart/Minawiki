@@ -164,7 +164,7 @@
                 ');
             $.ajax({
                 type: "GET",
-                url: "/page/left-nav/{{ $current_page->title }}",
+                url: "/page/left-nav/{{ $current_page->title }}?continue={{ urlencode($continue) }}",
                 success: function (msg) {
                     $('#left-nav').html(msg);
                 }
