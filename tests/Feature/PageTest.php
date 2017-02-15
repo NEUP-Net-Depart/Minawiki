@@ -20,7 +20,7 @@ class PageTest extends BrowserKitTestCase
      */
     public function testIndex()
     {
-        $this->post('/install', [ 'tel' => '12312312312', 'password' => 'admin', 'title' => 'Minawikiroot']);
+        $this->post('/install', ['tel' => '12312312312', 'password' => 'admin', 'title' => 'Minawikiroot']);
 
         $this->visit('/')
             ->see(env('APP_NAME'));
@@ -79,8 +79,9 @@ class PageTest extends BrowserKitTestCase
             ->seePageIs('/test2');
     }
 
-    public function testBackend() {
-        $this->post('/install', [ 'tel' => '12312312312', 'password' => 'admin', 'title' => 'Minawikiroot']);
+    public function testBackend()
+    {
+        $this->post('/install', ['tel' => '12312312312', 'password' => 'admin', 'title' => 'Minawikiroot']);
 
         //Test Add
         $this->withSession(['user.id' => 1, 'user.power' => '3'])
@@ -166,6 +167,26 @@ class PageTest extends BrowserKitTestCase
                 'result' => 'false',
                 'msg' => 'father not exist',
             ]);
+        //Test redirect
+        $page = new Page();
+        $page->father_id = 1;
+        $page->title = "cool1";
+        $page->is_folder = false;
+        $page->save();
+        $this->withSession(['user.id' => 1, 'user.power' => '3'])
+            ->json('PUT', '/page/' . $page->id, ['title' => 'cool2'])
+            ->seeJson([
+                'result' => 'true',
+                'msg' => 'success',
+            ]);
+        $this->withSession(['user.id' => 1, 'user.power' => '3'])
+            ->json('PUT', '/page/' . $page->id, ['title' => 'cool3'])
+            ->seeJson([
+                'result' => 'true',
+                'msg' => 'success',
+            ]);
+        $this->visit('/page/left-nav/cool1')
+            ->see('cool3');
         //Test Del
         $this->withSession(['user.id' => 1, 'user.power' => '3', 'user.sessionReality' => true])
             ->json('DELETE', '/page/2')
@@ -173,6 +194,45 @@ class PageTest extends BrowserKitTestCase
                 'result' => 'true',
                 'msg' => 'success',
             ]);
+        //Test sophisticated del
+        $page1 = new Page();
+        $page1->father_id = 1;
+        $page1->title = "s1";
+        $page1->is_folder = true;
+        $page1->save();
+        $page2 = new Page();
+        $page2->father_id = $page1->id;
+        $page2->title = "s2";
+        $page2->is_folder = true;
+        $page2->save();
+        $page3 = new Page();
+        $page3->father_id = $page2->id;
+        $page3->title = "s3";
+        $page3->is_folder = false;
+        $page3->save();
+        $this->withSession(['user.id' => 1, 'user.power' => '3'])
+            ->json('PUT', '/page/' . $page3->id, ['title' => 's4'])
+            ->seeJson([
+                'result' => 'true',
+                'msg' => 'success',
+            ]);
+        $this->withSession(['user.id' => 1, 'user.power' => '3'])
+            ->json('PUT', '/page/' . $page3->id, ['title' => 's5'])
+            ->seeJson([
+                'result' => 'true',
+                'msg' => 'success',
+            ]);
+        $this->withSession(['user.id' => 1, 'user.power' => '3', 'user.sessionReality' => true])
+            ->json('DELETE', '/page/' . $page1->id)
+            ->seeJson([
+                'result' => 'true',
+                'msg' => 'success',
+            ]);
+        $this->get('/s1')->assertResponseStatus(404);
+        $this->get('/s2')->assertResponseStatus(404);
+        $this->get('/s3')->assertResponseStatus(404);
+        $this->get('/s4')->assertResponseStatus(404);
+        $this->get('/s5')->assertResponseStatus(404);
         //Test illegal access
         $this->visit('/auth/logout');
         $this->put('/page/2', ['title' => 'testtest2'])
