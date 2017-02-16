@@ -46,7 +46,6 @@ class WikiController extends Controller
         else
             return json_encode(array(
                 'result' => 'true',
-                'original' => $version->original,
                 'content' => $version->content
             ));
     }
@@ -83,6 +82,44 @@ class WikiController extends Controller
             'result' => 'true',
             'msg' => 'success',
             'version' => $version
+        ));
+    }
+
+    /**
+     * Restore a page to a specific version
+     * @param Request $request
+     * @param $title
+     * @param $id
+     * @return string
+     */
+    public function restore(Request $request, $title, $id)
+    {
+        $page = Page::where('title', $title)->first();
+        if (empty($page))
+            return json_encode(array(
+                'result' => 'false',
+                'msg' => 'invalid title'
+            ));
+        $targetVersion = Version::where('id', $id)->first();
+        if (empty($targetVersion))
+            return json_encode(array(
+                'result' => 'false',
+                'msg' => 'invalid version id'
+            ));
+        $number = 1;    //next number
+        if ($page->versions()->count() > 0)
+            $number = intval($page->versions()->get()->sortBy('number')->last()['number']) + 1;
+        $version = new Version;
+        $version->number = $number;
+        $version->content = $targetVersion->content;
+        $version->original = $targetVersion->original;
+        $version->message = "回档到版本 #" . strval($targetVersion->number) . ".";
+        $version->user_id = $request->session()->get('user.id');
+        $version->is_little = $targetVersion->is_little;
+        $page->versions()->save($version);
+        return json_encode(array(
+            'result' => 'true',
+            'msg' => 'success'
         ));
     }
 }
