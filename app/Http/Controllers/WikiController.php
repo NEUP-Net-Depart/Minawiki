@@ -100,27 +100,36 @@ class WikiController extends Controller
                 'result' => 'false',
                 'msg' => 'invalid title'
             ));
-        $targetVersion = Version::where('id', $id)->first();
-        if (empty($targetVersion))
+        $current_last_version = $page->versions()->get()->sortBy('number')->last();
+        if($id != $current_last_version['id']) {
+            $targetVersion = Version::where('id', $id)->first();
+            if (empty($targetVersion))
+                return json_encode(array(
+                    'result' => 'false',
+                    'msg' => 'invalid version id'
+                ));
+            $number = 1;    //next number
+            if ($page->versions()->count() > 0)
+                $number = intval($current_last_version['number']) + 1;
+            $version = new Version;
+            $version->number = $number;
+            $version->content = $targetVersion->content;
+            $version->original = $targetVersion->original;
+            $version->message = "回档到版本 #" . strval($targetVersion->number) . ".";
+            $version->user_id = $request->session()->get('user.id');
+            $version->is_little = $targetVersion->is_little;
+            $page->versions()->save($version);
             return json_encode(array(
-                'result' => 'false',
-                'msg' => 'invalid version id'
+                'result' => 'true',
+                'msg' => 'success',
+                'version' => $version
             ));
-        $number = 1;    //next number
-        if ($page->versions()->count() > 0)
-            $number = intval($page->versions()->get()->sortBy('number')->last()['number']) + 1;
-        $version = new Version;
-        $version->number = $number;
-        $version->content = $targetVersion->content;
-        $version->original = $targetVersion->original;
-        $version->message = "回档到版本 #" . strval($targetVersion->number) . ".";
-        $version->user_id = $request->session()->get('user.id');
-        $version->is_little = $targetVersion->is_little;
-        $page->versions()->save($version);
-        return json_encode(array(
-            'result' => 'true',
-            'msg' => 'success',
-            'version' => $version
-        ));
+        }
+        else
+            return json_encode(array(
+                'result' => 'true',
+                'msg' => 'success',
+                'version' => $current_last_version
+            ));
     }
 }

@@ -131,7 +131,8 @@ function movePage(id) {
         }
     });
 }
-function updatePageContent(title) {
+function updatePageContent() {
+    var title = $('#this_page_title').val();
     var str_data = $("#pageContent_fm input,#pageContent_fm textarea").map(function () {
         return ($(this).attr("name") + '=' + $(this).val());
     }).get().join("&");
@@ -160,7 +161,7 @@ function updatePageContent(title) {
         }
     });
 }
-function dropPageContent(title) {
+function dropPageContent() {
     $('#page_content').removeAttr('style');
     $('#pageContent_fm').attr('style', 'display: none');
 }

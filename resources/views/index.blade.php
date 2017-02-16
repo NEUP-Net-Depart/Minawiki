@@ -12,13 +12,22 @@
                 <center>
                     <h2>
                         {{ $current_page->title }}
-                        <a href="javascript: showPageHistory()"
+                        <input id="this_page_title" value="{{ $current_page->title }}" type="hidden" style="display: none">
+                        <a id="showPageHistoryReturnButton" href="javascript: showPageHistoryReturn()" style="display: none;"
+                           class="btn-floating waves-effect waves-light theme-bg-sec btn right"><i
+                                    class="material-icons">&#xE5C4;<!--arrow_back--></i></a>
+                        <a id="showPageHistoryButton" href="javascript: showPageHistory()"
                            class="btn-floating waves-effect waves-light theme-bg-sec btn right"><i
                                     class="material-icons">&#xE889;<!--history--></i></a>
-                        <a href="javascript: editPageContent()"
-                           class="btn-floating waves-effect waves-light theme-bg-sec btn right"
-                           style="margin-right: 3px"><i
-                                    class="material-icons left">&#xE3C9;<!--edit--></i></a>
+                        @if(isset($uid))
+                            <a id="editPageContentButton" href="javascript: editPageContent()"
+                               class="btn-floating waves-effect waves-light theme-bg-sec btn right float-margin"><i
+                                        class="material-icons left">&#xE3C9;<!--edit--></i></a>
+                        @else
+                            <a id="editPageContentButton" href="/auth/login?continue={{ urlencode($continue) }}"
+                               class="btn-floating waves-effect waves-light theme-bg-sec btn right float-margin"><i
+                                        class="material-icons left">&#xE3C9;<!--edit--></i></a>
+                        @endif
                     </h2>
                 </center>
                 <div id="page_content_container" class="row">
@@ -42,7 +51,7 @@
                                 <label for="page_content_textarea">这里是萌萌哒的内容</label>
                             </div>
                             <div class="col s12">
-                                <a href="javascript: updatePageContent('{{ $current_page->title }}')"
+                                <a href="javascript: updatePageContent()"
                                    class="waves-effect waves-light btn-large theme-bg-sec right">提交</a>
                                 <a href="javascript: dropPageContent()"
                                    class="waves-effect waves-light btn-large theme-bg-sec right"
@@ -193,10 +202,14 @@
         function editPageContent() {
             $('#page_content').attr('style', 'display: none');
             $('#pageContent_fm').removeAttr('style');
+            $('#page_content_textarea').trigger('autoresize');
         }
         function showPageHistory(page) {
             $('#page_content_container').attr('style', 'display: none');
             $('#page_history').removeAttr('style');
+            $('#showPageHistoryButton').attr('style', 'display: none');
+            $('#editPageContentButton').attr('style', 'display: none');
+            $('#showPageHistoryReturnButton').removeAttr('style');
             $('#page_history').html('<center>\
 <div class="preloader-wrapper big active center" style="margin-top: 30px">\
 <div class="spinner-layer theme-border-dark">\
@@ -239,10 +252,14 @@
                                     var dataObj = eval("(" + msg + ")");
                                     $(el).find('span').html('<div class="row">' + dataObj.content
                                         + '</div><div class="row">' +
-                                        '<a class="waves-effect waves-light theme-bg-sec btn right" href="javascript: restore(' +
+                                            @if(isset($uid))
+                                                '<a class="waves-effect waves-light theme-bg-sec btn right" href="javascript: restore(' +
                                         $(el).find('input[name="id"]').val() +
                                         ')">' +
-                                        '<i class="material-icons left">&#xE8B3;<!--restore--></i>恢复此版本</a>' +
+                                            @else
+                                                '<a class="waves-effect waves-light theme-bg-sec btn right" href="/auth/login?continue={{ urlencode($continue) }}">' +
+                                            @endif
+                                                '<i class="material-icons left">&#xE8B3;<!--restore--></i>恢复此版本</a>' +
                                         '</div>');
                                 }
                             });
@@ -250,6 +267,13 @@
                     });
                 }
             });
+        }
+        function showPageHistoryReturn() {
+            $('#page_content_container').removeAttr('style');
+            $('#page_history').attr('style', 'display: none');
+            $('#showPageHistoryButton').removeAttr('style');
+            $('#editPageContentButton').removeAttr('style');
+            $('#showPageHistoryReturnButton').attr('style', 'display: none');
         }
         function restore(id) {
             $.ajax({
@@ -261,11 +285,18 @@
                     if (dataObj.result == "true") {
                         $('#page_content').html(dataObj.version['content']);
                         $('#page_content_textarea').html(dataObj.version['original']);
+                        $('#page_content_textarea').val(dataObj.version['original']);
                         $('#page_history').attr('style', 'display: none');
                         $('#page_content_container').removeAttr('style');
+                        $('#showPageHistoryButton').removeAttr('style');
+                        $('#editPageContentButton').removeAttr('style');
+                        $('#showPageHistoryReturnButton').attr('style', 'display: none');
+                        dropPageContent();
                     }
-                    else
-                        Materialize.toast("有点小问题", 3000, 'theme-bg-sec');
+                    else if(dataObj.result == "invalid version id")
+                        Materialize.toast("无效的版本，请刷新页面后重试！", 3000, 'theme-bg-sec');
+                    else if(dataObj.result == "invalid title")
+                        Materialize.toast("页面错误，请刷新页面！", 3000, 'theme-bg-sec');
                 },
                 error: function (xhr) {
                     if (xhr.status == 422) {

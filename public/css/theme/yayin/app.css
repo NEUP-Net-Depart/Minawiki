@@ -97,6 +97,25 @@
     border-bottom: 1px solid #000;
     box-shadow: 0 1px 0 0 #000;
 }
+/* label focus color */
+.input-field textarea:focus + label {
+    color: #66ccff !important;
+}
+/* label underline focus color */
+.input-field textarea:focus {
+    border-bottom: 1px solid #66ccff !important;
+    box-shadow: 0 1px 0 0 #66ccff !important;
+}
+/* valid color */
+.input-field textarea.valid {
+    border-bottom: 1px solid #66ccff;
+    box-shadow: 0 1px 0 0 #66ccff;
+}
+/* invalid color */
+.input-field textarea.invalid {
+    border-bottom: 1px solid #000;
+    box-shadow: 0 1px 0 0 #000;
+}
 /* icon prefix focus color */
 .input-field .prefix.active {
     color: #66ccff;
