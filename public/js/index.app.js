@@ -3,7 +3,7 @@
  */
 function addPage() {
     var str_data1 = $("#addPage_fm input[type!=checkbox],#addPage_fm select").map(function () {
-        return ($(this).attr("name") + '=' + $(this).val());
+        return ($(this).attr("name") + '=' + encodeURIComponent($(this).val()));
     }).get().join("&");
     var str_data2 = $("#addPage_fm input[type=checkbox]").map(function () {
         var is_checked = $(this).is(":checked") ? 1 : 0;
@@ -40,7 +40,7 @@ function addPage() {
 }
 function editPage(id) {
     var str_data1 = $("#addPage_fm input[type!=checkbox],#addPage_fm select").map(function () {
-        return ($(this).attr("name") + '=' + $(this).val());
+        return ($(this).attr("name") + '=' + encodeURIComponent($(this).val()));
     }).get().join("&");
     var str_data2 = $("#addPage_fm input[type=checkbox]").map(function () {
         var is_checked = $(this).is(":checked") ? 1 : 0;
@@ -134,7 +134,7 @@ function movePage(id) {
 function updatePageContent() {
     var title = $('#this_page_title').val();
     var str_data = $("#pageContent_fm input,#pageContent_fm textarea").map(function () {
-        return ($(this).attr("name") + '=' + $(this).val());
+        return ($(this).attr("name") + '=' + encodeURIComponent($(this).val()));
     }).get().join("&");
     $.ajax({
         type: "POST",
