@@ -72,10 +72,10 @@ class WikiController extends Controller
         $version->user_id = $request->session()->get('user.id');
         $version->is_little = boolval($request->is_little);
         $page->versions()->save($version);
-        return json_encode(array([
+        return json_encode([
             'result' => 'true',
             'msg' => 'success',
-            'number' => $number
-        ]));
+            'version' => $version
+        ]);
     }
 }

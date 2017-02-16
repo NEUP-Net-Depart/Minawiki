@@ -22,7 +22,7 @@ class IndexController extends Controller
             $path->prepend($current_page);
         } else {
             //Check if title exists
-            if(Redirect::where('title', $title)->count() > 0)
+            if (Redirect::where('title', $title)->count() > 0)
                 return redirect('/' . Redirect::where('title', $title)->first()->destination);
             $current_page = $pages->where('title', $title)->first();
             if (!isset($current_page))
@@ -49,13 +49,15 @@ class IndexController extends Controller
             $left_data_page = $pages->where('id', $current_page['father_id'])->first();
         }
 
+        $page_content = $current_page->versions()->get()->sortBy('number')->last()['content'];
+
         if ($request->session()->has('user.id')) {
-            return view('index', ['path' => $path, 'current_page' => $current_page, 'left_data_page' => $left_data_page,
+            return view('index', ['path' => $path, 'current_page' => $current_page, 'left_data_page' => $left_data_page, 'content' => $page_content,
                 'uid' => $request->session()->get('user.id'), 'power' => $request->session()->get('user.power'),
-                'continue' => $request->getRequestUri() ]);
+                'continue' => $request->getRequestUri()]);
         } else {
-            return view('index', ['path' => $path, 'current_page' => $current_page, 'left_data_page' => $left_data_page,
-                'continue' => $request->getRequestUri() ]);
+            return view('index', ['path' => $path, 'current_page' => $current_page, 'left_data_page' => $left_data_page, 'content' => $page_content,
+                'continue' => $request->getRequestUri()]);
         }
     }
 }

@@ -43,6 +43,6 @@ Route::put('/page/{id}', 'PageController@update')->middleware('checksu');
 Route::delete('/page/{id}', 'PageController@destroy')->middleware('checksu', 'checkrel');
 
 //Wiki Manage
-Route::get('/{title}/update', 'WikiController@index');
+//Route::get('/{title}/update', 'WikiController@index');
 Route::get('/{title}/history', 'WikiController@history');
 Route::post('/{title}/update', 'WikiController@store')->middleware('checklogin');
