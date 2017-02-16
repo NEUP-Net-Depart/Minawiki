@@ -12,7 +12,11 @@
                 <center>
                     <h2>
                         {{ $current_page->title }}
+                        <input id="this_page_id" value="{{ $current_page->id }}" type="hidden"
+                               style="display: none">
                         <input id="this_page_title" value="{{ $current_page->title }}" type="hidden"
+                               style="display: none">
+                        <input id="this_left_data_page_title" value="{{ $left_data_page->title }}" type="hidden"
                                style="display: none">
                         <a id="showPageHistoryReturnButton" href="javascript: showPageHistoryReturn()"
                            style="display: none;"
@@ -25,7 +29,7 @@
                             <a id="editPageContentButton" href="javascript: editPageContent()"
                                class="btn-floating waves-effect waves-light theme-bg-sec btn right float-margin"><i
                                         class="material-icons left">&#xE3C9;<!--edit--></i></a>
-                        @elseif(!isset($uid))
+                        @elseif(!isset($uid) && $current_page->power == 0)
                             <a id="editPageContentButton" href="/auth/login?continue={{ urlencode($continue) }}"
                                class="btn-floating waves-effect waves-light theme-bg-sec btn right float-margin"><i
                                         class="material-icons left">&#xE3C9;<!--edit--></i></a>
@@ -80,6 +84,7 @@
                 <div class="row">
                     <div class="input-field col s12">
                         <input name="title" id="add_page_title_input" type="text" class="validate">
+                        <input style="display: none;">
                         <label for="add_page_title_input">页面标题</label>
                     </div>
                 </div>
@@ -157,6 +162,7 @@
                 <div class="row">
                     <div class="input-field col s12">
                         <input placeholder="父页面标题" name="father_title" type="text" class="validate">
+                        <input style="display: none">
                         <label for="title">移动到</label>
                     </div>
                 </div>
@@ -187,6 +193,7 @@
                 <div class="row">
                     <div class="input-field col s12">
                         <input id="del_page_input" type="text" class="validate">
+                        <input style="display: none">
                         <label for="del_page_input">删除确认字段</label>
                     </div>
                 </div>
@@ -260,7 +267,7 @@
                                         $(el).find('input[name="id"]').val() +
                                         ')"><i class="material-icons left">&#xE8B3;<!--restore--></i>恢复此版本</a>' +
                                         '</div>' +
-                                            @elseif(!isset($uid))
+                                            @elseif(!isset($uid) && $current_page->power == 0)
                                                 '<div class="row">' +
                                         '<a class="waves-effect waves-light theme-bg-sec btn right" href="/auth/login?continue={{ urlencode($continue) }}">' +
                                         '<i class="material-icons left">&#xE8B3;<!--restore--></i>恢复此版本</a>' +
@@ -280,38 +287,6 @@
             $('#showPageHistoryButton').removeAttr('style');
             $('#editPageContentButton').removeAttr('style');
             $('#showPageHistoryReturnButton').attr('style', 'display: none');
-        }
-        function restore(id) {
-            $.ajax({
-                type: "POST",
-                url: "/{{ $current_page->title }}/restore/" + id,
-                data: "_method=PUT&_token={!! csrf_token() !!}",
-                success: function (msg) {
-                    var dataObj = eval("(" + msg + ")");
-                    if (dataObj.result == "true") {
-                        $('#page_content').html(dataObj.version['content']);
-                        $('#page_content_textarea').html(dataObj.version['original']);
-                        $('#page_content_textarea').val(dataObj.version['original']);
-                        $('#page_history').attr('style', 'display: none');
-                        $('#page_content_container').removeAttr('style');
-                        $('#showPageHistoryButton').removeAttr('style');
-                        $('#editPageContentButton').removeAttr('style');
-                        $('#showPageHistoryReturnButton').attr('style', 'display: none');
-                        dropPageContent();
-                    }
-                    else if (dataObj.result == "invalid version id")
-                        Materialize.toast("无效的版本，请刷新页面后重试！", 3000, 'theme-bg-sec');
-                    else if (dataObj.result == "invalid title")
-                        Materialize.toast("页面错误，请刷新页面！", 3000, 'theme-bg-sec');
-                },
-                error: function (xhr) {
-                    if (xhr.status == 422) {
-                        Materialize.toast('请正确填写相关字段！', 3000, 'theme-bg-sec')
-                    } else {
-                        Materialize.toast('服务器出错了，请刷新重试', 3000, 'theme-bg-sec')
-                    }
-                }
-            });
         }
         function loadLeftNav() {
             $('#left-nav').html('<center>\
@@ -372,6 +347,7 @@
             else
                 $('#add_page_protect_children_switch').removeAttr('checked');
             $('#add_page_power_select').val($('#' + title + "_power").val());
+            $('select').material_select();
             @endif
             $('#add_page_submit').attr('href', 'javascript: editPage(' + $('#' + title + "_id").val() + ')');
             $('#add_page_modal').modal('open');
@@ -392,6 +368,10 @@
                 $('#add_page_protect_children_switch').removeAttr('disabled');
             else
                 $('#add_page_protect_children_switch').attr('disabled', 'disabled');
+        }
+        function dropPageContent() {
+            $('#page_content').removeAttr('style');
+            $('#pageContent_fm').attr('style', 'display: none');
         }
         $(document).ready(function () {
             loadLeftNav();

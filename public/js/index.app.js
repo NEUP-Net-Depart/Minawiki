@@ -84,6 +84,8 @@ function delPage(id) {
             success: function (msg) {
                 var dataObj = eval("(" + msg + ")");
                 if (dataObj.result == "true") {
+                    if(id == $('#this_page_id').val())
+                        window.location.href = '/' + $('#this_left_data_page_title').val();
                     $('#del_page_modal').modal('close');
                     loadLeftNav();
                 }
@@ -161,7 +163,39 @@ function updatePageContent() {
         }
     });
 }
-function dropPageContent() {
-    $('#page_content').removeAttr('style');
-    $('#pageContent_fm').attr('style', 'display: none');
+
+function restore(id) {
+    var str_data = $("#restore_fm input").map(function () {
+        return ($(this).attr("name") + '=' + encodeURIComponent($(this).val()));
+    }).get().join("&");
+    $.ajax({
+        type: "POST",
+        url: "/" + $("#this_page_title").val() +"/restore/" + id,
+        data: str_data + "&_method=PUT",
+        success: function (msg) {
+            var dataObj = eval("(" + msg + ")");
+            if (dataObj.result == "true") {
+                $('#page_content').html(dataObj.version['content']);
+                $('#page_content_textarea').html(dataObj.version['original']);
+                $('#page_content_textarea').val(dataObj.version['original']);
+                $('#page_history').attr('style', 'display: none');
+                $('#page_content_container').removeAttr('style');
+                $('#showPageHistoryButton').removeAttr('style');
+                $('#editPageContentButton').removeAttr('style');
+                $('#showPageHistoryReturnButton').attr('style', 'display: none');
+                dropPageContent();
+            }
+            else if (dataObj.result == "invalid version id")
+                Materialize.toast("无效的版本，请刷新页面后重试！", 3000, 'theme-bg-sec');
+            else if (dataObj.result == "invalid title")
+                Materialize.toast("页面错误，请刷新页面！", 3000, 'theme-bg-sec');
+        },
+        error: function (xhr) {
+            if (xhr.status == 422) {
+                Materialize.toast('请正确填写相关字段！', 3000, 'theme-bg-sec')
+            } else {
+                Materialize.toast('服务器出错了，请刷新重试', 3000, 'theme-bg-sec')
+            }
+        }
+    });
 }

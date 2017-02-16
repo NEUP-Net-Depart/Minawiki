@@ -20,7 +20,8 @@
                     </div>
                 </div>
             </div>
-            <div class="collapsible-body"><span>Lorem ipsum dolor sit amet.</span></div>
+            <div class="collapsible-body"><span></span></div>
+            <form id="restore_fm" style="display: none">{!! csrf_field() !!}</form>
         </li>
         @endforeach
     </ul>
