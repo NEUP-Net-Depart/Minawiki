@@ -135,9 +135,14 @@ function movePage(id) {
 }
 function updatePageContent() {
     var title = $('#this_page_title').val();
-    var str_data = $("#pageContent_fm input,#pageContent_fm textarea").map(function () {
+    var str_data1 = $("#pageContent_fm input,#pageContent_fm textarea").map(function () {
         return ($(this).attr("name") + '=' + encodeURIComponent($(this).val()));
     }).get().join("&");
+    var str_data2 = $("#pageContent_fm input[type=checkbox]").map(function () {
+        var is_checked = $(this).is(":checked") ? 1 : 0;
+        return ($(this).attr("name") + '=' + is_checked);
+    }).get().join("&");
+    var str_data = str_data1 + "&" + str_data2;
     $.ajax({
         type: "POST",
         url: "/" + title + "/update",

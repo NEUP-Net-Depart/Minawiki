@@ -56,7 +56,17 @@
                                 @endif
                                 <label for="page_content_textarea">这里是萌萌哒的内容</label>
                             </div>
+                        </div>
+                        <div class="row">
+                            <div class="input-field col s12">
+                                <input id="message_input" name="message" placeholder="为这条编辑添加一条注释（可选）" type="text" class="validate">
+                                <label for="message_input">编辑注释</label>
+                            </div>
+                        </div>
+                        <div class="row">
                             <div class="col s12">
+                                <input type="checkbox" class="filled-in" id="is_little_checkbox"/>
+                                <label for="is_little_checkbox">这是一条小编辑</label>
                                 <a href="javascript: updatePageContent()"
                                    class="waves-effect waves-light btn-large theme-bg-sec right">提交</a>
                                 <a href="javascript: dropPageContent()"
@@ -211,6 +221,8 @@
         function editPageContent() {
             $('#page_content').attr('style', 'display: none');
             $('#pageContent_fm').removeAttr('style');
+            $('#message_input').val('');
+            $('#is_little_checkbox').removeAttr('checked');
             $('#page_content_textarea').trigger('autoresize');
         }
         function showPageHistory(page) {

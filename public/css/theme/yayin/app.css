@@ -121,6 +121,11 @@
     color: #66ccff;
 }
 
+[type="checkbox"].filled-in:checked+label:after {
+    background-color: #4dc4ff !important;
+    border: #4dc4ff !important;
+}
+
 .switch label input[type=checkbox]:checked+.lever {
     background-color: #66ccff;
 }
