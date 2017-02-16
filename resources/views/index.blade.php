@@ -32,13 +32,14 @@
                     <form id="pageContent_fm" style="display: none" class="col s12">
                         <div class="row">
                             <div class="input-field col s12">
-                                <textarea name="text" id="page_content_textarea"
-                                          class="materialize-textarea">
-                                    @if(!empty($content))
-                                        {{ $content->original }}
-                                    @endif
-                                </textarea>
-                                <label for="textarea1">这里是萌萌哒的内容</label>
+                                @if(!empty($content))
+                                    <textarea name="text" id="page_content_textarea"
+                                              class="materialize-textarea">{{ $content->original }}</textarea>
+                                @else
+                                    <textarea name="text" id="page_content_textarea"
+                                              class="materialize-textarea"></textarea>
+                                @endif
+                                <label for="page_content_textarea">这里是萌萌哒的内容</label>
                             </div>
                             <div class="col s12">
                                 <a href="javascript: updatePageContent('{{ $current_page->title }}')"
@@ -231,7 +232,18 @@
 </div>\
 </center>\
 ');
-                        },
+                            $.ajax({
+                                type: "GET",
+                                url: "/{{ $current_page->title }}/history/" + $(el).find('input[name="id"]').val(),
+                                success: function (msg) {
+                                    var dataObj = eval("(" + msg + ")");
+                                    $(el).find('span').html('<div class="row">' + dataObj.content
+                                        + '</div><div class="row">' +
+                                        '<a class="waves-effect waves-light theme-bg-sec btn" href="javascript: restore()"><i class="material-icons left">&#xE8B3;<!--restore--></i>button</a>' +
+                                        '</div>');
+                                }
+                            });
+                        }
                     });
                 }
             });

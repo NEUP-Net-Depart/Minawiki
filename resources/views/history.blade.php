@@ -3,12 +3,16 @@
         <li class="collection-header"><h4>历史版本</h4></li>
         @foreach($paginator as $item)
         <li>
+            <input class="hidden" style="display: none" value="{{ $item->id }}">
             <div class="collapsible-header">
                 <div class="row" style="margin-bottom: 0">
                     <div class="col s2">
-                        #{{ $item->user_id }}
+                        {{ $item->number }}
                     </div>
-                    <div class="col s6">
+                    <div class="col s2">
+                        By #{{ $item->user_id }}
+                    </div>
+                    <div class="col s4">
                         {{ $item->message }}
                     </div>
                     <div class="col s4">
