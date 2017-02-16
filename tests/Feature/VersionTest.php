@@ -24,6 +24,7 @@ class VersionTest extends BrowserKitTestCase
         $page->father_id = 1;
         $page->title = "VersionTest";
         $page->is_folder = false;
+        $page->power = 2;
         $page->save();
 
         $this->withSession(['user.id' => 1, 'user.power' => '3'])
@@ -45,6 +46,12 @@ class VersionTest extends BrowserKitTestCase
             ->seeJson([
                 'result' => 'false',
                 'msg' => 'invalid title'
+            ]);
+        $this->withSession(['user.id' => 1, 'user.power' => '1'])
+            ->json('POST', '/VersionTest/update', ['text' => 'update2', 'is_little' => 'true'])
+            ->seeJson([
+                'result' => 'false',
+                'msg' => 'permission denied'
             ]);
         //Test get one version
         $this->withSession(['user.id' => 1, 'user.power' => '3'])
@@ -75,6 +82,12 @@ class VersionTest extends BrowserKitTestCase
             ->seeJson([
                 'result' => 'false',
                 'msg' => 'invalid version id'
+            ]);
+        $this->withSession(['user.id' => 1, 'user.power' => '1'])
+            ->json('PUT', '/VersionTest/restore/1')
+            ->seeJson([
+                'result' => 'false',
+                'msg' => 'permission denied'
             ]);
         $this->withSession(['user.id' => 1, 'user.power' => '3'])
             ->json('PUT', '/VersionTest/restore/1')

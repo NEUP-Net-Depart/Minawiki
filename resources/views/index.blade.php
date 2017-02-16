@@ -12,18 +12,20 @@
                 <center>
                     <h2>
                         {{ $current_page->title }}
-                        <input id="this_page_title" value="{{ $current_page->title }}" type="hidden" style="display: none">
-                        <a id="showPageHistoryReturnButton" href="javascript: showPageHistoryReturn()" style="display: none;"
+                        <input id="this_page_title" value="{{ $current_page->title }}" type="hidden"
+                               style="display: none">
+                        <a id="showPageHistoryReturnButton" href="javascript: showPageHistoryReturn()"
+                           style="display: none;"
                            class="btn-floating waves-effect waves-light theme-bg-sec btn right"><i
                                     class="material-icons">&#xE5C4;<!--arrow_back--></i></a>
                         <a id="showPageHistoryButton" href="javascript: showPageHistory()"
                            class="btn-floating waves-effect waves-light theme-bg-sec btn right"><i
                                     class="material-icons">&#xE889;<!--history--></i></a>
-                        @if(isset($uid))
+                        @if(isset($uid) && $power >= $current_page->power)
                             <a id="editPageContentButton" href="javascript: editPageContent()"
                                class="btn-floating waves-effect waves-light theme-bg-sec btn right float-margin"><i
                                         class="material-icons left">&#xE3C9;<!--edit--></i></a>
-                        @else
+                        @elseif(!isset($uid))
                             <a id="editPageContentButton" href="/auth/login?continue={{ urlencode($continue) }}"
                                class="btn-floating waves-effect waves-light theme-bg-sec btn right float-margin"><i
                                         class="material-icons left">&#xE3C9;<!--edit--></i></a>
@@ -251,16 +253,20 @@
                                 success: function (msg) {
                                     var dataObj = eval("(" + msg + ")");
                                     $(el).find('span').html('<div class="row">' + dataObj.content
-                                        + '</div><div class="row">' +
-                                            @if(isset($uid))
-                                                '<a class="waves-effect waves-light theme-bg-sec btn right" href="javascript: restore(' +
+                                        + '</div>' +
+                                            @if(isset($uid) && $power >= $current_page->power)
+                                                '<div class="row">' +
+                                        '<a class="waves-effect waves-light theme-bg-sec btn right" href="javascript: restore(' +
                                         $(el).find('input[name="id"]').val() +
-                                        ')">' +
-                                            @else
-                                                '<a class="waves-effect waves-light theme-bg-sec btn right" href="/auth/login?continue={{ urlencode($continue) }}">' +
+                                        ')"><i class="material-icons left">&#xE8B3;<!--restore--></i>恢复此版本</a>' +
+                                        '</div>' +
+                                            @elseif(!isset($uid))
+                                                '<div class="row">' +
+                                        '<a class="waves-effect waves-light theme-bg-sec btn right" href="/auth/login?continue={{ urlencode($continue) }}">' +
+                                        '<i class="material-icons left">&#xE8B3;<!--restore--></i>恢复此版本</a>' +
+                                        '</div>' +
                                             @endif
-                                                '<i class="material-icons left">&#xE8B3;<!--restore--></i>恢复此版本</a>' +
-                                        '</div>');
+                                                '');
                                 }
                             });
                         }
@@ -293,9 +299,9 @@
                         $('#showPageHistoryReturnButton').attr('style', 'display: none');
                         dropPageContent();
                     }
-                    else if(dataObj.result == "invalid version id")
+                    else if (dataObj.result == "invalid version id")
                         Materialize.toast("无效的版本，请刷新页面后重试！", 3000, 'theme-bg-sec');
-                    else if(dataObj.result == "invalid title")
+                    else if (dataObj.result == "invalid title")
                         Materialize.toast("页面错误，请刷新页面！", 3000, 'theme-bg-sec');
                 },
                 error: function (xhr) {

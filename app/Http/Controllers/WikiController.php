@@ -25,7 +25,7 @@ class WikiController extends Controller
                 'msg' => 'invalid title'
             ));
         $versions = Version::where('page_id', $page->id)->orderBy('number', 'desc')->paginate(10);
-        return view('history', [ 'paginator' => $versions ]);
+        return view('history', ['paginator' => $versions]);
     }
 
     /**
@@ -63,6 +63,11 @@ class WikiController extends Controller
                 'result' => 'false',
                 'msg' => 'invalid title'
             ));
+        if (intval($request->session()->get('user.power')) < intval($page->power))
+            return json_encode(array(
+                'result' => 'false',
+                'msg' => 'permission denied'
+            ));
         $number = 1;    //next number
         if ($page->versions()->count() > 0)
             $number = intval($page->versions()->get()->sortBy('number')->last()['number']) + 1;
@@ -71,7 +76,7 @@ class WikiController extends Controller
         $version->number = $number;
         $version->content = clean($parsedown->text($request->text));
         $version->original = $request->text;
-        if(!isset($request->message))
+        if (!isset($request->message))
             $version->message = "修改了「" . $page->title . "」.";
         else
             $version->message = $request->message;
@@ -100,8 +105,13 @@ class WikiController extends Controller
                 'result' => 'false',
                 'msg' => 'invalid title'
             ));
+        if (intval($request->session()->get('user.power')) < intval($page->power))
+            return json_encode(array(
+                'result' => 'false',
+                'msg' => 'permission denied'
+            ));
         $current_last_version = $page->versions()->get()->sortBy('number')->last();
-        if($id != $current_last_version['id']) {
+        if ($id != $current_last_version['id']) {
             $targetVersion = Version::where('id', $id)->first();
             if (empty($targetVersion))
                 return json_encode(array(
@@ -124,8 +134,7 @@ class WikiController extends Controller
                 'msg' => 'success',
                 'version' => $version
             ));
-        }
-        else
+        } else
             return json_encode(array(
                 'result' => 'true',
                 'msg' => 'success',
