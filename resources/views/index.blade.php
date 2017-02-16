@@ -239,7 +239,8 @@
                                     var dataObj = eval("(" + msg + ")");
                                     $(el).find('span').html('<div class="row">' + dataObj.content
                                         + '</div><div class="row">' +
-                                        '<a class="waves-effect waves-light theme-bg-sec btn" href="javascript: restore()"><i class="material-icons left">&#xE8B3;<!--restore--></i>button</a>' +
+                                        '<a class="waves-effect waves-light theme-bg-sec btn right" href="javascript: restore()">' +
+                                        '<i class="material-icons left">&#xE8B3;<!--restore--></i>恢复此版本</a>' +
                                         '</div>');
                                 }
                             });
