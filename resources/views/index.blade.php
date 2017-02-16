@@ -195,6 +195,7 @@
                         <label for="del_page_input">删除确认字段</label>
                     </div>
                 </div>
+                {!! csrf_field() !!}
             </form>
         </div>
         <div class="modal-footer">

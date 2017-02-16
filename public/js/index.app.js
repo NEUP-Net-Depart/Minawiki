@@ -76,11 +76,11 @@ function editPage(id) {
     });
 }
 function delPage(id) {
-    if($('#del_page_prompt').html() == $('#del_page_input').val())
+    if ($('#del_page_prompt').html() == $('#del_page_input').val())
         $.ajax({
             type: "POST",
             url: "/page/" + id,
-            data: "_method=DELETE&_token={!! csrf_token() !!}",
+            data: "_method=DELETE&_token=" + $(':input[name=_token]:last').val(),
             success: function (msg) {
                 var dataObj = eval("(" + msg + ")");
                 if (dataObj.result == "true") {
@@ -115,9 +115,9 @@ function movePage(id) {
                 $('#move_page_modal').modal('close');
                 loadLeftNav();
             }
-            else if(dataObj.msg == "father not exist")
+            else if (dataObj.msg == "father not exist")
                 Materialize.toast("指定的父页面不存在", 3000, 'theme-bg-sec');
-            else if(dataObj.msg == "improper father")
+            else if (dataObj.msg == "improper father")
                 Materialize.toast("不恰当的父亲！", 3000, 'theme-bg-sec');
             else
                 Materialize.toast("有点小问题", 3000, 'theme-bg-sec');
@@ -146,7 +146,7 @@ function updatePageContent(title) {
                 $('#page_content').removeAttr('style');
                 $('#pageContent_fm').attr('style', 'display: none');
             }
-            else if(dataObj.msg == "invalid title")
+            else if (dataObj.msg == "invalid title")
                 Materialize.toast("页面异常，请刷新重试", 3000, 'theme-bg-sec');
             else
                 Materialize.toast("有点小问题", 3000, 'theme-bg-sec');
