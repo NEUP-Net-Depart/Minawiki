@@ -49,7 +49,7 @@ class IndexController extends Controller
             $left_data_page = $pages->where('id', $current_page['father_id'])->first();
         }
 
-        $page_content = $current_page->versions()->get()->sortBy('number')->last()['content'];
+        $page_content = $current_page->versions->sortBy('number')->last();
 
         if ($request->session()->has('user.id')) {
             return view('index', ['path' => $path, 'current_page' => $current_page, 'left_data_page' => $left_data_page, 'content' => $page_content,

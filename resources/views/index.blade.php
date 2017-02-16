@@ -12,24 +12,39 @@
                 <center>
                     <h2>
                         {{ $current_page->title }}
-                        <a href="javascript: showPageHistory()" class="btn-floating waves-effect waves-light theme-bg-sec btn right"><i
+                        <a href="javascript: showPageHistory()"
+                           class="btn-floating waves-effect waves-light theme-bg-sec btn right"><i
                                     class="material-icons">&#xE889;<!--history--></i></a>
-                        <a href="javascript: editPageContent()" class="btn-floating waves-effect waves-light theme-bg-sec btn right" style="margin-right: 3px"><i
+                        <a href="javascript: editPageContent()"
+                           class="btn-floating waves-effect waves-light theme-bg-sec btn right"
+                           style="margin-right: 3px"><i
                                     class="material-icons left">&#xE3C9;<!--edit--></i></a>
                     </h2></center>
                 <div id="page_content_container" class="row">
                     <div class="col s12" id="page_content">
-                        {!! $content !!}
+                        @if(empty($content))
+                            <p>还没有内容</p>
+                        @else
+                            {!! $content->content !!}
+                        @endif
                     </div>
                     <form id="pageContent_fm" style="display: none" class="col s12">
                         <div class="row">
                             <div class="input-field col s12">
-                                <textarea name="text" id="page_content_textarea" class="materialize-textarea">{{ $content }}</textarea>
+                                <textarea name="text" id="page_content_textarea"
+                                          class="materialize-textarea">
+                                    @if(!empty($content))
+                                        {{ $content->original }}
+                                    @endif
+                                </textarea>
                                 <label for="textarea1">这里是萌萌哒的内容</label>
                             </div>
                             <div class="col s12">
-                                <a href="javascript: updatePageContent('{{ $current_page->title }}')" class="waves-effect waves-light btn-large theme-bg-sec right">提交</a>
-                                <a href="javascript: dropPageContent()" class="waves-effect waves-light btn-large theme-bg-sec right" style="margin-right: 10px">放弃</a>
+                                <a href="javascript: updatePageContent('{{ $current_page->title }}')"
+                                   class="waves-effect waves-light btn-large theme-bg-sec right">提交</a>
+                                <a href="javascript: dropPageContent()"
+                                   class="waves-effect waves-light btn-large theme-bg-sec right"
+                                   style="margin-right: 10px">放弃</a>
                             </div>
                         </div>
                         {{ csrf_field() }}
@@ -60,7 +75,7 @@
     </div>
     <!-- Add Page Modal -->
     <div id="add_page_modal" class="modal
-    @if(isset($power) && $power > 1)
+@if(isset($power) && $power > 1)
             modal-fixed-footer
             @endif
             ">
@@ -200,19 +215,19 @@
         }
         function loadLeftNav() {
             $('#left-nav').html('<center>\
-                <div class="preloader-wrapper big active center" style="margin-top: 30px">\
-                <div class="spinner-layer theme-border-dark">\
-                <div class="circle-clipper left">\
-                <div class="circle"></div>\
-                </div><div class="gap-patch">\
-                <div class="circle"></div>\
-                </div><div class="circle-clipper right">\
-                <div class="circle"></div>\
-                </div>\
-                </div>\
-                </div>\
-                </center>\
-                ');
+<div class="preloader-wrapper big active center" style="margin-top: 30px">\
+<div class="spinner-layer theme-border-dark">\
+<div class="circle-clipper left">\
+<div class="circle"></div>\
+</div><div class="gap-patch">\
+<div class="circle"></div>\
+</div><div class="circle-clipper right">\
+<div class="circle"></div>\
+</div>\
+</div>\
+</div>\
+</center>\
+');
             $.ajax({
                 type: "GET",
                 url: "/page/left-nav/{{ $current_page->title }}?continue={{ urlencode($continue) }}",
@@ -226,13 +241,13 @@
             $('#add_page_title_input').val("");
             $('#add_page_fatherid_input').val({{ $left_data_page->id }});
             @if(isset($power) && $power > 1)
-        $('#add_page_power_select').val(0);
+            $('#add_page_power_select').val(0);
             $('#add_page_is_folder_switch').removeAttr('checked');
             $('#add_page_is_notice_switch').removeAttr('checked');
             $('#add_page_protect_children_switch').removeAttr('checked');
             $('#add_page_protect_children_switch').attr('disabled', 'disabled');
             @endif
-        $('#add_page_submit').attr('href', 'javascript: addPage()');
+            $('#add_page_submit').attr('href', 'javascript: addPage()');
             $('#add_page_modal').modal('open');
         }
         function showEditPageModal(title) {
@@ -240,23 +255,23 @@
             $('#add_page_title_input').val($('#' + title + "_title").val());
             $('#add_page_fatherid_input').val($('#' + title + "_father_id").val());
             @if(isset($power) && $power > 1)
-                if ($('#' + title + "_is_folder").val() == "1") {
-                    $('#add_page_is_folder_switch').prop('checked', 'checked');
-                    $('#add_page_protect_children_switch').removeAttr('disabled');
-                }
-                else {
-                    $('#add_page_is_folder_switch').removeAttr('checked');
-                    $('#add_page_protect_children_switch').attr('disabled', 'disabled');
-                }
-                if ($('#' + title + "_is_notice").val() == "1")
-                    $('#add_page_is_notice_switch').prop('checked', 'checked');
-                else
-                    $('#add_page_is_notice_switch').removeAttr('checked');
-                if ($('#' + title + "_protect_children").val() == "1")
-                    $('#add_page_protect_children_switch').prop('checked', 'checked');
-                else
-                    $('#add_page_protect_children_switch').removeAttr('checked');
-                $('#add_page_power_select').val($('#' + title + "_power").val());
+            if ($('#' + title + "_is_folder").val() == "1") {
+                $('#add_page_is_folder_switch').prop('checked', 'checked');
+                $('#add_page_protect_children_switch').removeAttr('disabled');
+            }
+            else {
+                $('#add_page_is_folder_switch').removeAttr('checked');
+                $('#add_page_protect_children_switch').attr('disabled', 'disabled');
+            }
+            if ($('#' + title + "_is_notice").val() == "1")
+                $('#add_page_is_notice_switch').prop('checked', 'checked');
+            else
+                $('#add_page_is_notice_switch').removeAttr('checked');
+            if ($('#' + title + "_protect_children").val() == "1")
+                $('#add_page_protect_children_switch').prop('checked', 'checked');
+            else
+                $('#add_page_protect_children_switch').removeAttr('checked');
+            $('#add_page_power_select').val($('#' + title + "_power").val());
             @endif
             $('#add_page_submit').attr('href', 'javascript: editPage(' + $('#' + title + "_id").val() + ')');
             $('#add_page_modal').modal('open');

@@ -19,15 +19,15 @@ class WikiController extends Controller
     {
         $page = Page::where('title', $title)->first();
         if (empty($page))
-            return json_encode(array([
+            return json_encode(array(
                 'result' => 'false',
                 'msg' => 'invalid title'
-            ]));
+            ));
         //Get newest version
-        return json_encode(array([
+        return json_encode(array(
             'result' => 'true',
             'content' => $page->versions()->get()->sortBy('number')->last()['content']
-        ]));
+        ));
     }
 
     /**
@@ -39,14 +39,14 @@ class WikiController extends Controller
     {
         $page = Page::where('title', $title)->first();
         if (empty($page))
-            return json_encode(array([
+            return json_encode(array(
                 'result' => 'false',
                 'msg' => 'invalid title'
-            ]));
-        return json_encode(array([
+            ));
+        return json_encode(array(
             'result' => 'true',
-            'history' => $page->versions->sortBy('number')->toJson()
-        ]));
+            'history' => Version::where('page_id', $page->id)->orderBy('number', 'desc')->paginate(10)
+        ));
     }
 
     /**
@@ -58,10 +58,10 @@ class WikiController extends Controller
     {
         $page = Page::where('title', $title)->first();
         if (empty($page))
-            return json_encode(array([
+            return json_encode(array(
                 'result' => 'false',
                 'msg' => 'invalid title'
-            ]));
+            ));
         $number = 1;    //next number
         if ($page->versions()->count() > 0)
             $number = intval($page->versions()->get()->sortBy('number')->last()['number']) + 1;
@@ -69,13 +69,18 @@ class WikiController extends Controller
         $version = new Version;
         $version->number = $number;
         $version->content = clean($parsedown->text($request->text));
+        $version->original = $request->text;
+        if(!isset($request->message))
+            $version->message = "修改了" . $page->title;
+        else
+            $version->message = $request->message;
         $version->user_id = $request->session()->get('user.id');
         $version->is_little = boolval($request->is_little);
         $page->versions()->save($version);
-        return json_encode([
+        return json_encode(array(
             'result' => 'true',
             'msg' => 'success',
             'version' => $version
-        ]);
+        ));
     }
 }

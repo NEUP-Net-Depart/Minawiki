@@ -19,6 +19,8 @@ class CreateVersionsTable extends Migration
             $table->index('page_id');
             $table->integer('number');
             $table->longText('content');
+            $table->longText('original');
+            $table->string('message');
             $table->integer('user_id');
             $table->boolean('is_little');
             $table->softDeletes();
