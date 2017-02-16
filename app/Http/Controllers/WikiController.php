@@ -12,25 +12,6 @@ use App\Version;
 class WikiController extends Controller
 {
     /**
-     * @param Request $request
-     * @param $title
-     */
-    public function index(Request $request, $title)
-    {
-        $page = Page::where('title', $title)->first();
-        if (empty($page))
-            return json_encode(array(
-                'result' => 'false',
-                'msg' => 'invalid title'
-            ));
-        //Get newest version
-        return json_encode(array(
-            'result' => 'true',
-            'content' => $page->versions()->get()->sortBy('number')->last()['content']
-        ));
-    }
-
-    /**
      * Get all versions
      * @param Request $request
      * @param $title
@@ -43,10 +24,12 @@ class WikiController extends Controller
                 'result' => 'false',
                 'msg' => 'invalid title'
             ));
-        return json_encode(array(
+        $versions = Version::where('page_id', $page->id)->orderBy('number', 'desc')->paginate(10);
+        return view('history', [ 'paginator' => $versions ]);
+        /*return json_encode(array(
             'result' => 'true',
-            'history' => Version::where('page_id', $page->id)->orderBy('number', 'desc')->paginate(10)
-        ));
+            'history' => $versions
+        ));*/
     }
 
     /**
@@ -71,7 +54,7 @@ class WikiController extends Controller
         $version->content = clean($parsedown->text($request->text));
         $version->original = $request->text;
         if(!isset($request->message))
-            $version->message = "修改了" . $page->title;
+            $version->message = "修改了「" . $page->title . "」.";
         else
             $version->message = $request->message;
         $version->user_id = $request->session()->get('user.id');

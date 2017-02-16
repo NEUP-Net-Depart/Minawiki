@@ -19,11 +19,12 @@
                            class="btn-floating waves-effect waves-light theme-bg-sec btn right"
                            style="margin-right: 3px"><i
                                     class="material-icons left">&#xE3C9;<!--edit--></i></a>
-                    </h2></center>
+                    </h2>
+                </center>
                 <div id="page_content_container" class="row">
                     <div class="col s12" id="page_content">
                         @if(empty($content))
-                            <p>还没有内容</p>
+                            <p>还没有任何内容哦～</p>
                         @else
                             {!! $content->content !!}
                         @endif
@@ -47,28 +48,10 @@
                                    style="margin-right: 10px">放弃</a>
                             </div>
                         </div>
-                        {{ csrf_field() }}
+                        {!! csrf_field() !!}
                     </form>
                 </div>
                 <div id="page_history" style="display: none;" class="row">
-                    <div class="col s12">
-                        <ul class="collection with-header">
-                            <li class="collection-header"><h4>历史记录</h4></li>
-                            <li class="collection-item">Alvin</li>
-                            <li class="collection-item">Alvin</li>
-                            <li class="collection-item">Alvin</li>
-                            <li class="collection-item">Alvin</li>
-                        </ul>
-                        <ul class="pagination">
-                            <li class="disabled"><a href="#!"><i class="material-icons">chevron_left</i></a></li>
-                            <li class="active"><a href="#!">1</a></li>
-                            <li class="waves-effect"><a href="#!">2</a></li>
-                            <li class="waves-effect"><a href="#!">3</a></li>
-                            <li class="waves-effect"><a href="#!">4</a></li>
-                            <li class="waves-effect"><a href="#!">5</a></li>
-                            <li class="waves-effect"><a href="#!"><i class="material-icons">chevron_right</i></a></li>
-                        </ul>
-                    </div>
                 </div>
             </div>
         </div>
@@ -210,9 +193,48 @@
             $('#page_content').attr('style', 'display: none');
             $('#pageContent_fm').removeAttr('style');
         }
-        function showPageHistory() {
+        function showPageHistory(page) {
             $('#page_content_container').attr('style', 'display: none');
             $('#page_history').removeAttr('style');
+            $('#page_history').html('<center>\
+<div class="preloader-wrapper big active center" style="margin-top: 30px">\
+<div class="spinner-layer theme-border-dark">\
+<div class="circle-clipper left">\
+<div class="circle"></div>\
+</div><div class="gap-patch">\
+<div class="circle"></div>\
+</div><div class="circle-clipper right">\
+<div class="circle"></div>\
+</div>\
+</div>\
+</div>\
+</center>\
+');
+            $.ajax({
+                type: "GET",
+                url: "/{{ $current_page->title }}/history?page=" + page,
+                success: function (msg) {
+                    $('#page_history').html(msg);
+                    $('.collapsible').collapsible({
+                        onOpen: function (el) {
+                            $(el).find('span').html('<center>\
+<div class="preloader-wrapper big active center">\
+<div class="spinner-layer theme-border-dark">\
+<div class="circle-clipper left">\
+<div class="circle"></div>\
+</div><div class="gap-patch">\
+<div class="circle"></div>\
+</div><div class="circle-clipper right">\
+<div class="circle"></div>\
+</div>\
+</div>\
+</div>\
+</center>\
+');
+                        },
+                    });
+                }
+            });
         }
         function loadLeftNav() {
             $('#left-nav').html('<center>\

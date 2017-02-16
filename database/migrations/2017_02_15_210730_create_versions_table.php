@@ -18,8 +18,8 @@ class CreateVersionsTable extends Migration
             $table->integer('page_id');
             $table->index('page_id');
             $table->integer('number');
-            $table->longText('content');
-            $table->longText('original');
+            $table->longText('content')->nullable();
+            $table->longText('original')->nullable();
             $table->string('message');
             $table->integer('user_id');
             $table->boolean('is_little');
