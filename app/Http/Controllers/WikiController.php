@@ -26,10 +26,29 @@ class WikiController extends Controller
             ));
         $versions = Version::where('page_id', $page->id)->orderBy('number', 'desc')->paginate(10);
         return view('history', [ 'paginator' => $versions ]);
-        /*return json_encode(array(
-            'result' => 'true',
-            'history' => $versions
-        ));*/
+    }
+
+    /**
+     * Get single version ajax
+     * @param Request $request
+     * @param $title
+     * @param $id
+     * @return string
+     */
+    public function getOneVersion(Request $request, $title, $id)
+    {
+        $version = Version::where('id', $id)->first();
+        if (empty($version))
+            return json_encode(array(
+                'result' => 'false',
+                'msg' => 'invalid version id'
+            ));
+        else
+            return json_encode(array(
+                'result' => 'true',
+                'original' => $version->original,
+                'content' => $version->content
+            ));
     }
 
     /**
