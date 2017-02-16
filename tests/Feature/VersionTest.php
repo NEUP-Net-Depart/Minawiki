@@ -46,24 +46,47 @@ class VersionTest extends BrowserKitTestCase
                 'result' => 'false',
                 'msg' => 'invalid title'
             ]);
-        //Test get version
+        //Test get one version
         $this->withSession(['user.id' => 1, 'user.power' => '3'])
-            ->json('GET', '/VersionTest/update')
+            ->json('GET', '/VersionTest/history/1')
             ->seeJson([
                 'result' => 'true',
-                'content' => '<p>update2</p>'
+                'content' => '<p>update1</p>'
             ]);
         $this->withSession(['user.id' => 1, 'user.power' => '3'])
-            ->json('GET', '/fakeroot/update')
+            ->json('GET', '/VersionTest/history/1000')
+            ->seeJson([
+                'result' => 'false',
+                'msg' => 'invalid version id'
+            ]);
+        //Test history
+        $this->withSession(['user.id' => 1, 'user.power' => '3'])
+            ->visit('/VersionTest/history')
+            ->see("VersionTest");
+        //Test restore
+        $this->withSession(['user.id' => 1, 'user.power' => '3'])
+            ->json('PUT', '/faketitle/restore/1')
             ->seeJson([
                 'result' => 'false',
                 'msg' => 'invalid title'
             ]);
-        //Test history
         $this->withSession(['user.id' => 1, 'user.power' => '3'])
-            ->json('GET', '/VersionTest/history')
+            ->json('PUT', '/VersionTest/restore/1000')
             ->seeJson([
-                'result' => 'true'
+                'result' => 'false',
+                'msg' => 'invalid version id'
+            ]);
+        $this->withSession(['user.id' => 1, 'user.power' => '3'])
+            ->json('PUT', '/VersionTest/restore/1')
+            ->seeJson([
+                'result' => 'true',
+                'msg' => 'success'
+            ]);
+        $this->withSession(['user.id' => 1, 'user.power' => '3'])
+            ->json('GET', '/VersionTest/history/3')
+            ->seeJson([
+                'result' => 'true',
+                'content' => '<p>update1</p>'
             ]);
         //Test delete version
         $this->withSession(['user.id' => 1, 'user.power' => '3', 'user.sessionReality' => true])

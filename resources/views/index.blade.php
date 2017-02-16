@@ -255,7 +255,7 @@
             $.ajax({
                 type: "POST",
                 url: "/{{ $current_page->title }}/restore/" + id,
-                data: "_method=PUT&token={!! csrf_token() !!}",
+                data: "_method=PUT&_token={!! csrf_token() !!}",
                 success: function (msg) {
                     var dataObj = eval("(" + msg + ")");
                     if (dataObj.result == "true") {
