@@ -239,13 +239,40 @@
                                     var dataObj = eval("(" + msg + ")");
                                     $(el).find('span').html('<div class="row">' + dataObj.content
                                         + '</div><div class="row">' +
-                                        '<a class="waves-effect waves-light theme-bg-sec btn right" href="javascript: restore()">' +
+                                        '<a class="waves-effect waves-light theme-bg-sec btn right" href="javascript: restore(' +
+                                        $(el).find('input[name="id"]').val() +
+                                        ')">' +
                                         '<i class="material-icons left">&#xE8B3;<!--restore--></i>恢复此版本</a>' +
                                         '</div>');
                                 }
                             });
                         }
                     });
+                }
+            });
+        }
+        function restore(id) {
+            $.ajax({
+                type: "POST",
+                url: "/{{ $current_page->title }}/restore/" + id,
+                data: "_method=PUT&token={!! csrf_token() !!}",
+                success: function (msg) {
+                    var dataObj = eval("(" + msg + ")");
+                    if (dataObj.result == "true") {
+                        $('#page_content').html(dataObj.version['content']);
+                        $('#page_content_textarea').html(dataObj.version['original']);
+                        $('#page_history').attr('style', 'display: none');
+                        $('#page_content_container').removeAttr('style');
+                    }
+                    else
+                        Materialize.toast("有点小问题", 3000, 'theme-bg-sec');
+                },
+                error: function (xhr) {
+                    if (xhr.status == 422) {
+                        Materialize.toast('请正确填写相关字段！', 3000, 'theme-bg-sec')
+                    } else {
+                        Materialize.toast('服务器出错了，请刷新重试', 3000, 'theme-bg-sec')
+                    }
                 }
             });
         }
