@@ -302,6 +302,9 @@
                                     MathJax.Hub.Queue(["Typeset",MathJax.Hub]);
                                 }
                             });
+                        },
+                        onClose: function (el) {
+                            $(el).find('.ct_div').html('<span class="markdown-body"></span>');
                         }
                     });
                 }
