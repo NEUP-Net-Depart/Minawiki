@@ -6,17 +6,20 @@
             <input class="hidden" style="display: none" name="id" value="{{ $item->id }}">
             <div class="collapsible-header">
                 <div class="row" style="margin-bottom: 0">
-                    <div class="col s2">
+                    <div class="col">
                         #{{ $item->number }}
                     </div>
-                    <div class="col s2">
+                    <div class="col">
                         作者 #{{ $item->user_id }}
                     </div>
-                    <div class="col s4">
+                    <div class="col">
+                        @if($item->is_little)
+                            <b>【小编辑】</b>
+                        @endif
                         {{ $item->message }}
                     </div>
-                    <div class="col s4">
-                        {{ $item->updated_at }}
+                    <div class="col">
+                        <label>{{ $item->updated_at }}</label>
                     </div>
                 </div>
             </div>

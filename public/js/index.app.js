@@ -54,6 +54,8 @@ function editPage(id) {
         success: function (msg) {
             var dataObj = eval("(" + msg + ")");
             if (dataObj.result == "true") {
+                if(id == $('#this_page_id').val())
+                    history.go(0);
                 $('#add_page_modal').modal('close');
                 loadLeftNav();
             }
@@ -114,6 +116,8 @@ function movePage(id) {
         success: function (msg) {
             var dataObj = eval("(" + msg + ")");
             if (dataObj.result == "true") {
+                if(id == $('#this_page_id').val())
+                    history.go(0);
                 $('#move_page_modal').modal('close');
                 loadLeftNav();
             }
@@ -135,7 +139,7 @@ function movePage(id) {
 }
 function updatePageContent() {
     var title = $('#this_page_title').val();
-    var str_data1 = $("#pageContent_fm input,#pageContent_fm textarea").map(function () {
+    var str_data1 = $("#pageContent_fm input[type!=checkbox],#pageContent_fm textarea").map(function () {
         return ($(this).attr("name") + '=' + encodeURIComponent($(this).val()));
     }).get().join("&");
     var str_data2 = $("#pageContent_fm input[type=checkbox]").map(function () {

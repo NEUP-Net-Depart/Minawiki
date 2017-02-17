@@ -65,7 +65,7 @@
                         </div>
                         <div class="row">
                             <div class="col s12">
-                                <input type="checkbox" class="filled-in" id="is_little_checkbox"/>
+                                <input type="checkbox" name="is_little" class="filled-in" id="is_little_checkbox"/>
                                 <label for="is_little_checkbox">这是一条小编辑</label>
                                 <a href="javascript: updatePageContent()"
                                    class="waves-effect waves-light btn-large theme-bg-sec right">提交</a>
