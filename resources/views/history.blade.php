@@ -23,7 +23,7 @@
                     </div>
                 </div>
             </div>
-            <div class="collapsible-body"><span></span></div>
+            <div class="collapsible-body ct_div"><span class="markdown-body"></span></div>
             <form id="restore_fm" style="display: none">{!! csrf_field() !!}</form>
         </li>
         @endforeach

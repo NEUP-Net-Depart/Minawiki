@@ -45,7 +45,7 @@
                     </h2>
                 </center>
                 <div id="page_content_container" class="row">
-                    <div class="col s12" id="page_content">
+                    <div class="col s12 markdown-body" id="page_content">
                         @if(empty($content))
                             <p>还没有任何内容哦～</p>
                         @else
@@ -284,7 +284,8 @@
                                 success: function (msg) {
                                     var dataObj = eval("(" + msg + ")");
                                     $(el).find('span').html('<div class="row">' + dataObj.content
-                                        + '</div>' +
+                                        + '</div>');
+                                    $(el).find('.ct_div').append(
                                             @if(isset($uid) && $power >= $current_page->power)
                                                 '<div class="row">' +
                                         '<a class="waves-effect waves-light theme-bg-sec btn right" href="javascript: restore(' +
