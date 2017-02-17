@@ -18,6 +18,14 @@
                                style="display: none">
                         <input id="this_left_data_page_title" value="{{ $left_data_page->title }}" type="hidden"
                                style="display: none">
+                        <a id="editPageContentSubmitButton" href="javascript: updatePageContent()"
+                           style="display: none;"
+                           class="btn-floating waves-effect waves-light theme-bg-sec btn right"><i
+                                    class="material-icons">&#xE163;<!--send--></i></a>
+                        <a id="editPageContentReturnButton" href="javascript: dropPageContent()"
+                           style="display: none;"
+                           class="btn-floating waves-effect waves-light theme-bg-sec btn right float-margin"><i
+                                    class="material-icons">&#xE5C4;<!--arrow_back--></i></a>
                         <a id="showPageHistoryReturnButton" href="javascript: showPageHistoryReturn()"
                            style="display: none;"
                            class="btn-floating waves-effect waves-light theme-bg-sec btn right"><i
@@ -219,11 +227,15 @@
     <script src="/js/index.app.js"></script>
     <script>
         function editPageContent() {
-            $('#page_content').attr('style', 'display: none');
-            $('#pageContent_fm').removeAttr('style');
             $('#message_input').val('');
             $('#is_little_checkbox').removeAttr('checked');
+            $('#page_content').attr('style', 'display: none');
+            $('#pageContent_fm').removeAttr('style');
             $('#page_content_textarea').trigger('autoresize');
+            $('#editPageContentButton').attr('style', 'display: none');
+            $('#showPageHistoryButton').attr('style', 'display: none');
+            $('#editPageContentReturnButton').removeAttr('style');
+            $('#editPageContentSubmitButton').removeAttr('style');
         }
         function showPageHistory(page) {
             $('#page_content_container').attr('style', 'display: none');
@@ -286,6 +298,7 @@
                                         '</div>' +
                                             @endif
                                                 '');
+                                    MathJax.Hub.Queue(["Typeset",MathJax.Hub]);
                                 }
                             });
                         }
@@ -384,6 +397,10 @@
         function dropPageContent() {
             $('#page_content').removeAttr('style');
             $('#pageContent_fm').attr('style', 'display: none');
+            $('#editPageContentButton').removeAttr('style');
+            $('#showPageHistoryButton').removeAttr('style');
+            $('#editPageContentReturnButton').attr('style', 'display: none');
+            $('#editPageContentSubmitButton').attr('style', 'display: none');
         }
         $(document).ready(function () {
             loadLeftNav();

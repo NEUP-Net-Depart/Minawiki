@@ -29,6 +29,10 @@
 
 <script type="text/javascript" src="/js/app.js"></script>
 
+<script type="text/javascript" async
+        src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML">
+</script>
+
 @yield('nav')
 <main>
     @yield('content')

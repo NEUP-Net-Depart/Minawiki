@@ -157,6 +157,11 @@ function updatePageContent() {
                 $('#page_content').html(dataObj.version['content']);
                 $('#page_content').removeAttr('style');
                 $('#pageContent_fm').attr('style', 'display: none');
+                $('#editPageContentButton').removeAttr('style');
+                $('#showPageHistoryButton').removeAttr('style');
+                $('#editPageContentReturnButton').attr('style', 'display: none');
+                $('#editPageContentSubmitButton').attr('style', 'display: none');
+                MathJax.Hub.Queue(["Typeset",MathJax.Hub]);
             }
             else if (dataObj.msg == "invalid title")
                 Materialize.toast("页面异常，请刷新重试", 3000, 'theme-bg-sec');
@@ -192,6 +197,7 @@ function restore(id) {
                 $('#showPageHistoryButton').removeAttr('style');
                 $('#editPageContentButton').removeAttr('style');
                 $('#showPageHistoryReturnButton').attr('style', 'display: none');
+                MathJax.Hub.Queue(["Typeset",MathJax.Hub]);
                 dropPageContent();
             }
             else if (dataObj.result == "invalid version id")
