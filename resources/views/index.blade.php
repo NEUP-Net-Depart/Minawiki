@@ -67,7 +67,8 @@
                         </div>
                         <div class="row">
                             <div class="input-field col s12">
-                                <input id="message_input" name="message" placeholder="为这条编辑添加一条注释（可选）" type="text" class="validate">
+                                <input id="message_input" name="message" placeholder="为这条编辑添加一条注释（可选）" type="text"
+                                       class="validate">
                                 <label for="message_input">编辑注释</label>
                             </div>
                         </div>
@@ -86,6 +87,32 @@
                     </form>
                 </div>
                 <div id="page_history" style="display: none;" class="row">
+                </div>
+                <div id="comment_pool">
+                    <div class="row">
+                        <div class="input-field col s12">
+                            <textarea id="comment_input" class="materialize-textarea"></textarea>
+                            <label class="active" for="comment_input">发表评论</label>
+                        </div>
+                        <div class="input-field col s12" style="margin-top: 0">
+                            <div class="col"><p style="margin-top: 0">您所发表的评论都将是匿名的。</p></div>
+                            <div class="right">
+                                <a class="waves-effect waves-light btn right theme-dark">发表<i
+                                            class="material-icons right">&#xE163;
+                                        <!--send--></i></a>
+                            </div>
+                        </div>
+                    </div>
+                    <ul class="collection theme-dark-a">
+                        <li class="collection-item">
+                            <center>～～～精彩评论～～～</center>
+                        </li>
+                        @include('comment')
+                        <li class="collection-item" style="border-top: 1px solid #e0e0e0">
+                            <center>——— 最新评论 ———</center>
+                        </li>
+                        @include('comment')
+                    </ul>
                 </div>
             </div>
         </div>
@@ -288,18 +315,18 @@
                                     $(el).find('.ct_div').append(
                                             @if(isset($uid) && $power >= $current_page->power)
                                                 '<div class="row">' +
-                                        '<a class="waves-effect waves-light theme-bg-sec btn right" href="javascript: restore(' +
-                                        $(el).find('input[name="id"]').val() +
-                                        ')"><i class="material-icons left">&#xE8B3;<!--restore--></i>恢复此版本</a>' +
-                                        '</div>' +
+                                            '<a class="waves-effect waves-light theme-bg-sec btn right" href="javascript: restore(' +
+                                            $(el).find('input[name="id"]').val() +
+                                            ')"><i class="material-icons left">&#xE8B3;<!--restore--></i>恢复此版本</a>' +
+                                            '</div>' +
                                             @elseif(!isset($uid) && $current_page->power == 0)
                                                 '<div class="row">' +
-                                        '<a class="waves-effect waves-light theme-bg-sec btn right" href="/auth/login?continue={{ urlencode($continue) }}">' +
-                                        '<i class="material-icons left">&#xE8B3;<!--restore--></i>恢复此版本</a>' +
-                                        '</div>' +
+                                            '<a class="waves-effect waves-light theme-bg-sec btn right" href="/auth/login?continue={{ urlencode($continue) }}">' +
+                                            '<i class="material-icons left">&#xE8B3;<!--restore--></i>恢复此版本</a>' +
+                                            '</div>' +
                                             @endif
                                                 '');
-                                    MathJax.Hub.Queue(["Typeset",MathJax.Hub]);
+                                    MathJax.Hub.Queue(["Typeset", MathJax.Hub]);
                                 }
                             });
                         },

@@ -13,6 +13,11 @@
     color: #4dc4ff !important;
 }
 
+.theme-dark-a a {
+    /* tianyiblue-dark */
+    color: #4dc4ff !important;
+}
+
 .theme-border-dark {
     border-color: #4dc4ff;
 }

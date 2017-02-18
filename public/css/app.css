@@ -19,3 +19,7 @@ main {
 .float-margin {
     margin-right: 3px
 }
+
+.collection .collection-item.avatar {
+    min-height: 64px;
+}
