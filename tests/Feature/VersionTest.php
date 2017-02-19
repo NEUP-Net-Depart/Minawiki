@@ -19,6 +19,8 @@ class VersionTest extends BrowserKitTestCase
      */
     public function testBackend()
     {
+        $this->post('/install', ['tel' => '12312312312', 'password' => 'admin', 'title' => 'Minawikiroot']);
+
         //Test add version
         $page = new Page();
         $page->father_id = 1;

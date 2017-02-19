@@ -89,29 +89,28 @@
                 <div id="page_history" style="display: none;" class="row">
                 </div>
                 <div id="comment_pool">
-                    <div class="row">
+                    <div class="row" id="comment_fm">
                         <div class="input-field col s12">
-                            <textarea id="comment_input" class="materialize-textarea"></textarea>
+                            <textarea id="comment_input" name="text" class="materialize-textarea"></textarea>
                             <label class="active" for="comment_input">发表评论</label>
                         </div>
                         <div class="input-field col s12" style="margin-top: 0">
                             <div class="col"><p style="margin-top: 0">您所发表的评论都将是匿名的。</p></div>
                             <div class="right">
-                                <a class="waves-effect waves-light btn right theme-dark">发表<i
+                                <a href="javascript: comment()" class="waves-effect waves-light btn right theme-dark">发表<i
                                             class="material-icons right">&#xE163;
                                         <!--send--></i></a>
                             </div>
                         </div>
+                        {!! csrf_field() !!}
                     </div>
-                    <ul class="collection theme-dark-a">
-                        <li class="collection-item">
-                            <center>～～～精彩评论～～～</center>
-                        </li>
-                        @include('comment')
-                        <li class="collection-item" style="border-top: 1px solid #e0e0e0">
-                            <center>——— 最新评论 ———</center>
-                        </li>
-                        @include('comment')
+                    <ul class="collection theme-dark-a" style="border-top: 0">
+                        <div id="mostpopular_comment_container">
+
+                        </div>
+                        <div id="latest_comment_container">
+
+                        </div>
                     </ul>
                 </div>
             </div>
@@ -253,6 +252,31 @@
     </div>
     <script src="/js/index.app.js"></script>
     <script>
+        function loadComments(order, page) {
+                $('#' + order + '_comment_container .loadmore').remove();
+                $('#' + order + '_comment_container').append('<center class="loading">\
+<div class="preloader-wrapper small active center" style="margin-top: 10px; margin-bottom: 10px">\
+<div class="spinner-layer theme-border-dark">\
+<div class="circle-clipper left">\
+<div class="circle"></div>\
+</div><div class="gap-patch">\
+<div class="circle"></div>\
+</div><div class="circle-clipper right">\
+<div class="circle"></div>\
+</div>\
+</div>\
+</div>\
+</center>\
+');
+                $.ajax({
+                    type: "GET",
+                    url: "/{{ $current_page->title }}/comment?order=" + order + "&page=" + page,
+                    success: function (msg) {
+                        $('#' + order + '_comment_container .loading').remove();
+                        $('#' + order + '_comment_container').append(msg);
+                    }
+                });
+        }
         function editPageContent() {
             $('#message_input').val('');
             $('#is_little_checkbox').removeAttr('checked');
@@ -435,6 +459,8 @@
         }
         $(document).ready(function () {
             loadLeftNav();
+            loadComments('mostpopular', 1);
+            loadComments('latest', 1);
         });
     </script>
 @endsection

@@ -204,6 +204,44 @@ function restore(id) {
                 Materialize.toast("无效的版本，请刷新页面后重试！", 3000, 'theme-bg-sec');
             else if (dataObj.result == "invalid title")
                 Materialize.toast("页面错误，请刷新页面！", 3000, 'theme-bg-sec');
+            else
+                Materialize.toast("有点小问题", 3000, 'theme-bg-sec');
+        },
+        error: function (xhr) {
+            if (xhr.status == 422) {
+                Materialize.toast('请正确填写相关字段！', 3000, 'theme-bg-sec')
+            } else {
+                Materialize.toast('服务器出错了，请刷新重试', 3000, 'theme-bg-sec')
+            }
+        }
+    });
+}
+
+function comment() {
+    var str_data1 = $("#comment_fm input").map(function () {
+        return ($(this).attr("name") + '=' + encodeURIComponent($(this).val()));
+    }).get().join("&");
+    var str_data2 = $("#comment_fm textarea").map(function () {
+        return ($(this).attr("name") + '=' + encodeURIComponent($(this).val()));
+    }).get().join("&");
+    var str_data = str_data1 + '&' + str_data2;
+    $.ajax({
+        type: "POST",
+        url: "/" + $("#this_page_title").val() +"/comment",
+        data: str_data,
+        success: function (msg) {
+            var dataObj = eval("(" + msg + ")");
+            if (dataObj.result == "true") {
+                $("#comment_input").html('');
+                $("#comment_input").val('');
+                Materialize.toast("发表成功！", 3000, 'theme-bg-sec');
+                $('#latest_comment_container').html('');
+                loadComments('latest', 1);
+            }
+            else if (dataObj.result == "invalid title")
+                Materialize.toast("页面错误，请刷新页面！", 3000, 'theme-bg-sec');
+            else
+                Materialize.toast("有点小问题", 3000, 'theme-bg-sec');
         },
         error: function (xhr) {
             if (xhr.status == 422) {

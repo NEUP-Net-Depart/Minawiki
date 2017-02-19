@@ -43,8 +43,11 @@ Route::put('/page/{id}', 'PageController@update')->middleware('checksu');
 Route::delete('/page/{id}', 'PageController@destroy')->middleware('checksu', 'checkrel');
 
 //Wiki Manage
-//Route::get('/{title}/update', 'WikiController@index');
+Route::post('/{title}/update', 'WikiController@store')->middleware('checklogin');
+Route::put('/{title}/restore/{id}', 'WikiController@restore')->middleware('checklogin');
 Route::get('/{title}/history', 'WikiController@history');
 Route::get('/{title}/history/{id}', 'WikiController@getOneVersion');
-Route::put('/{title}/restore/{id}', 'WikiController@restore')->middleware('checklogin');
-Route::post('/{title}/update', 'WikiController@store')->middleware('checklogin');
+
+//Comment Manage
+Route::get('/{title}/comment', 'CommentController@index');
+Route::post('/{title}/comment', 'CommentController@store')->middleware('checklogin');
