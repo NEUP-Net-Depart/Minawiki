@@ -217,6 +217,12 @@ class AuthController extends Controller
         $user = User::where('tel', $request->tel)->first();
 
         if (Hash::check($user->salt . $request->password, $user->password)) {
+            if (Hash::needsRehash($user->password)) {
+                //Generate random salt
+                $salt = base64_encode(random_bytes(24));
+                $user->salt = $salt;
+                $user->password = Hash::make($salt . $request->password);
+            }
             //Generate and save token
             $user->token = $user->tel . strval(time());
             $user->save();
@@ -252,6 +258,12 @@ class AuthController extends Controller
         $user = User::where('id', $request->session()->get('user.id'))->first();
 
         if (Hash::check($user->salt . $request->password, $user->password)) {
+            if (Hash::needsRehash($user->password)) {
+                //Generate random salt
+                $salt = base64_encode(random_bytes(24));
+                $user->salt = $salt;
+                $user->password = Hash::make($salt . $request->password);
+            }
             //Generate and save token
             $user->token = $user->tel . strval(time());
             $user->save();
