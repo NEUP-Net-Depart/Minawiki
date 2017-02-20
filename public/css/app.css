@@ -20,6 +20,13 @@ main {
     margin-right: 3px
 }
 
-.collection .collection-item.avatar {
-    min-height: 64px;
+.avatar-circle {
+    margin-top: 1px;
+    margin-bottom: 1px;
+}
+
+.reply {
+    margin-top: 10px;
+    background-color: #f8f8f8;
+    padding: 10px 10px 10px 10px !important;
 }

@@ -218,6 +218,10 @@ function restore(id) {
 }
 
 function comment() {
+    if($('#comment_input').val() == "") {
+        Materialize.toast("你什么都没写呀", 3000, 'theme-bg-sec');
+        return;
+    }
     var str_data1 = $("#comment_fm input").map(function () {
         return ($(this).attr("name") + '=' + encodeURIComponent($(this).val()));
     }).get().join("&");
@@ -234,6 +238,7 @@ function comment() {
             if (dataObj.result == "true") {
                 $("#comment_input").html('');
                 $("#comment_input").val('');
+                $('#comment_input').trigger('autoresize');
                 Materialize.toast("发表成功！", 3000, 'theme-bg-sec');
                 $('#latest_comment_container').html('');
                 loadComments('latest', 1);
