@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Comment;
 use App\CommentMessage;
+use App\Star;
+use App\StarMessage;
 use App\Page;
 use Parsedown;
 
@@ -58,6 +60,7 @@ class CommentController extends Controller
             'AutoFormat.AutoParagraph' => true,
             'AutoFormat.RemoveEmpty' => true,
         ];
+        //Add comment
         $comment = new Comment();
         $comment->page_id = $page->id;
         $comment->user_id = $request->session()->get('user.id');
@@ -67,8 +70,20 @@ class CommentController extends Controller
         $comment->ban = false;
         $comment->star_num = 0;
 
-        if(isset($request->reply_id))
-            $comment->reply_id = $request->reply_id;
+        if(isset($request->reply_id)) {
+            $target_comment = Comment::where('id', $request->reply_id)->first();
+            if(empty($target_comment))
+                return json_encode(array(
+                    'result' => 'false',
+                    'msg' => 'invalid reply id'
+                ));
+            $comment->reply_id = $target_comment->id;
+            //Add comment message
+            $comment_message = new CommentMessage;
+            $comment_message->user_id = $target_comment->user_id;
+            $comment_message->is_read = false;
+            $comment_message->save();
+        }
         if(isset($request->signature))
             $comment->signature = $request->signature;
 
@@ -123,6 +138,80 @@ class CommentController extends Controller
         return json_encode(array(
             'result' => 'false',
             'msg' => 'unauthorised'
+        ));
+    }
+
+    /**
+     * @param Request $request
+     * @param $title
+     * @param $id
+     * @return string
+     */
+    public function star(Request $request, $title, $id)
+    {
+        $page = Page::where('title', $title)->first();
+        if (empty($page))
+            return json_encode(array(
+                'result' => 'false',
+                'msg' => 'invalid title'
+            ));
+        $comment = Comment::where('id', $id)->first();
+        if (empty($comment))
+            return json_encode(array(
+                'result' => 'false',
+                'msg' => 'invalid comment id'
+            ));
+        //Check star numbers
+        switch($comment->stars->where('user_id', $request->session()->get('user.id'))->count())
+        {
+            case 0:
+                //Add star
+                $star = new Star;
+                $star->user_id = intval($request->session()->get('user.id'));
+                $comment->stars()->save($star);
+                //Add star message
+                $star_message = new StarMessage;
+                $star_message->user_id = intval($request->session()->get('user.id'));
+                $star_message->comment_id = $comment->id;
+                $star_message->times = 1;
+                $star_message->is_read = false;
+                $star_message->save();
+                //Update comment star count
+                $comment->star_num = $comment->star_num + 1;
+                $comment->save();
+                break;
+            case 1:
+                //Add star
+                $star = new Star;
+                $star->user_id = intval($request->session()->get('user.id'));
+                $comment->stars()->save($star);
+                //Update star message
+                $star_message = StarMessage::where('user_id', $request->session()->get('user.id'))
+                    ->where('comment_id', $comment->id)->first();
+                $star_message->times = 2;
+                $star_message->is_read = false;
+                $star_message->save();
+                //Update comment star count
+                $comment->star_num = $comment->star_num + 1;
+                $comment->save();
+                break;
+            case 2:
+                //Delete stars
+                Star::where('user_id', $request->session()->get('user.id'))
+                    ->where('comment_id', $comment->id)
+                    ->delete();
+                //Delete star message
+                StarMessage::where('user_id', $request->session()->get('user.id'))
+                    ->where('comment_id', $comment->id)
+                    ->delete();
+                //Update comment star count
+                $comment->star_num = $comment->star_num - 2;
+                $comment->save();
+                break;
+        }
+        return json_encode(array(
+            'result' => 'true',
+            'msg' => 'success'
         ));
     }
 }

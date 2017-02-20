@@ -9,6 +9,10 @@ use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use App\Page;
 use App\Comment;
+use App\CommentMessage;
+use App\Star;
+use App\StarMessage;
+use App\User;
 
 class CommentTest extends BrowserKitTestCase
 {
@@ -59,11 +63,19 @@ class CommentTest extends BrowserKitTestCase
 
         //Test reply
         $this->withSession(['user.id' => 1, 'user.power' => '3'])
+            ->json('POST', '/CommentTest/comment', ['text' => 'replycomment1', 'reply_id' => 23333])
+            ->seeJson([
+                'result' => 'false',
+                'msg' => 'invalid reply id',
+            ]);
+        $this->withSession(['user.id' => 1, 'user.power' => '3'])
             ->json('POST', '/CommentTest/comment', ['text' => 'replycomment1', 'reply_id' => 1])
             ->seeJson([
                 'result' => 'true',
                 'msg' => 'success',
             ]);
+        $user = User::where('id', 1)->first();
+        $this->assertTrue($user->comment_messages->count() == 1);
 
         //Test show reply
         $this->withSession(['user.id' => 1, 'user.power' => '3'])
@@ -118,5 +130,46 @@ class CommentTest extends BrowserKitTestCase
                 'result' => 'true',
                 'msg' => 'ban success',
             ]);
+
+        //Test star
+        $comment = new Comment();
+        $comment->page_id = $page->id;
+        $comment->user_id = 1;
+        $comment->content = "Test comment for stars.";
+        $comment->signature = "匿名用户";
+        $comment->position = "打酱油评论";
+        $comment->ban = false;
+        $comment->star_num = 0;
+        $comment->save();
+
+        $this->withSession(['user.id' => 1, 'user.power' => '3'])
+            ->json('POST', '/CommentTest/comment/' . $comment->id . '/star')
+            ->seeJson([
+                'result' => 'true',
+                'msg' => 'success',
+            ]);
+        $this->assertTrue(Comment::where('id', $comment->id)->first()->star_num == 1);
+        $this->assertTrue(Star::where('user_id', 1)->where('comment_id', $comment->id)->count() == 1);
+        $this->assertTrue(StarMessage::where('user_id', 1)->where('comment_id', $comment->id)->first()->times == 1);
+
+        $this->withSession(['user.id' => 1, 'user.power' => '3'])
+            ->json('POST', '/CommentTest/comment/' . $comment->id . '/star')
+            ->seeJson([
+                'result' => 'true',
+                'msg' => 'success',
+            ]);
+        $this->assertTrue(Comment::where('id', $comment->id)->first()->star_num == 2);
+        $this->assertTrue(Star::where('user_id', 1)->where('comment_id', $comment->id)->count() == 2);
+        $this->assertTrue(StarMessage::where('user_id', 1)->where('comment_id', $comment->id)->first()->times == 2);
+
+        $this->withSession(['user.id' => 1, 'user.power' => '3'])
+            ->json('POST', '/CommentTest/comment/' . $comment->id . '/star')
+            ->seeJson([
+                'result' => 'true',
+                'msg' => 'success',
+            ]);
+        $this->assertTrue(Comment::where('id', $comment->id)->first()->star_num == 0);
+        $this->assertTrue(Star::where('user_id', 1)->where('comment_id', $comment->id)->count() == 0);
+        $this->assertTrue(StarMessage::where('user_id', 1)->where('comment_id', $comment->id)->count() == 0);
     }
 }
