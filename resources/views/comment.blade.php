@@ -98,7 +98,11 @@
                 <div class="markdown-body-strict" id="{{ $item->id }}_comment_content">{!! $item->content !!}</div>
                 @if(isset($item->reply_id) && $item->reply_id != null)
                     <div class="col s12 reply markdown-body-strict">
-                        {!! $item->replyTarget->content !!}
+                        @if(isset($item->replyTarget) && $item->replyTarget != null)
+                            {!! $item->replyTarget->content !!}
+                        @else
+                            <p>此评论已被作者删除。</p>
+                        @endif
                     </div>
                 @endif
             </div>
