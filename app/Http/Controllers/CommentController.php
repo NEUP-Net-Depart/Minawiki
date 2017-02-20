@@ -81,8 +81,43 @@ class CommentController extends Controller
      * @param  int $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Request $request, $title, $id)
     {
-        //
+        $page = Page::where('title', $title)->first();
+        if (empty($page))
+            return json_encode(array(
+                'result' => 'false',
+                'msg' => 'invalid title'
+            ));
+        $comment = Comment::where('id', $id)->first();
+        if(empty($comment))
+            return json_encode(array(
+                'result' => 'false',
+                'msg' => 'invalid comment id'
+            ));
+        //Check if it's deleting by itself
+        if(intval($request->session()->get('user.id')) == intval($comment->user_id))
+        {
+            Comment::where('id', $id)->delete();
+            return json_encode(array(
+                'result' => 'true',
+                'msg' => 'delete success'
+            ));
+        }
+        //Check power
+        if($request->session()->has('user.power') && intval($request->session()->get('user.power')) > 0)
+        {
+            $comment->ban = true;
+            $comment->ban_admin = strval($request->session()->get('user.admin'));
+            $comment->save();
+            return json_encode(array(
+                'result' => 'true',
+                'msg' => 'ban success'
+            ));
+        }
+        return json_encode(array(
+            'result' => 'false',
+            'msg' => 'unauthorised'
+        ));
     }
 }
