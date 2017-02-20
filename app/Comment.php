@@ -35,8 +35,16 @@ class Comment extends Model
     /**
      * 获取该评论的所有回复模型。
      */
-    public function reply()
+    public function replies()
     {
         return $this->hasMany('App\Comment', 'reply_id');
+    }
+
+    /**
+     * 获取该评论的所有星星模型。
+     */
+    public function stars()
+    {
+        return $this->hasMany('App\Star');
     }
 }

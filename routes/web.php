@@ -52,3 +52,4 @@ Route::get('/{title}/history/{id}', 'WikiController@getOneVersion');
 Route::get('/{title}/comment', 'CommentController@index');
 Route::post('/{title}/comment', 'CommentController@store')->middleware('checklogin');
 Route::delete('/{title}/comment/{id}', 'CommentController@destroy')->middleware('checklogin');
+Route::post('/{title}/comment/{id}/star', 'CommentController@star')->middleware('checklogin');
