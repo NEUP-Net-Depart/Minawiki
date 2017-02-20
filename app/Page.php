@@ -27,4 +27,9 @@ class Page extends Model
     {
         return $this->hasMany('App\Version');
     }
+
+    public function comments()
+    {
+        return $this->hasMany('App\Comment');
+    }
 }

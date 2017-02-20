@@ -41,10 +41,10 @@
         @foreach($left_data as $item)
             @if($item->id == $current_page->id)
                 <a href="/{{ $item->title }}" class="collection-item active"><span
-                            class="badge">1</span>{{ $item->title }}</a>
+                            class="badge">{{ $item->comments->count() > 0 ? $item->comments->count() : '' }}</span>{{ $item->title }}</a>
             @else
                 <a href="/{{ $item->title }}" class="collection-item"><span
-                            class="badge">1</span>{{ $item->title }}</a>
+                            class="badge">{{ $item->comments->count() > 0 ? $item->comments->count() : '' }}</span>{{ $item->title }}</a>
             @endif
         @endforeach
         @if(!$left_data_page->protect_children)

@@ -107,7 +107,7 @@ class CommentTest extends BrowserKitTestCase
             ->json('DELETE', '/CommentTest/comment/1')
             ->seeJson([
                 'result' => 'false',
-                'msg' => 'unauthorised',
+                'msg' => 'unauthorized',
             ]);
         $this->withSession(['user.id' => 1, 'user.power' => '3'])
             ->json('DELETE', '/CommentTest/comment/1')

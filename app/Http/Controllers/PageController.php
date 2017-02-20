@@ -20,7 +20,7 @@ class PageController extends Controller
      */
     function index(Request $request, $title = null)
     {
-        $pages = Page::all();
+        $pages = Page::with('comments')->get();
         if ($title == null) {
             $current_page = $pages->where('id', 1)->first();
         } else {

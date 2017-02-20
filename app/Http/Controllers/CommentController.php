@@ -27,13 +27,17 @@ class CommentController extends Controller
             ));
         if (!isset($request->order)) $request->order = "mostpopular";
         if ($request->order == "latest")
-            $comments = Comment::with('replyTarget')->where('page_id', $page->id)->orderBy('id', 'desc')->paginate(10);
+            $comments = Comment::with('replyTarget', 'stars')->where('page_id', $page->id)->orderBy('id', 'desc')->paginate(10);
         else if ($request->order == "mostpopular")
-            $comments = Comment::with('replyTarget')->where('page_id', $page->id)
+            $comments = Comment::with('replyTarget', 'stars')->where('page_id', $page->id)
                 ->where('star_num', '>=', 10)
                 ->orderBy('star_num', 'desc')
                 ->orderBy('id', 'desc')
                 ->paginate(10);
+        foreach ($comments as $comment) {
+            if($request->session()->has('user.id'))
+                $comment->user_star_num = Star::where('comment_id', $comment->id)->where('user_id', $request->session()->get('user.id'))->count();
+        }
         return view('comment', ['paginator' => $comments, 'order' => $request->order,
             'power' => $request->session()->get('user.power'), 'uid' => $request->session()->get('user.id')
         ]);
@@ -181,6 +185,7 @@ class CommentController extends Controller
                 //Update comment star count
                 $comment->star_num = $comment->star_num + 1;
                 $comment->save();
+                $msg = 1;
                 break;
             case 1:
                 //Add star
@@ -196,6 +201,7 @@ class CommentController extends Controller
                 //Update comment star count
                 $comment->star_num = $comment->star_num + 1;
                 $comment->save();
+                $msg = 2;
                 break;
             case 2:
                 //Delete stars
@@ -209,11 +215,12 @@ class CommentController extends Controller
                 //Update comment star count
                 $comment->star_num = $comment->star_num - 2;
                 $comment->save();
+                $msg = 3;
                 break;
         }
         return json_encode(array(
             'result' => 'true',
-            'msg' => 'success'
+            'msg' => $msg
         ));
     }
 }

@@ -66,13 +66,28 @@
                         @endif
                     @endif
                 </ul>
-                <a href="#!" class="secondary-content"><i class="material-icons">&#xE83A;<!--star_half--></i>
-                    @if($item->star_num != 0)
-                        <span class="star-badge">{{ $item->star_num }}</span>
-                    @endif
-                </a>
-                <a href="javascript: replying('{{ $item->id }}')" class="secondary-content"><i class="material-icons">
-                        &#xE15E;<!--reply--></i></a>
+                @if($item->user_star_num == 0)
+                    <input type="hidden" style="display: none" id="{{ $item->id }}_star_casenum" value="0">
+                    <a href="javascript: star('{{ $item->id }}')" class="secondary-content"><i id="{{ $item->id }}_star" class="material-icons">
+                            &#xE83A;<!--star_border--></i>
+                @elseif($item->user_star_num == 1)
+                    <input type="hidden" style="display: none" id="{{ $item->id }}_star_casenum" value="1">
+                    <a href="javascript: star('{{ $item->id }}')" class="secondary-content"><i id="{{ $item->id }}_star" class="material-icons">
+                            &#xE838;<!--star--></i>
+                @elseif($item->user_star_num == 2)
+                    <input type="hidden" style="display: none" id="{{ $item->id }}_star_casenum" value="2">
+                    <a href="javascript: star('{{ $item->id }}')" class="secondary-content"><i id="{{ $item->id }}_star" class="material-icons">
+                            &#xE838;<!--star--></i>
+                @endif
+                        <span id="{{ $item->id }}_star_badge" class="star-badge"
+                           @if($item->star_num == 0)
+                               style="display: none"
+                           @endif
+                    >{{ $item->star_num }}</span>
+                     </a>
+                                    <a href="javascript: replying('{{ $item->id }}')" class="secondary-content"><i
+                                                class="material-icons">
+                                            &#xE15E;<!--reply--></i></a>
             </div>
         </div>
         <div class="row" style="margin-bottom: 0">
@@ -87,7 +102,7 @@
         </div>
     </li>
 @endforeach
-<form id="deleteComment_fm" style="display: none">
+<form id="Comment_fm" style="display: none">
     {!! csrf_field() !!}
 </form>
 @if($paginator->lastPage() > 1 && $paginator->currentPage() != $paginator->lastPage())
