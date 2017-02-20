@@ -8,7 +8,7 @@
     </li>
 @endif
 @foreach($paginator as $item)
-    <li class="collection-item">
+    <li id="{{ $item->id }}_comment_box" class="collection-item">
         <div class="row" style="margin-bottom: 5px">
             <div class="col" style="padding-right: 0">
                 <img src="http://www.gravatar.com/avatar/{{ md5($item->id) }}?s=36&d=identicon" alt=""
@@ -19,7 +19,53 @@
                 <p style="margin: 0 0 0 0"><label>{{ $item->updated_at }}</label></p>
             </div>
             <div class="col right">
-                <a href="#!" class="secondary-content"><i class="material-icons">&#xE80D;<!--share--></i></a>
+                <!-- Dropdown Trigger -->
+                <a href="#!" class="dropdown-button secondary-content" data-activates='{{ $item->id }}_dropdown'><i
+                            class="material-icons">&#xE5D4;<!--more_vert--></i></a>
+                <!-- Dropdown Structure -->
+                <ul id='{{ $item->id }}_dropdown' class='dropdown-content'>
+                    <li><a class="copyTriggerButton">
+                            <table>
+                                <td class="no-padding"><i class="material-icons">&#xE14D;<!--content_copy--></i></td>
+                                <td class="no-padding">复制评论</td>
+                            </table>
+                        </a>
+                    </li>
+                    <li><a href="#!">
+                            <table>
+                                <td class="no-padding"><i class="material-icons">&#xE80D;<!--share--></i></td>
+                                <td class="no-padding">分享评论</td>
+                            </table>
+                        </a>
+                    </li>
+                    @if($uid == $item->user_id)
+                        <li><a href="javascript: deleteComment({{ $item->id }})">
+                                <table>
+                                    <td class="no-padding"><i class="material-icons">&#xE92B;<!--delete_forever--></i>
+                                    </td>
+                                    <td class="no-padding">删除评论</td>
+                                </table>
+                            </a>
+                        </li>
+                    @else
+                        <li><a href="#!">
+                                <table>
+                                    <td class="no-padding"><i class="material-icons">&#xE160;<!--report--></i></td>
+                                    <td class="no-padding">举报评论</td>
+                                </table>
+                            </a>
+                        </li>
+                        @if($power > 0)
+                            <li><a href="javascript: deleteComment({{ $item->id }})">
+                                    <table>
+                                        <td class="no-padding"><i class="material-icons">&#xE14B;<!--block--></i></td>
+                                        <td class="no-padding">屏蔽评论</td>
+                                    </table>
+                                </a>
+                            </li>
+                        @endif
+                    @endif
+                </ul>
                 <a href="#!" class="secondary-content"><i class="material-icons">&#xE83A;<!--star_half--></i>
                     @if($item->star_num != 0)
                         <span class="star-badge">{{ $item->star_num }}</span>
@@ -41,6 +87,9 @@
         </div>
     </li>
 @endforeach
+<form id="deleteComment_fm" style="display: none">
+    {!! csrf_field() !!}
+</form>
 @if($paginator->lastPage() > 1 && $paginator->currentPage() != $paginator->lastPage())
     <a href="javascript: loadComments('{{ $order }}','{{ strval($paginator->currentPage()+1) }}')"
        class="collection-item loadmore">

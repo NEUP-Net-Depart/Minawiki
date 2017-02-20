@@ -31,6 +31,8 @@
 <!-- Compiled and minified JavaScript -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.98.0/js/materialize.min.js"></script>
 
+{{--<script type="text/javascript" src="http://zeroclipboard.org/javascripts/zc/v2.2.0/ZeroClipboard.js"></script>--}}
+
 <script type="text/javascript" src="/js/app.js"></script>
 
 <script type="text/javascript" async

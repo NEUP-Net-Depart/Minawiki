@@ -170,7 +170,7 @@
     background-color: #66ccff;
 }
 
-.dropdown-content li > a, .dropdown-content li > span {
+.dropdown-content li > a, .dropdown-content li > span, .dropdown-content li a > table {
     color: #4dc4ff;
 }
 

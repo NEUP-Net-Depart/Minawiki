@@ -32,7 +32,9 @@ class CommentController extends Controller
                 ->orderBy('star_num', 'desc')
                 ->orderBy('id', 'desc')
                 ->paginate(10);
-        return view('comment', ['paginator' => $comments, 'order' => $request->order]);
+        return view('comment', ['paginator' => $comments, 'order' => $request->order,
+            'power' => $request->session()->get('user.power'), 'uid' => $request->session()->get('user.id')
+        ]);
     }
 
     /**
@@ -122,7 +124,7 @@ class CommentController extends Controller
         }
         return json_encode(array(
             'result' => 'false',
-            'msg' => 'unauthorised'
+            'msg' => 'unauthorized'
         ));
     }
 }
