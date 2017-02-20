@@ -128,6 +128,13 @@ class CommentController extends Controller
             ));
         //Check if it's deleting by itself
         if (intval($request->session()->get('user.id')) == intval($comment->user_id)) {
+            //Delete stars
+            Star::where('comment_id', $comment->id)->delete();
+            //Delete star message
+            StarMessage::where('comment_id', $comment->id)->delete();
+            //Delete comment message
+            CommentMessage::where('comment_id', $comment->id)->delete();
+            //Delete comment
             Comment::where('id', $id)->delete();
             return json_encode(array(
                 'result' => 'true',

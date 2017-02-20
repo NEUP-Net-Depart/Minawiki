@@ -90,47 +90,6 @@ class CommentTest extends BrowserKitTestCase
             ->visit('/CommentTest/comment?order=mostpopular')
             ->dontsee('âââ ææ°è¯è®º âââ'); //最新评论 不知道是什么编码orz*/
 
-        //Test delete comment
-        $this->withSession(['user.id' => 1, 'user.power' => '3'])
-            ->json('DELETE', '/CommentTest233/comment/1')
-            ->seeJson([
-                'result' => 'false',
-                'msg' => 'invalid title',
-            ]);
-        $this->withSession(['user.id' => 1, 'user.power' => '3'])
-            ->json('DELETE', '/CommentTest/comment/233333')
-            ->seeJson([
-                'result' => 'false',
-                'msg' => 'invalid comment id',
-            ]);
-        $this->withSession(['user.id' => 123, 'user.power' => '0'])
-            ->json('DELETE', '/CommentTest/comment/1')
-            ->seeJson([
-                'result' => 'false',
-                'msg' => 'unauthorized',
-            ]);
-        $this->withSession(['user.id' => 1, 'user.power' => '3'])
-            ->json('DELETE', '/CommentTest/comment/1')
-            ->seeJson([
-                'result' => 'true',
-                'msg' => 'delete success',
-            ]);
-        $comment = new Comment();
-        $comment->page_id = $page->id;
-        $comment->user_id = 2;
-        $comment->content = "Test comment.";
-        $comment->signature = "匿名用户";
-        $comment->position = "打酱油评论";
-        $comment->ban = false;
-        $comment->star_num = 0;
-        $comment->save();
-        $this->withSession(['user.id' => 1, 'user.power' => '3'])
-            ->json('DELETE', '/CommentTest/comment/' . $comment->id)
-            ->seeJson([
-                'result' => 'true',
-                'msg' => 'ban success',
-            ]);
-
         //Test star
         $comment = new Comment();
         $comment->page_id = $page->id;
@@ -171,5 +130,49 @@ class CommentTest extends BrowserKitTestCase
         $this->assertTrue(Comment::where('id', $comment->id)->first()->star_num == 0);
         $this->assertTrue(Star::where('user_id', 1)->where('comment_id', $comment->id)->count() == 0);
         $this->assertTrue(StarMessage::where('user_id', 1)->where('comment_id', $comment->id)->count() == 0);
+
+        //Test delete comment
+        $this->withSession(['user.id' => 1, 'user.power' => '3'])
+            ->json('DELETE', '/CommentTest233/comment/1')
+            ->seeJson([
+                'result' => 'false',
+                'msg' => 'invalid title',
+            ]);
+        $this->withSession(['user.id' => 1, 'user.power' => '3'])
+            ->json('DELETE', '/CommentTest/comment/233333')
+            ->seeJson([
+                'result' => 'false',
+                'msg' => 'invalid comment id',
+            ]);
+        $this->withSession(['user.id' => 123, 'user.power' => '0'])
+            ->json('DELETE', '/CommentTest/comment/1')
+            ->seeJson([
+                'result' => 'false',
+                'msg' => 'unauthorized',
+            ]);
+        $this->withSession(['user.id' => 1, 'user.power' => '3'])
+            ->json('DELETE', '/CommentTest/comment/1')
+            ->seeJson([
+                'result' => 'true',
+                'msg' => 'delete success',
+            ]);
+        $this->assertTrue(Star::where('comment_id', 1)->count() == 0);
+        $this->assertTrue(StarMessage::where('comment_id', 1)->count() == 0);
+        $this->assertTrue(CommentMessage::where('comment_id', 1)->count() == 0);
+        $comment = new Comment();
+        $comment->page_id = $page->id;
+        $comment->user_id = 2;
+        $comment->content = "Test comment.";
+        $comment->signature = "匿名用户";
+        $comment->position = "打酱油评论";
+        $comment->ban = false;
+        $comment->star_num = 0;
+        $comment->save();
+        $this->withSession(['user.id' => 1, 'user.power' => '3'])
+            ->json('DELETE', '/CommentTest/comment/' . $comment->id)
+            ->seeJson([
+                'result' => 'true',
+                'msg' => 'ban success',
+            ]);
     }
 }
