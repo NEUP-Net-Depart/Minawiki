@@ -10,24 +10,33 @@
 @foreach($paginator as $item)
     <li class="collection-item">
         <div class="row" style="margin-bottom: 5px">
-            <div class="col">
+            <div class="col" style="padding-right: 0">
                 <img src="http://www.gravatar.com/avatar/{{ md5($item->id) }}?s=36&d=identicon" alt=""
                      class="circle avatar-circle">
             </div>
             <div class="col">
-                <a href="#!">{{ $item->signature }}</a>
+                <a href="#!" id="{{ $item->id }}_comment_signature">{{ $item->signature }}</a>
                 <p style="margin: 0 0 0 0"><label>{{ $item->updated_at }}</label></p>
             </div>
             <div class="col right">
-                <a href="#!" class="secondary-content"><i class="material-icons">&#xE83A;<!--star_half--></i></a>
+                <a href="#!" class="secondary-content"><i class="material-icons">&#xE80D;<!--share--></i></a>
+                <a href="#!" class="secondary-content"><i class="material-icons">&#xE83A;<!--star_half--></i>
+                    @if($item->star_num != 0)
+                        <span class="star-badge">{{ $item->star_num }}</span>
+                    @endif
+                </a>
+                <a href="javascript: replying('{{ $item->id }}')" class="secondary-content"><i class="material-icons">
+                        &#xE15E;<!--reply--></i></a>
             </div>
         </div>
         <div class="row" style="margin-bottom: 0">
             <div class="col s12">
-                <div class="markdown-body-strict">{!! $item->content !!}</div>
-                <div class="col s12 reply">
-                    这里当然是回复的内容啦！
-                </div>
+                <div class="markdown-body-strict" id="{{ $item->id }}_comment_content">{!! $item->content !!}</div>
+                @if(isset($item->reply_id) && $item->reply_id != null)
+                    <div class="col s12 reply markdown-body-strict">
+                        {!! $item->replyTarget->content !!}
+                    </div>
+                @endif
             </div>
         </div>
     </li>

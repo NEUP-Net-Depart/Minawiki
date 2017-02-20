@@ -236,10 +236,15 @@ function comment() {
         success: function (msg) {
             var dataObj = eval("(" + msg + ")");
             if (dataObj.result == "true") {
+                $('#comment_reply_id_input').val('');
                 $("#comment_input").html('');
                 $("#comment_input").val('');
+                $('#comment_input').removeAttr('placeholder');
                 $('#comment_input').trigger('autoresize');
                 Materialize.toast("发表成功！", 3000, 'theme-bg-sec');
+                /*$("html, body").animate({
+                    scrollTop: $('#latest_comment_container').offset().top
+                }, 0);*/
                 $('#latest_comment_container').html('');
                 loadComments('latest', 1);
             }
