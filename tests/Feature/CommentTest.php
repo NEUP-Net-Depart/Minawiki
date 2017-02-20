@@ -56,6 +56,19 @@ class CommentTest extends BrowserKitTestCase
             ->dontsee('âââ ææ°è¯è®º âââ')//最新评论 不知道是什么编码orz
             ->see("comment1");
 
+        //Test reply
+        $this->withSession(['user.id' => 1, 'user.power' => '3'])
+            ->json('POST', '/CommentTest/comment', ['text' => 'replycomment1', 'reply_id' => 1])
+            ->seeJson([
+                'result' => 'true',
+                'msg' => 'success',
+            ]);
+
+        //Test show reply
+        $this->withSession(['user.id' => 1, 'user.power' => '3'])
+            ->visit('/CommentTest/comment?order=latest')
+            ->see('comment1');
+
         /*$this->withSession(['user.id' => 1, 'user.power' => '3'])
             ->visit('/CommentTest/comment')
             ->dontsee('âââ ææ°è¯è®º âââ'); //最新评论 不知道是什么编码orz

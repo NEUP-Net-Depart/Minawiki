@@ -41,6 +41,10 @@
     color: #ffffff !important;
 }
 
+.star-badge-active {
+    color: #4dc4ff !important;
+}
+
 ::-moz-selection {
     background: #66ccff;
     color: #ffffff;;

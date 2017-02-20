@@ -25,9 +25,9 @@ class CommentController extends Controller
             ));
         if (!isset($request->order)) $request->order = "mostpopular";
         if ($request->order == "latest")
-            $comments = Comment::where('page_id', $page->id)->orderBy('id', 'desc')->paginate(10);
+            $comments = Comment::with('replyTarget')->where('page_id', $page->id)->orderBy('id', 'desc')->paginate(10);
         else if ($request->order == "mostpopular")
-            $comments = Comment::where('page_id', $page->id)
+            $comments = Comment::with('replyTarget')->where('page_id', $page->id)
                 ->where('star_num', '>=', 10)
                 ->orderBy('star_num', 'desc')
                 ->orderBy('id', 'desc')
@@ -66,6 +66,11 @@ class CommentController extends Controller
         $comment->position = "打酱油评论";
         $comment->ban = false;
         $comment->star_num = 0;
+
+        if(isset($request->reply_id))
+            $comment->reply_id = $request->reply_id;
+        if(isset($request->signature))
+            $comment->signature = $request->signature;
 
         $comment->save();
 

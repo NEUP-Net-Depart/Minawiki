@@ -90,6 +90,7 @@
                 </div>
                 <div id="comment_pool">
                     <div class="row" id="comment_fm">
+                        <input id="comment_reply_id_input" type="hidden" style="display: none;" name="reply_id">
                         <div class="input-field col s12">
                             <textarea id="comment_input" name="text" class="materialize-textarea" required></textarea>
                             <label class="active" for="comment_input">发表评论</label>
@@ -252,6 +253,15 @@
     </div>
     <script src="/js/index.app.js"></script>
     <script>
+        function replying(id) {
+            $('#comment_reply_id_input').val(id);
+            $('#comment_input').attr('placeholder', "回复 " + $('#' + id.toString() + '_comment_signature').text()
+                + "： " + $('#' + id.toString() + '_comment_content').text());
+            $('#comment_input').focus();
+            $("html, body").animate({
+                scrollTop: $('#comment_fm').offset().top
+            }, 0);
+        }
         function loadComments(order, page) {
                 $('#' + order + '_comment_container .loadmore').remove();
                 $('#' + order + '_comment_container').append('<center class="loading">\
