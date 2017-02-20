@@ -11,7 +11,7 @@
     <li class="collection-item avatar">
         <img src="http://www.gravatar.com/avatar/{{ md5($item->id) }}?s=48&d=identicon" alt="" class="circle">
         <a href="#!">{{ $item->signature }}</a>
-        <p>{!! $item->content !!}</p>
+        {!! $item->content !!}
         <a href="#!" class="secondary-content"><i class="material-icons">&#xE83A;<!--star_half--></i></a>
     </li>
 @endforeach

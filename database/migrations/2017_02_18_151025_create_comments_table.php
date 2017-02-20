@@ -25,6 +25,7 @@ class CreateCommentsTable extends Migration
             $table->integer('reply_id')->nullable();
             $table->integer('star_num');
             $table->index(['page_id', 'star_num']);
+            $table->softDeletes();
             $table->timestamps();
         });
     }
