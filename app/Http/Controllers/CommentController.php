@@ -35,12 +35,15 @@ class CommentController extends Controller
                 ->orderBy('id', 'desc')
                 ->paginate(10);
         foreach ($comments as $comment) {
-            if($request->session()->has('user.id'))
+            if ($request->session()->has('user.id'))
                 $comment->user_star_num = Star::where('comment_id', $comment->id)->where('user_id', $request->session()->get('user.id'))->count();
         }
-        return view('comment', ['paginator' => $comments, 'order' => $request->order,
-            'power' => $request->session()->get('user.power'), 'uid' => $request->session()->get('user.id')
-        ]);
+        if ($request->session()->has('user.id'))
+            return view('comment', ['paginator' => $comments, 'order' => $request->order,
+                'power' => $request->session()->get('user.power'), 'uid' => $request->session()->get('user.id')
+            ]);
+        else
+            return view('comment', ['paginator' => $comments, 'order' => $request->order, 'continue' => '/' . $title]);
     }
 
     /**
@@ -76,24 +79,26 @@ class CommentController extends Controller
         $comment->ban = false;
         $comment->star_num = 0;
 
-        if(isset($request->reply_id)) {
+        if (isset($request->signature))
+            $comment->signature = $request->signature;
+
+        if (isset($request->reply_id)) {
             $target_comment = Comment::where('id', $request->reply_id)->first();
-            if(empty($target_comment))
+            if (empty($target_comment))
                 return json_encode(array(
                     'result' => 'false',
                     'msg' => 'invalid reply id'
                 ));
             $comment->reply_id = $target_comment->id;
+            $comment->save();
             //Add comment message
             $comment_message = new CommentMessage;
+            $comment_message->comment_id = $comment->id;
             $comment_message->user_id = $target_comment->user_id;
             $comment_message->is_read = false;
             $comment_message->save();
-        }
-        if(isset($request->signature))
-            $comment->signature = $request->signature;
-
-        $comment->save();
+        } else
+            $comment->save();
 
         return json_encode(array(
             'result' => 'true',
@@ -116,14 +121,13 @@ class CommentController extends Controller
                 'msg' => 'invalid title'
             ));
         $comment = Comment::where('id', $id)->first();
-        if(empty($comment))
+        if (empty($comment))
             return json_encode(array(
                 'result' => 'false',
                 'msg' => 'invalid comment id'
             ));
         //Check if it's deleting by itself
-        if(intval($request->session()->get('user.id')) == intval($comment->user_id))
-        {
+        if (intval($request->session()->get('user.id')) == intval($comment->user_id)) {
             Comment::where('id', $id)->delete();
             return json_encode(array(
                 'result' => 'true',
@@ -131,8 +135,7 @@ class CommentController extends Controller
             ));
         }
         //Check power
-        if($request->session()->has('user.power') && intval($request->session()->get('user.power')) > 0)
-        {
+        if ($request->session()->has('user.power') && intval($request->session()->get('user.power')) > 0) {
             $comment->ban = true;
             $comment->ban_admin = strval($request->session()->get('user.admin'));
             $comment->save();
@@ -168,8 +171,7 @@ class CommentController extends Controller
                 'msg' => 'invalid comment id'
             ));
         //Check star numbers
-        switch($comment->stars->where('user_id', $request->session()->get('user.id'))->count())
-        {
+        switch ($comment->stars->where('user_id', $request->session()->get('user.id'))->count()) {
             case 0:
                 //Add star
                 $star = new Star;
@@ -218,9 +220,9 @@ class CommentController extends Controller
                 $msg = 3;
                 break;
         }
-        return json_encode(array(
+        return json_encode([
             'result' => 'true',
             'msg' => $msg
-        ));
+        ]);
     }
 }

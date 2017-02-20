@@ -38,7 +38,7 @@
                             </table>
                         </a>
                     </li>
-                    @if($uid == $item->user_id)
+                    @if(isset($uid) && $uid == $item->user_id)
                         <li><a href="javascript: deleteComment({{ $item->id }})">
                                 <table>
                                     <td class="no-padding"><i class="material-icons">&#xE92B;<!--delete_forever--></i>
@@ -55,7 +55,7 @@
                                 </table>
                             </a>
                         </li>
-                        @if($power > 0)
+                        @if(isset($power) && $power > 0)
                             <li><a href="javascript: deleteComment({{ $item->id }})">
                                     <table>
                                         <td class="no-padding"><i class="material-icons">&#xE14B;<!--block--></i></td>
@@ -66,7 +66,10 @@
                         @endif
                     @endif
                 </ul>
-                @if($item->user_star_num == 0)
+                @if(!isset($uid))
+                    <a href="/auth/login?continue={{ urlencode($continue) }}" class="secondary-content"><i id="{{ $item->id }}_star" class="material-icons">
+                            &#xE83A;<!--star_border--></i>
+                @elseif($item->user_star_num == 0)
                     <input type="hidden" style="display: none" id="{{ $item->id }}_star_casenum" value="0">
                     <a href="javascript: star('{{ $item->id }}')" class="secondary-content"><i id="{{ $item->id }}_star" class="material-icons">
                             &#xE83A;<!--star_border--></i>

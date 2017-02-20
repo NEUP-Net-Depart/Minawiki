@@ -54,7 +54,7 @@ function editPage(id) {
         success: function (msg) {
             var dataObj = eval("(" + msg + ")");
             if (dataObj.result == "true") {
-                if(id == $('#this_page_id').val())
+                if (id == $('#this_page_id').val())
                     history.go(0);
                 $('#add_page_modal').modal('close');
                 loadLeftNav();
@@ -86,7 +86,7 @@ function delPage(id) {
             success: function (msg) {
                 var dataObj = eval("(" + msg + ")");
                 if (dataObj.result == "true") {
-                    if(id == $('#this_page_id').val())
+                    if (id == $('#this_page_id').val())
                         window.location.href = '/' + $('#this_left_data_page_title').val();
                     $('#del_page_modal').modal('close');
                     loadLeftNav();
@@ -116,7 +116,7 @@ function movePage(id) {
         success: function (msg) {
             var dataObj = eval("(" + msg + ")");
             if (dataObj.result == "true") {
-                if(id == $('#this_page_id').val())
+                if (id == $('#this_page_id').val())
                     history.go(0);
                 $('#move_page_modal').modal('close');
                 loadLeftNav();
@@ -161,7 +161,7 @@ function updatePageContent() {
                 $('#showPageHistoryButton').removeAttr('style');
                 $('#editPageContentReturnButton').attr('style', 'display: none');
                 $('#editPageContentSubmitButton').attr('style', 'display: none');
-                MathJax.Hub.Queue(["Typeset",MathJax.Hub]);
+                MathJax.Hub.Queue(["Typeset", MathJax.Hub]);
             }
             else if (dataObj.msg == "invalid title")
                 Materialize.toast("页面异常，请刷新重试", 3000, 'theme-bg-sec');
@@ -184,7 +184,7 @@ function restore(id) {
     }).get().join("&");
     $.ajax({
         type: "POST",
-        url: "/" + $("#this_page_title").val() +"/restore/" + id,
+        url: "/" + $("#this_page_title").val() + "/restore/" + id,
         data: str_data + "&_method=PUT",
         success: function (msg) {
             var dataObj = eval("(" + msg + ")");
@@ -197,7 +197,7 @@ function restore(id) {
                 $('#showPageHistoryButton').removeAttr('style');
                 $('#editPageContentButton').removeAttr('style');
                 $('#showPageHistoryReturnButton').attr('style', 'display: none');
-                MathJax.Hub.Queue(["Typeset",MathJax.Hub]);
+                MathJax.Hub.Queue(["Typeset", MathJax.Hub]);
                 dropPageContent();
             }
             else if (dataObj.result == "invalid version id")
@@ -218,7 +218,11 @@ function restore(id) {
 }
 
 function comment() {
-    if($('#comment_input').val() == "") {
+    setCookie('comment', $("#comment_fm textarea").val(), '30');
+    setCookie('comment_reply', $('#comment_reply_id_input').val(), '30');
+    if ($('#user_id').val() == "")
+        window.location.href = '/auth/login?continue=' + encodeURIComponent('/' + $('#this_page_title').val());
+    if ($('#comment_input').val() == "") {
         Materialize.toast("你什么都没写呀", 3000, 'theme-bg-sec');
         return;
     }
@@ -231,7 +235,7 @@ function comment() {
     var str_data = str_data1 + '&' + str_data2;
     $.ajax({
         type: "POST",
-        url: "/" + $("#this_page_title").val() +"/comment",
+        url: "/" + $("#this_page_title").val() + "/comment",
         data: str_data,
         success: function (msg) {
             var dataObj = eval("(" + msg + ")");
@@ -243,10 +247,12 @@ function comment() {
                 $('#comment_input').trigger('autoresize');
                 Materialize.toast("发表成功！", 3000, 'theme-bg-sec');
                 /*$("html, body").animate({
-                    scrollTop: $('#latest_comment_container').offset().top
-                }, 0);*/
+                 scrollTop: $('#latest_comment_container').offset().top
+                 }, 0);*/
                 $('#latest_comment_container').html('');
                 loadComments('latest', 1);
+                setCookie('comment', "", -1);
+                setCookie('comment_reply', "", -1);
             }
             else if (dataObj.result == "invalid title")
                 Materialize.toast("页面错误，请刷新页面！", 3000, 'theme-bg-sec');
@@ -269,16 +275,16 @@ function deleteComment(id) {
     }).get().join("&");
     $.ajax({
         type: "POST",
-        url: "/" + $("#this_page_title").val() +"/comment/" + id.toString(),
+        url: "/" + $("#this_page_title").val() + "/comment/" + id.toString(),
         data: str_data + '&_method=DELETE',
         success: function (msg) {
             var dataObj = eval("(" + msg + ")");
             if (dataObj.result == "true") {
-                if(dataObj.msg == "delete success") {
+                if (dataObj.msg == "delete success") {
                     Materialize.toast("删除成功！", 3000, 'theme-bg-sec');
                     $('#' + id.toString() + '_comment_box').remove();
                 }
-                else if(dataObj.msg == "ban success")
+                else if (dataObj.msg == "ban success")
                     Materialize.toast("屏蔽成功！", 3000, 'theme-bg-sec');
             }
             else if (dataObj.result == "invalid title")
@@ -308,7 +314,7 @@ function star(id) {
     }).get().join("&");
     $.ajax({
         type: "POST",
-        url: "/" + $("#this_page_title").val() +"/comment/" + id.toString() + "/star",
+        url: "/" + $("#this_page_title").val() + "/comment/" + id.toString() + "/star",
         data: str_data,
         success: function (msg) {
             try {
@@ -339,21 +345,21 @@ function star(id) {
     });
 }
 function setStar(casenum, id) {
-    if(casenum == 0) {
+    if (casenum == 0) {
         $('#' + id.toString() + '_star').html('&#xE838;');
         $('#' + id.toString() + '_star_badge').html((parseInt($('#' + id.toString() + '_star_badge').html()) + 1).toString());
         $('#' + id.toString() + '_star_badge').removeAttr('style');
         $('#' + id.toString() + '_star_casenum').val(1);
     }
-    else if(casenum == 1) {
+    else if (casenum == 1) {
         $('#' + id.toString() + '_star').html('&#xE838;');
         $('#' + id.toString() + '_star_badge').html((parseInt($('#' + id.toString() + '_star_badge').html()) + 1).toString());
         $('#' + id.toString() + '_star_casenum').val(2);
     }
-    else if(casenum == 2) {
+    else if (casenum == 2) {
         $('#' + id.toString() + '_star').html('&#xE83A;');
         $('#' + id.toString() + '_star_badge').html((parseInt($('#' + id.toString() + '_star_badge').html()) - 2).toString());
-        if(parseInt($('#' + id.toString() + '_star_badge').html()) <= 0)
+        if (parseInt($('#' + id.toString() + '_star_badge').html()) <= 0)
             $('#' + id.toString() + '_star_badge').attr('style', 'display: none');
         $('#' + id.toString() + '_star_casenum').val(0);
     }

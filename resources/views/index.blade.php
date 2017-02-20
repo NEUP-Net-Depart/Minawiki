@@ -90,6 +90,7 @@
                 </div>
                 <div id="comment_pool">
                     <div class="row" id="comment_fm">
+                        <input id="user_id" type="hidden" style="display: none;" value="{{ isset($uid) ? $uid : null }}">
                         <input id="comment_reply_id_input" type="hidden" style="display: none;" name="reply_id">
                         <div class="input-field col s12">
                             <textarea id="comment_input" name="text" class="materialize-textarea" required></textarea>
@@ -481,6 +482,10 @@
             $('#editPageContentSubmitButton').attr('style', 'display: none');
         }
         $(document).ready(function () {
+            $('#comment_input').val(getCookie('comment'));
+            $('#comment_reply_id_input').val(getCookie('comment_reply'));
+            setCookie('comment', "", -1);
+            setCookie('comment_reply', "", -1);
             loadLeftNav();
             loadComments('mostpopular', 1);
             loadComments('latest', 1);

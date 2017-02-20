@@ -146,7 +146,7 @@ class CommentTest extends BrowserKitTestCase
             ->json('POST', '/CommentTest/comment/' . $comment->id . '/star')
             ->seeJson([
                 'result' => 'true',
-                'msg' => 'success',
+                'msg' => 1,
             ]);
         $this->assertTrue(Comment::where('id', $comment->id)->first()->star_num == 1);
         $this->assertTrue(Star::where('user_id', 1)->where('comment_id', $comment->id)->count() == 1);
@@ -156,7 +156,7 @@ class CommentTest extends BrowserKitTestCase
             ->json('POST', '/CommentTest/comment/' . $comment->id . '/star')
             ->seeJson([
                 'result' => 'true',
-                'msg' => 'success',
+                'msg' => 2,
             ]);
         $this->assertTrue(Comment::where('id', $comment->id)->first()->star_num == 2);
         $this->assertTrue(Star::where('user_id', 1)->where('comment_id', $comment->id)->count() == 2);
@@ -166,7 +166,7 @@ class CommentTest extends BrowserKitTestCase
             ->json('POST', '/CommentTest/comment/' . $comment->id . '/star')
             ->seeJson([
                 'result' => 'true',
-                'msg' => 'success',
+                'msg' => 3,
             ]);
         $this->assertTrue(Comment::where('id', $comment->id)->first()->star_num == 0);
         $this->assertTrue(Star::where('user_id', 1)->where('comment_id', $comment->id)->count() == 0);
