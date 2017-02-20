@@ -87,21 +87,6 @@ class AuthController extends Controller
 
     /**
      * @param Request $request
-     * @return bool
-     */
-    private function geetestValidate(Request $request)
-    {
-        $this->validate($request, [
-            'geetest_challenge' => 'geetest',
-        ], [
-            'geetest' => config('geetest.server_fail_alert')
-        ]);
-
-        return true;
-    }
-
-    /**
-     * @param Request $request
      * @return string(json)
      */
     public function sendTextCaptcha(Request $request)
@@ -132,7 +117,7 @@ class AuthController extends Controller
 
         $apikey = env('YUNPIAN_KEY');
         $mobile = $request->tel;
-        $text = "【东大水站】您的验证码是" . $captcha;
+        $text = "【东大维基】您的验证码是" . $captcha . "。如非本人操作，请忽略本短信";
 
         $data = array('text' => $text, 'apikey' => $apikey, 'mobile' => $mobile);
         curl_setopt($ch, CURLOPT_URL, 'https://sms.yunpian.com/v2/sms/single_send.json');
@@ -140,6 +125,21 @@ class AuthController extends Controller
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
 
         return strval(curl_exec($ch));
+    }
+
+    /**
+     * @param Request $request
+     * @return bool
+     */
+    private function geetestValidate(Request $request)
+    {
+        $this->validate($request, [
+            'geetest_challenge' => 'geetest',
+        ], [
+            'geetest' => config('geetest.server_fail_alert')
+        ]);
+
+        return true;
     }
 
     /**

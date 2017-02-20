@@ -15,4 +15,28 @@ class Comment extends Model
      * @var array
      */
     protected $dates = ['deleted_at'];
+
+    /**
+     * 获取该评论的用户模型。
+     */
+    public function user()
+    {
+        return $this->belongsTo('App\User');
+    }
+
+    /**
+     * 获取该回复的原始评论模型。
+     */
+    public function replyTarget()
+    {
+        return $this->belongsTo('App\Comment', 'reply_id');
+    }
+
+    /**
+     * 获取该评论的所有回复模型。
+     */
+    public function reply()
+    {
+        return $this->hasMany('App\Comment', 'reply_id');
+    }
 }

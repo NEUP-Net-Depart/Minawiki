@@ -91,7 +91,7 @@
                 <div id="comment_pool">
                     <div class="row" id="comment_fm">
                         <div class="input-field col s12">
-                            <textarea id="comment_input" name="text" class="materialize-textarea"></textarea>
+                            <textarea id="comment_input" name="text" class="materialize-textarea" required></textarea>
                             <label class="active" for="comment_input">发表评论</label>
                         </div>
                         <div class="input-field col s12" style="margin-top: 0">
@@ -274,6 +274,7 @@
                     success: function (msg) {
                         $('#' + order + '_comment_container .loading').remove();
                         $('#' + order + '_comment_container').append(msg);
+                        MathJax.Hub.Queue(["Typeset", MathJax.Hub]);
                     }
                 });
         }
