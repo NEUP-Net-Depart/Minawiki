@@ -11,7 +11,8 @@
         "laravel/browser-kit-testing": "^1.0",
         "laravel/framework": "5.4.*",
         "laravel/tinker": "~1.0",
-        "mews/purifier": "^2.0"
+        "mews/purifier": "^2.0",
+        "satooshi/php-coveralls": "^1.0"
     },
     "require-dev": {
         "fzaninotto/faker": "~1.4",
