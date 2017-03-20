@@ -27,4 +27,11 @@ before_script:
   - php artisan db:seed
 
 script:
+  - mkdir -p build/logs
   - vendor/bin/phpunit
+
+after_success:
+  - travis_retry php vendor/bin/coveralls
+
+notifications:
+  webhooks: https://fathomless-fjord-24024.herokuapp.com/notify
