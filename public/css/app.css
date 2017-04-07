@@ -43,3 +43,14 @@ main {
     box-sizing: border-box;
     display: inline-block;
 }
+
+ul.collection li.collection {
+    opacity: 0;
+    margin: 0;
+    border: 0;
+    border-bottom: 1px solid #e0e0e0;
+}
+
+ul.collection li.collection:last-child {
+    border-bottom: 0;
+}
