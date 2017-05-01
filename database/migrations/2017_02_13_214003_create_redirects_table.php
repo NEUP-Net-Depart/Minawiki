@@ -32,3 +32,4 @@ class CreateRedirectsTable extends Migration
         Schema::dropIfExists('redirects');
     }
 }
+

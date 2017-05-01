@@ -22,7 +22,8 @@
                             </form>
                         </li>
                         @if(isset($uid))
-                            <li><a href="/auth/logout">#{{ $uid }}</a> </li>
+                            <li><a href="/user/">#{{ $uid }}</a></li>
+                            <li><a href="/auth/logout">退出</a> </li>
                         @else
                             <li><a href="/auth/login">登录</a></li>
                             <li><a href="/auth/register">注册</a></li>
@@ -30,7 +31,8 @@
                     </ul>
                     <ul class="side-nav" id="mobile-demo">
                         @if(isset($uid))
-                            <li><a href="/auth/logout">#{{ $uid }}</a> </li>
+                            <li><a href="/user/">#{{ $uid }}</a></li>
+                            <li><a href="/auth/logout">退出</a> </li>
                         @else
                             <li><a href="/auth/login">登录</a></li>
                             <li><a href="/auth/register">注册</a></li>

@@ -14,6 +14,9 @@
 Route::get('/install', 'InstallController@index');
 Route::post('/install', 'InstallController@install');
 
+//User Center
+Route::get('/user', 'UserController@showUserCenter');
+
 Route::get('/{title?}', 'IndexController@index');
 
 //Initialize geetest
@@ -42,6 +45,7 @@ Route::post('/page/move/{id}', 'PageController@move')->middleware('checksu');
 Route::put('/page/{id}', 'PageController@update')->middleware('checksu');
 Route::delete('/page/{id}', 'PageController@destroy')->middleware('checksu', 'checkrel');
 
+
 //Wiki Manage
 Route::post('/{title}/update', 'WikiController@store')->middleware('checklogin');
 Route::put('/{title}/restore/{id}', 'WikiController@restore')->middleware('checklogin');
@@ -53,3 +57,4 @@ Route::get('/{title}/comment', 'CommentController@index');
 Route::post('/{title}/comment', 'CommentController@store')->middleware('checklogin');
 Route::delete('/{title}/comment/{id}', 'CommentController@destroy')->middleware('checklogin');
 Route::post('/{title}/comment/{id}/star', 'CommentController@star')->middleware('checklogin');
+
