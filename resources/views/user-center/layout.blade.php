@@ -33,7 +33,7 @@
     <div class="col m8 s12">
         <div style="text-align: center">
             @if(isset($uid))
-                <h3> #{{ $uid }}</h3>
+
             @else
                 <h3> 你还没登录呦</h3>
             @endif
@@ -45,12 +45,5 @@
     </div>
     </div>
 </div>
-
-    <script>
-        function showMyCommits() {
-
-        }
-
-    </script>
 
 @stop

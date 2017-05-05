@@ -37,6 +37,7 @@ class UserController extends Controller
 
         // 获得登录的用户并跳转
         $userid = $request -> session() -> get('user.id');
-        return view('user-center.'.$subPage, ['uid' => $userid, 'path' => $path]);
+        return view('user-center.'.$subPage, ['uid' => $userid, 'path' => $path,
+            'tel' => $request -> session() -> get('user.tel')]);
     }
 }

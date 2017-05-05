@@ -235,7 +235,7 @@ return [
         'Purifier' => Mews\Purifier\Facades\Purifier::class,
         // 表单
         'Form' => Collective\Html\FormFacade::class,
-
+        'Html' => Collective\Html\HtmlFacade::class,
     ],
 
 ];
