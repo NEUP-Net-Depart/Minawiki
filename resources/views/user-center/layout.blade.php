@@ -7,22 +7,25 @@
     <div id="left-nav" class="col m4 s12">
         <ul class="collection theme-word-dark theme-sec-i">
             <li class="collection-item" style="transform: translateX(0px); opacity: 1;">
-                <a href="#" onclick="showMyCommits()">我的评论</a>
+                <a href="/user/userInfo">个人信息</a>
             </li>
             <li class="collection-item" style="transform: translateX(0px); opacity: 1;">
-                <a href="#">我的赞</a>
+                <a href="/user/myComment" onclick="showMyCommits()">我的评论</a>
             </li>
             <li class="collection-item" style="transform: translateX(0px); opacity: 1;">
-                <a href="#">评论我的</a>
+                <a href="/user/myStar">我的赞</a>
             </li>
             <li class="collection-item" style="transform: translateX(0px); opacity: 1;">
-                <a href="#">赞过我的</a>
+                <a href="/user/commentMe">评论我的</a>
             </li>
             <li class="collection-item" style="transform: translateX(0px); opacity: 1;">
-                <a href="#">我的评分</a>
+                <a href="/user/starMe">赞过我的</a>
             </li>
             <li class="collection-item" style="transform: translateX(0px); opacity: 1;">
-                <a href="#">修改密码</a>
+                <a href="/user/myRate">我的评分</a>
+            </li>
+            <li class="collection-item" style="transform: translateX(0px); opacity: 1;">
+                <a href="/user/changePsd">修改密码</a>
             </li>
         </ul>
 
@@ -35,6 +38,7 @@
                 <h3> 你还没登录呦</h3>
             @endif
             <div id="content">
+                @yield('user-center-content')
                 <!-- 内容区 -->
             </div>
         </div>

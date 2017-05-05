@@ -12,7 +12,7 @@ class UserController extends Controller
      * @param:Request, $id
      * @return view
      */
-    public function ShowUserCenter(Request $request) {
+    public function ShowUserCenter(Request $request, $subPage = 'userInfo') {
         // 验证是否登录
         if (!$request -> session() -> has('user.id')) {
             $request['continue'] = '/user/';
@@ -37,6 +37,6 @@ class UserController extends Controller
 
         // 获得登录的用户并跳转
         $userid = $request -> session() -> get('user.id');
-        return view('user-center', ['uid' => $userid, 'path' => $path]);
+        return view('user-center.'.$subPage, ['uid' => $userid, 'path' => $path]);
     }
 }

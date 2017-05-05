@@ -15,7 +15,8 @@ Route::get('/install', 'InstallController@index');
 Route::post('/install', 'InstallController@install');
 
 //User Center
-Route::get('/user', 'UserController@showUserCenter');
+Route::get('/user/{subPage}', 'UserController@showUserCenter');
+Route::get('/user/', 'UserController@showUserCenter');
 
 Route::get('/{title?}', 'IndexController@index');
 

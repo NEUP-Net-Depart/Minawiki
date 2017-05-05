@@ -180,6 +180,9 @@ return [
 
         Germey\Geetest\GeetestServiceProvider::class,
 
+        //表单
+        Collective\Html\HtmlServiceProvider::class,
+
     ],
 
     /*
@@ -230,6 +233,8 @@ return [
         'View' => Illuminate\Support\Facades\View::class,
         'Geetest' => Germey\Geetest\Geetest::class,
         'Purifier' => Mews\Purifier\Facades\Purifier::class,
+        // 表单
+        'Form' => Collective\Html\FormFacade::class,
 
     ],
 
