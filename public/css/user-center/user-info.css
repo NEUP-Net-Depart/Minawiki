@@ -1,0 +1,37 @@
+
+#myPoint {
+    width: 100%;
+}
+.contentArea:before .contentArea:after {
+    content: "";
+    display: block;
+}
+.pointArea {
+    float: right;
+    margin: 0;
+}
+
+#point {
+    margin: 0;
+    font-size: 100px;
+}
+
+#PointText {
+    float:left;
+    max-width: 60%;
+}
+
+#detailButton {
+    margin: 0;
+    position: relative;
+    top: -10%;
+}
+
+#myPointDetailList {
+    background-color: rgba(219, 220, 221, 0.68);
+    margin: 0;
+}
+
+.myPointDetailItem {
+    margin-left: 5%;
+}

@@ -2,12 +2,12 @@
 
 @section('user-center-content')
 
-    <h2>修改密码</h2>
-    <div class="container">
+    <h2 style="text-align: center">修改密码</h2>
+    <div class="container" id="changePsd_fm">
 
         {!!Form::Open(['url' => '#'])!!}
 
-        <div class="input-field col s12" id="changePsd_fm">
+        <div class="input-field col s12" >
             <div>
                 {!! Form::label('oldPsd', '旧密码') !!}
                 {!! Form::password('oldPsd') !!}
@@ -47,9 +47,11 @@
         function changePsd() {
             var newPsd = $('#newPsd').val();
             var repeat = $('#repeat').val();
+
             var str_data = $("#changePsd_fm input").map(function () {
                 return ($(this).attr("name") + '=' + $(this).val());
             }).get().join("&");
+
             if (newPsd != repeat) {
                 Materialize.toast("两次密码不一致", 3000, 'theme-bg-sec');
             } else {

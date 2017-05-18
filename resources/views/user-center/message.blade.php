@@ -2,6 +2,6 @@
 
 @section('user-center-content')
 
-    <h2>收到的赞</h2>
+<h3>消息盒子</h3>
 
-@stop
+    @endsection

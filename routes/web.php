@@ -16,8 +16,10 @@ Route::get('/install', 'InstallController@index');
 Route::post('/install', 'InstallController@install');
 
 //User Center
-Route::get('/user/{subPage}', 'UserController@showUserCenter');
-Route::get('/user/', 'UserController@showUserCenter');
+Route::get('/user/loadMyComments', 'UserController@getMyComments') -> middleware('checklogin');
+Route::get('/user/userInfo/loadMyPointDetails', 'UserController@loadMyPointDetails') -> middleware('checklogin');
+Route::get('/user/{subPage}', 'UserController@showUserCenter') -> middleware('checklogin');
+Route::get('/user/', 'UserController@showUserCenter') -> middleware('checklogin');
 
 Route::get('/{title?}', 'IndexController@index');
 
