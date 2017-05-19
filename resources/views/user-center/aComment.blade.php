@@ -11,7 +11,7 @@
             </div>
             <div class="col">
                 <a id="my_comment" href="/{{$item->page_id}}">{{ $item -> page_id }} </a>
-                <p id="{{ $item -> id }}_update" style="margin: 0 0 0 0;"><label>{{ $item -> updated_at }}<label></p>
+                <p id="{{ $item -> id }}_update" style="margin: 0 0 0 0;"><label>{{ $item -> updated_at }}</label></p>
             </div>
             <div class="col right">
                 <!-- 星星和删除 -->

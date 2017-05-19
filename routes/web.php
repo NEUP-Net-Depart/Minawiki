@@ -17,6 +17,7 @@ Route::post('/install', 'InstallController@install');
 
 //User Center
 Route::get('/user/loadMyComments', 'UserController@getMyComments') -> middleware('checklogin');
+Route::get('/user/loadMyRating', 'UserController@loadMyRating') -> middleware('checklogin');
 Route::get('/user/userInfo/loadMyPointDetails', 'UserController@loadMyPointDetails') -> middleware('checklogin');
 Route::get('/user/{subPage}', 'UserController@showUserCenter') -> middleware('checklogin');
 Route::get('/user/', 'UserController@showUserCenter') -> middleware('checklogin');
@@ -61,4 +62,3 @@ Route::get('/{title}/comment', 'CommentController@index');
 Route::post('/{title}/comment', 'CommentController@store')->middleware('checklogin');
 Route::delete('/{title}/comment/{id}', 'CommentController@destroy')->middleware('checklogin');
 Route::post('/{title}/comment/{id}/star', 'CommentController@star')->middleware('checklogin');
-

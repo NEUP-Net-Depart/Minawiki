@@ -18,8 +18,8 @@
         </div>
         <div style="clear: both;"></div>
         <div id="pointDetail">
-        <a id = "detailButton">详细信息</a>
-        <ul id="myPointDetailList" style="display: none;">
+            <a id = "detailButton">详细信息</a>
+            <ul id="myPointDetailList" style="display: none;">
         </ul>
         </div>
     </div>

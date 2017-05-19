@@ -68,4 +68,17 @@ class UserController extends Controller
         }
         return view('user-center.aPointDetailItem', ['paginator' => $paginator]);
     }
+
+    public function loadMyRating(Request $request) {
+        $paginator[0]['id'] = 1;
+        $paginator[0]['page_id'] = 'NEUWIKI';
+        $paginator[0]['rateitem'] = 'LALALA';
+        $paginator[0]['mark'] = 98;
+        $paginator[0]['full_mark'] = 100;
+        $paginator[0]['time'] = '2017-1-1';
+        $paginator[0]['last'] = true;
+
+        return view('user-center.aRate', ['paginator' => $paginator]);
+
+    }
 }

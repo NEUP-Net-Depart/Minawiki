@@ -30,11 +30,11 @@
         </div>
 
         <div class="row" >
-            <div class="col s6">
+            <div class="col s6" style="margin-top: 18px;">
                 {!! Geetest::render() !!}
             </div>
 
-            <div class="col s6">
+            <div class="col s6" style="text-align: center;">
                 <button onclick="changePsd()" type="button" class='btn btn-large theme-dark'>
                     提交
                 </button>
