@@ -1,12 +1,13 @@
 @foreach($paginator as $item)
 
     @if($item['is_read'] == false)
-        <li class="collection-item unread" id="{{ $item['id'] }}_comment">
+        <li class="collection-item unread aMessage" id="{{ $item['id'] }}_comment">
     @else
-        <span class="collection-item read" id="{{ $item['id'] }}_comment">
+        <li class="collection-item read aMessage" id="{{ $item['id'] }}_comment">
             @endif
+            <span>
             @if ($item['is_read'] == false)
-                <a href="#!" class="setRead">已读</a>
+                <a href="javascript: setRead('{{ strval($item['id']) }}')" class="setRead">已读</a>
             @endif
 
             <span>{{ $item['username'] }}
@@ -16,17 +17,11 @@
                         两次</span>
                 @endif
             @else
-                评论了你:</span>
+                评论了你:
                 <ul class="collection" id="{{ $item['id'] }}_reply"></ul>
                 <script>
                     $('#{{ $item['id'] }}_reply').append(loadAComment('{{ strval($item['id']) }}'));
                 </script>
             @endif
-
-
-
-
         </li>
-
-
         @endforeach

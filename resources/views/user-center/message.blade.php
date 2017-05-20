@@ -18,12 +18,29 @@
             });
             return t;
         }
+
+        function setRead(id) {
+            $('#' + id + '_comment').removeClass('unread').addClass('read');
+            $('#' + id + '_comment' + ' .setRead').remove();
+            $.ajax({
+                type: 'post',
+                url: '/user/read',
+                data: '&id=' + id
+            })
+        }
+
+        function setAllRead() {
+            $('.aMessage').filter('.unread').each(function (index, element) {
+                var id = element.getAttribute('id').split('_')[0];
+                setRead(id);
+            });
+        }
     </script>
 
     <div>
         <link rel="stylesheet" href="/css/user-center/messageBox.css">
         <h3 style="text-align: center;">消息盒子</h3>
-        <a href='#' class="setRead">全部标记为已读</a>
+        <a href='javascript:setAllRead()' class="setRead">全部标记为已读</a>
         <ul class="collection" id="msgBox">
 
         </ul>
@@ -47,7 +64,6 @@
 </div>\
 </center>\
 ');
-
             $.ajax({
                 'url' : '/user/loadMessages?startIndex=' + i,
                 'type' : 'get',

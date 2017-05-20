@@ -102,18 +102,18 @@ class UserController extends Controller
         $paginator[1]['type'] = 'comment';
         $paginator[1]['commentText'] = 'HHHHH';
         $paginator[1]['id'] = 2;
-        $paginator[2]['is_read'] = false;
+        $paginator[2]['is_read'] = true;
         $paginator[2]['username'] = '匿名用户';
         $paginator[2]['type'] = 'star';
         $paginator[2]['commentText'] = 'HHHHH';
         $paginator[2]['times'] = 2;
         $paginator[2]['id'] = 3;
-        $paginator[3]['is_read'] = false;
+        $paginator[3]['is_read'] = true;
         $paginator[3]['username'] = '匿名用户';
         $paginator[3]['type'] = 'comment';
         $paginator[3]['commentText'] = 'HHHH';
         $paginator[3]['id'] = 4;
-        $paginator[4]['is_read'] = false;
+        $paginator[4]['is_read'] = true;
         $paginator[4]['username'] = '匿名用户';
         $paginator[4]['type'] = 'star';
         $paginator[4]['commentText'] = 'HHHHH';
@@ -126,5 +126,9 @@ class UserController extends Controller
         $this -> validate($request, ['comment_id' => 'required']);
         $comment = Comment::where('id', $request -> comment_id) -> paginate(10);
         return view('user-center.aComment', ['paginator' => $comment, 'dontShowFooter' => true]);
+    }
+
+    function read(Request $request) {
+        // TODO: 设置某个消息为已读
     }
 }
