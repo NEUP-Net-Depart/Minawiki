@@ -48,6 +48,8 @@
     {!! csrf_field() !!}
 </form>
 
+@if(!isset($dontShowFooter))
+
 @if($paginator->lastPage() > 1 && $paginator->currentPage() != $paginator->lastPage())
     <a href="javascript: loadMyComments('{{ strval($paginator->currentPage()+1) }}')"
        class="collection-item loadmore">
@@ -58,3 +60,5 @@
         <center>没有更多评论了</center>
     </li>
 @endif
+
+    @endif

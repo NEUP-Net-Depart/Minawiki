@@ -1,0 +1,11 @@
+.unread *, .unread{
+    background-color: rgb(250, 255, 162) !important;
+}
+
+.setRead {
+    float: right;
+}
+
+#msgBox {
+    width: 100%;
+}

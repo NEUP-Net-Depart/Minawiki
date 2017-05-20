@@ -46,7 +46,6 @@ class UserController extends Controller
 
     public function getMyComments(Request $request){
         // TODO: 获得自己的评论
-
         $this -> validate($request, ['startIndex' => 'required']);
         $comments = Comment::where('user_id', $request -> session() -> get('user.id'))
             -> orderBy('id', 'desc')
@@ -83,12 +82,49 @@ class UserController extends Controller
     }
 
     public function loadCommentMe(Request $request) {
-        //TODO: 获得回复我的消息
         $myComments = CommentMessage::where('user_id', $request -> session() -> get('user.id'))
             -> pluck('comment_id');
 
         $comments = Comment::whereIn('reply_id', $myComments) -> paginate(10);
 
         return view('user-center.aComment', ['paginator' => $comments]);
+    }
+
+    public function loadMessages(Request $request) {
+        $paginator[0]['is_read'] = false;
+        $paginator[0]['username'] = '匿名用户';
+        $paginator[0]['type'] = 'star';
+        $paginator[0]['commentText'] = 'HHHHH';
+        $paginator[0]['times'] = 1;
+        $paginator[0]['id'] = 1;
+        $paginator[1]['is_read'] = false;
+        $paginator[1]['username'] = '匿名用户';
+        $paginator[1]['type'] = 'comment';
+        $paginator[1]['commentText'] = 'HHHHH';
+        $paginator[1]['id'] = 2;
+        $paginator[2]['is_read'] = false;
+        $paginator[2]['username'] = '匿名用户';
+        $paginator[2]['type'] = 'star';
+        $paginator[2]['commentText'] = 'HHHHH';
+        $paginator[2]['times'] = 2;
+        $paginator[2]['id'] = 3;
+        $paginator[3]['is_read'] = false;
+        $paginator[3]['username'] = '匿名用户';
+        $paginator[3]['type'] = 'comment';
+        $paginator[3]['commentText'] = 'HHHH';
+        $paginator[3]['id'] = 4;
+        $paginator[4]['is_read'] = false;
+        $paginator[4]['username'] = '匿名用户';
+        $paginator[4]['type'] = 'star';
+        $paginator[4]['commentText'] = 'HHHHH';
+        $paginator[4]['times'] = 1;
+        $paginator[4]['id'] = 5;
+        return view('user-center.aMessage', ['paginator' => $paginator]);
+    }
+
+    function loadAComment(Request $request) {
+        $this -> validate($request, ['comment_id' => 'required']);
+        $comment = Comment::where('id', $request -> comment_id) -> paginate(10);
+        return view('user-center.aComment', ['paginator' => $comment, 'dontShowFooter' => true]);
     }
 }

@@ -16,9 +16,9 @@
         </div>
 
 
-        <div class="collection theme-dark-a" id="myCommentList">
+        <ul class="collection theme-dark-a" id="myCommentList">
 
-        </div>
+        </ul>
     </center>
     <script>
 

@@ -16,6 +16,8 @@ Route::get('/install', 'InstallController@index');
 Route::post('/install', 'InstallController@install');
 
 //User Center
+Route::get('/user/loadAComment', 'UserController@loadAComment');
+Route::get('/user/loadMessages', 'UserController@loadMessages') -> middleware('checklogin');
 Route::get('/user/loadCommentMe', 'UserController@loadCommentMe') -> middleware('checklogin');
 Route::get('/user/loadMyComments', 'UserController@getMyComments') -> middleware('checklogin');
 Route::get('/user/loadMyRating', 'UserController@loadMyRating') -> middleware('checklogin');

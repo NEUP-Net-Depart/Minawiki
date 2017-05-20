@@ -58,6 +58,7 @@
 
                 $.ajax({
                         type: "POST",
+                    // TODO: user/changePassword
                         url: "/auth/changePassword",
                         data: str_data,
                         success: function (msg) {
