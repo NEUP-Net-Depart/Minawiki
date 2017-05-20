@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\CommentMessage;
 use Illuminate\Http\Request;
 use App\Page;
 use App\Comment;
@@ -50,7 +51,7 @@ class UserController extends Controller
         $comments = Comment::where('user_id', $request -> session() -> get('user.id'))
             -> orderBy('id', 'desc')
             -> paginate(10);
-        return view('user-center.aComment', ['paginator' => $comments]);
+        return view('user-center.aComment', ['paginator' => $comments, 'canDelete' => true]);
     }
 
     public function getMyInformation(Request $request) {
@@ -70,6 +71,7 @@ class UserController extends Controller
     }
 
     public function loadMyRating(Request $request) {
+        // TODO: 获取我的评分
         $paginator[0]['id'] = 1;
         $paginator[0]['page_id'] = 'NEUWIKI';
         $paginator[0]['rateitem'] = 'LALALA';
@@ -77,8 +79,16 @@ class UserController extends Controller
         $paginator[0]['full_mark'] = 100;
         $paginator[0]['time'] = '2017-1-1';
         $paginator[0]['last'] = true;
+        return view('user-center.aRate', ['paginator' => $paginator, 'noMore' => false, 'now'=> 1]);
+    }
 
-        return view('user-center.aRate', ['paginator' => $paginator]);
+    public function loadCommentMe(Request $request) {
+        //TODO: 获得回复我的消息
+        $myComments = CommentMessage::where('user_id', $request -> session() -> get('user.id'))
+            -> pluck('comment_id');
 
+        $comments = Comment::whereIn('reply_id', $myComments) -> paginate(10);
+
+        return view('user-center.aComment', ['paginator' => $comments]);
     }
 }

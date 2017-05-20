@@ -4,16 +4,17 @@
 
     <div class="container">
         <link rel="stylesheet" href="/css/user-center/rating.css">
-        <div class="collection theme-dark-a" id="myRateList">
+        <h3 align="center">我的评分</h3>
+        <ul class="collection theme-dark-a" id="myRateList">
 
-        </div>
+        </ul>
     </div>
     <script>
 
         $.onload(loadMyRating(1));
 
         function loadMyRating(i) {
-            $('#myRateList.loadmore').remove();
+            $('#myRateList .loadmore').remove();
             $('#myRateList').append('<center class="loading">\
 <div class="preloader-wrapper small active center" style="margin-top: 10px; margin-bottom: 10px">\
 <div class="spinner-layer theme-border-dark">\

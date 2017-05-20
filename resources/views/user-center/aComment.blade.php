@@ -15,8 +15,10 @@
             </div>
             <div class="col right">
                 <!-- 星星和删除 -->
+                @if(isset($canDelete))
                 <a class="material-icons secondary-content" style="color:red;"
                    href="javascript: showDeleteCommentModal({!! $item -> id !!})">delete</a>
+                @endif
                 <a class=" secondary-content"><i class="material-icons">star</i><span class="star-badge">{{ $item -> star_num }}</span></a>
             </div>
         </div>
