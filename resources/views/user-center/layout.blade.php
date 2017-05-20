@@ -3,6 +3,7 @@
 @section('content')
 
 <div class="container">
+    <link rel="stylesheet" href="/css/user-center/layout.css">
     <div class="row">
     <div id="left-nav" class="col m4 s12">
         <ul class="collection theme-word-dark theme-sec-i">
@@ -20,6 +21,9 @@
             </li>
             <li class="collection-item">
                 <a href="/user/message">消息盒子</a>
+                @if(isset($newMessageNumber) and $newMessageNumber > 0)
+                <span id="newMessagesNum" class="theme-dark">{{ $newMessageNumber }}</span>
+                    @endif
             </li>
             <li class="collection-item" >
                 <a href="/user/changePsd">修改密码</a>

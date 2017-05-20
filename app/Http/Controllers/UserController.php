@@ -41,7 +41,7 @@ class UserController extends Controller
         $userid = $request -> session() -> get('user.id');
         // TODO: 获得用户的积分
         return view('user-center.'.$subPage, ['uid' => $userid, 'path' => $path,
-            'tel' => $request -> session() -> get('user.tel'), 'point' => 60]);
+            'tel' => $request -> session() -> get('user.tel'), 'point' => 60, 'newMessageNumber' => '2']);
     }
 
     public function getMyComments(Request $request){

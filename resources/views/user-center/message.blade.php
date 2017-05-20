@@ -26,7 +26,18 @@
                 type: 'post',
                 url: '/user/read',
                 data: '&id=' + id
-            })
+            });
+
+            var numberLabel = $('#newMessagesNum');
+            if (numberLabel !== []) {
+                var number = Number(numberLabel.text());
+                number -= 1;
+                if (number === 0) {
+                    numberLabel.remove();
+                } else {
+                    numberLabel.text(number);
+                }
+            }
         }
 
         function setAllRead() {
