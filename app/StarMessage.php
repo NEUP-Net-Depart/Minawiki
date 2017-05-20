@@ -13,4 +13,8 @@ class StarMessage extends Model
     {
         return $this->belongsTo('App\User');
     }
+    public function comment()
+    {
+        return $this->belongsTo('App\Comment');
+    }
 }
