@@ -10,7 +10,7 @@
             </div>
             <div class="modal-footer">
                 <a id="del_comment_submit" href="#!"
-                   class="modal-action waves-effect red white-text btn-flat">我明白这样做的后果并且要删除</a>
+                   class="modal-action waves-effect modal-close red white-text btn-flat">我明白这样做的后果并且要删除</a>
                 <a href="#!" class="modal-action modal-close waves-effect btn-flat ">取消</a>
             </div>
         </div>

@@ -28,15 +28,15 @@
     <script>
         $("#pointDetail").hover( function () {
             if ($("#pointDetail").hasClass('hover')) {
-                $('#myPointDetailList').show();
+                $('#myPointDetailList').slideDown(200);
             }
         }, function () {
-            $("#myPointDetailList").hide();
+            $("#myPointDetailList").slideUp(20);
             $('#pointDetail').removeClass('hover');
         });
         $("#detailButton").hover( function () {
             $('#pointDetail').addClass('hover');
-            $('#myPointDetailList').show();
+            $('#myPointDetailList').slideDown(200);
         });
         $.ajax({
             type: 'GET',

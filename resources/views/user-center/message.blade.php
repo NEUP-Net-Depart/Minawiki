@@ -32,10 +32,10 @@
             if (numberLabel !== []) {
                 var number = Number(numberLabel.text());
                 number -= 1;
-                if (number === 0) {
-                    numberLabel.remove();
-                } else {
+                if (number > 0) {
                     numberLabel.text(number);
+                } else {
+                    numberLabel.remove();
                 }
             }
         }
