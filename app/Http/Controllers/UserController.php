@@ -78,6 +78,7 @@ class UserController extends Controller
         $paginator[0]['full_mark'] = 100;
         $paginator[0]['time'] = '2017-1-1';
         $paginator[0]['last'] = true;
+        $paginator[0]['detail'] = '这是这个评分项的详细信息';
         return view('user-center.aRate', ['paginator' => $paginator, 'noMore' => false, 'now'=> 1]);
     }
 

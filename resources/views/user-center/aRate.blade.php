@@ -12,7 +12,11 @@
                 <div class="row mark_title">
                     <a id="{{ $item[ 'id']}}_page" href="/{{ $item[ 'page_id']}}">{{ $item[ 'page_id']}}</a>
                     <span> : </span>
-                    <a id="{{ $item[ 'id']}}_rateitem">{{ $item[ 'rateitem']}}</a>
+                    <div class="rate_detailArea">
+                        <a id="{{ $item[ 'id']}}_rateitem" class="rate_detailButton">{{ $item[ 'rateitem']}}</a>
+                        <p class="rate_detailText">{{ $item['detail'] }}</p>
+                    </div>
+
                 </div>
                 <div class="row">
                     <div class="rate_mark" class="markArea">

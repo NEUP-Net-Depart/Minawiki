@@ -11,7 +11,7 @@
     </div>
     <script>
 
-        $.onload(loadMyRating(1));
+        $(document).ready(loadMyRating(1));
 
         function loadMyRating(i) {
             $('#myRateList .loadmore').remove();
@@ -37,6 +37,7 @@
                 success: function (msg) {
                     $("#myRateList .loading").remove();
                     $("#myRateList").append(msg);
+                    register();
                 },
                 error: function (xhr) {
                     Materialize.toast('服务器出错'+ xhr.status, 3000, 'theme-bg-sec');
@@ -48,6 +49,27 @@
         function showDeleteCommentModal(id) {
             $("#del_comment_submit").attr('href', 'javascript: deleteComment(' + id +')');
             $("#delete_comment_modal").modal('open');
+        }
+
+        function register() {
+
+            $(".rate_detailButton").hover(function () {
+                var text = $(this).next(".rate_detailText");
+                $(text).show();
+                $(text).addClass('hover');
+            });
+
+            $(".rate_detailArea").hover(function () {
+                var text = $(this).find(".rate_detailText");
+                if ($(text).hasClass('hover')) {
+                    $(text).show();
+                }
+            }, function () {
+                var text = $(this).find(".rate_detailText");
+                $(text).removeClass('hover');
+                $(text).hide();
+            });
+
         }
     </script>
 

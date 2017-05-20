@@ -28,7 +28,13 @@
     <script>
         $("#pointDetail").hover( function () {
             if ($("#pointDetail").hasClass('hover')) {
-                $('#myPointDetailList').slideDown(200);
+                var list = $('#myPointDetailList');
+                list.slideDown(200);
+                if (! $(list).hasClass('loaded')) {
+                    load();
+                    $(list).addClass('loaded');
+                }
+
             }
         }, function () {
             $("#myPointDetailList").slideUp(20);
@@ -36,18 +42,26 @@
         });
         $("#detailButton").hover( function () {
             $('#pointDetail').addClass('hover');
-            $('#myPointDetailList').slideDown(200);
-        });
-        $.ajax({
-            type: 'GET',
-            url: '/user/userInfo/loadMyPointDetails',
-            success: function (msg) {
-                $("#myPointDetailList").append(msg);
-            },
-            error: function (xhr) {
-                $("#myPointDetailList").append("<center>服务器出错</center>");
+            var list = $('#myPointDetailList');
+            list.slideDown(200);
+            if (! $(list).hasClass('loaded')) {
+                load();
+                $(list).addClass('loaded');
             }
-        })
+        });
+        function load() {
+            $.ajax({
+                type: 'GET',
+                url: '/user/userInfo/loadMyPointDetails',
+                success: function (msg) {
+                    $("#myPointDetailList").append(msg);
+                },
+                error: function (xhr) {
+                    $("#myPointDetailList").append("<center>服务器出错</center>");
+                }
+            })
+        }
+
     </script>
 
 @stop
