@@ -32,7 +32,7 @@
             $.ajax({
 
                 type: 'GET',
-                url: '/user/loadCommentMe?startIndex=' + i ,
+                url: '/user/loadCommentMe?page=' + i ,
                 success: function (msg) {
                     $("#myCommentList .loading").remove();
                     $("#myCommentList").append(msg);

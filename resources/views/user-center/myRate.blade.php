@@ -33,7 +33,7 @@
             $.ajax({
 
                 type: 'GET',
-                url: '/user/loadMyRating?startIndex=' + i ,
+                url: '/user/loadMyRating?page=' + i ,
                 success: function (msg) {
                     $("#myRateList .loading").remove();
                     $("#myRateList").append(msg);
