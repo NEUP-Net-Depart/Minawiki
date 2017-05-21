@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\CommentMessage;
+use function foo\func;
 use Illuminate\Http\Request;
 use App\Page;
 use App\Comment;
@@ -44,12 +45,20 @@ class UserController extends Controller
             'tel' => $request -> session() -> get('user.tel'), 'point' => 60, 'newMessageNumber' => '2']);
     }
 
+    /**
+     * @param Request $request
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
     public function getMyComments(Request $request){
         // TODO: 获得自己的评论
-        $this -> validate($request, ['startIndex' => 'required']);
+        $this -> validate($request, ['page' => 'required']);
         $comments = Comment::where('user_id', $request -> session() -> get('user.id'))
             -> orderBy('id', 'desc')
-            -> paginate(10);
+            -> paginate(2);
+
+        foreach($comments as $c) {
+            $c -> page_id = Page::where('id', $c -> page_id) -> first() -> title;
+        }
         return view('user-center.aComment', ['paginator' => $comments, 'canDelete' => true]);
     }
 
@@ -83,6 +92,7 @@ class UserController extends Controller
     }
 
     public function loadCommentMe(Request $request) {
+        // TODO: 收到的评论
         $myComments = CommentMessage::where('user_id', $request -> session() -> get('user.id'))
             -> pluck('comment_id');
 
@@ -92,6 +102,7 @@ class UserController extends Controller
     }
 
     public function loadMessages(Request $request) {
+        // TODO: 新消息
         $paginator[0]['is_read'] = false;
         $paginator[0]['username'] = '匿名用户';
         $paginator[0]['type'] = 'star';

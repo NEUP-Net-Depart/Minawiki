@@ -9,9 +9,9 @@
                 <h4>删除评论</h4>
             </div>
             <div class="modal-footer">
-                <a id="del_comment_submit" href="#!"
+                <a id="del_comment_submit" href="#"
                    class="modal-action waves-effect modal-close red white-text btn-flat">我明白这样做的后果并且要删除</a>
-                <a href="#!" class="modal-action modal-close waves-effect btn-flat ">取消</a>
+                <a href="#" class="modal-action modal-close waves-effect btn-flat ">取消</a>
             </div>
         </div>
 
@@ -22,7 +22,7 @@
     </center>
     <script>
 
-        $.onload(loadMyComments(1));
+        $(document).ready(loadMyComments(1));
 
         function loadMyComments(i) {
             $('#myCommentList .loadmore').remove();
@@ -44,7 +44,7 @@
             $.ajax({
 
                 type: 'GET',
-                url: '/user/loadMyComments?startIndex=' + i ,
+                url: '/user/loadMyComments?page=' + i ,
                 success: function (msg) {
                     $("#myCommentList .loading").remove();
                     $("#myCommentList").append(msg);
@@ -59,6 +59,13 @@
         function showDeleteCommentModal(id) {
             $("#del_comment_submit").attr('href', 'javascript: deleteComment(' + id +')');
             $("#delete_comment_modal").modal('open');
+        }
+
+        function deleteComment(id) {
+            $.ajax({
+                type: 'delete',
+                url: '/user/'
+            })
         }
     </script>
 

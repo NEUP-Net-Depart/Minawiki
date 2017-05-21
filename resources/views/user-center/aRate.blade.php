@@ -12,11 +12,8 @@
                 <div class="row mark_title">
                     <a id="{{ $item[ 'id']}}_page" href="/{{ $item[ 'page_id']}}">{{ $item[ 'page_id']}}</a>
                     <span> : </span>
-                    <div class="rate_detailArea">
-                        <a id="{{ $item[ 'id']}}_rateitem" class="rate_detailButton">{{ $item[ 'rateitem']}}</a>
-                        <p class="rate_detailText">{{ $item['detail'] }}</p>
-                    </div>
-
+                    <a id="{{ $item[ 'id']}}_rateitem" class="rate_detailButton"
+                    data-togger="hover" data-placement="bottom" title="{{ $item['detail'] }}">{{ $item['rateitem']}}</a>
                 </div>
                 <div class="row">
                     <div class="rate_mark" class="markArea">
