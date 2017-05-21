@@ -21,27 +21,11 @@ class UserController extends Controller
             $request['continue'] = '/user/';
             return (new AuthController()) -> showLoginView($request);
         }
-        // 面包屑导航
-        $path = collect([]);
-        $page = Page::all();
-//        $currentPage = $page -> where('id', 3) -> first();
-        // 为了使用面包屑导航, 但是不能把用户中心加入Page表
-        $currentPage = new Page();
-        $currentPage -> title = "user";
-        $currentPage -> father_id = '1';
-        $currentPage -> id = '-1';
-
-        while ($currentPage['id'] != 1) {
-            $path -> prepend($currentPage);
-            $currentPage = $currentPage -> where('id', $currentPage['father_id']) -> first();
-        }
-        $path -> prepend($currentPage);
-
 
         // 获得登录的用户并跳转
         $userid = $request -> session() -> get('user.id');
         // TODO: 获得用户的积分
-        return view('user-center.'.$subPage, ['uid' => $userid, 'path' => $path,
+        return view('user-center.'.$subPage, ['uid' => $userid,
             'tel' => $request -> session() -> get('user.tel'), 'point' => 60, 'newMessageNumber' => '2']);
     }
 
