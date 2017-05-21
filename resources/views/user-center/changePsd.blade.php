@@ -1,5 +1,5 @@
 @extends('user-center.layout')
-
+@section('title', '修改密码')
 @section('user-center-content')
 
     <h2 style="text-align: center">修改密码</h2>

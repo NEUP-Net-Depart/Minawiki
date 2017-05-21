@@ -12,9 +12,10 @@
                             <!--menu--></i></a>
                     <ul id="nav-mobile" class="right hide-on-med-and-down nav-height">
                         <li>
-                            <form>
+                            <form action="http://www.baidu.com" method="get">
                                 <div class="input-field">
-                                    <input id="search" type="search" placeholder="Search" required class="auto-height">
+                                    <input type="hidden" name="page" value="@yield('title')">
+                                    <input name="wd" id="search" type="search" placeholder="Search" required class="auto-height">
                                     <label class="label-icon" for="search"><i class="material-icons">&#xE8B6;
                                             <!--search--></i></label>
                                     <i class="material-icons">&#xE5CD;<!--close--></i>

@@ -1,5 +1,5 @@
 @extends('user-center.layout')
-
+@section('title', '个人信息')
 @section('user-center-content')
     <link href="/css/user-center/user-info.css" rel="stylesheet">
     <div id="user-center">

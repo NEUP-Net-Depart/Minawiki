@@ -1,5 +1,5 @@
 @extends('user-center.layout')
-
+@section('title', '消息盒子')
 @section('user-center-content')
     <script>
         function loadAComment(id) {

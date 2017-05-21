@@ -1,5 +1,4 @@
 @extends('layouts.nav-nav')
-@section('title', '个人中心')
 @section('content')
 
 <div class="container">

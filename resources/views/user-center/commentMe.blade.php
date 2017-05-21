@@ -1,5 +1,5 @@
 @extends('user-center.layout')
-
+@section('title', '收到的评论')
 @section('user-center-content')
 
     <center>
