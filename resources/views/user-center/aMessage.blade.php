@@ -10,12 +10,12 @@
                 <a href="javascript: setRead('{{ strval($item -> id) }}')" class="setRead">已读</a>
             @endif
 
-            <span> 匿名用户
+            <span class="message"> 匿名用户
                 <!--
                 {{ $type = get_class($item) }}
                 -->
             @if ($type == 'App\StarMessage')
-                赞了你的评论 :{{ $item -> comment_id -> content }}
+                赞了你的评论 :{!! $item -> comment_id -> content !!}
                 @if ($item -> times == 2)
                         两次</span>
                 @endif

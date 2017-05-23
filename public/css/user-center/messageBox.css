@@ -9,3 +9,10 @@
 #msgBox {
     width: 100%;
 }
+
+.message > p {
+    background-color: #eaeaea;
+    margin: 0;
+    white-space: nowrap;
+    display: inline;
+}

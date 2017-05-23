@@ -85,12 +85,11 @@ class UserController extends Controller
 
     public function loadMessages(Request $request) {
         // TODO: 新消息
-        $k = Comment::all();
-        $paginator = CommentMessage::all();
+        $paginator = StarMessage::all();
         foreach($paginator as $t) {
             $t -> comment_id = Comment::where('id', $t -> comment_id) -> first();
         }
-        return view('user-center.aMessage', ['paginator' => $paginator, 'k' => $k]);
+        return view('user-center.aMessage', ['paginator' => $paginator]);
     }
 
     function loadAComment(Request $request) {
