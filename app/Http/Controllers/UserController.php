@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\CommentMessage;
+use App\StarMessage;
 use function foo\func;
 use Illuminate\Http\Request;
 use App\Page;
@@ -16,17 +17,14 @@ class UserController extends Controller
      * @return view
      */
     public function ShowUserCenter(Request $request, $subPage = 'userInfo') {
-        // 验证是否登录
-        if (!$request -> session() -> has('user.id')) {
-            $request['continue'] = '/user/';
-            return (new AuthController()) -> showLoginView($request);
-        }
-
         // 获得登录的用户并跳转
-        $userid = $request -> session() -> get('user.id');
+        $user_id = $request -> session() -> get('user.id');
         // TODO: 获得用户的积分
-        return view('user-center.'.$subPage, ['uid' => $userid,
-            'tel' => $request -> session() -> get('user.tel'), 'point' => 60, 'newMessageNumber' => '2']);
+        // TODO: 获得用户的未读消息数
+        $unReads = CommentMessage::where('user_id', $user_id) -> where('is_read', false) -> count();
+        $unReads += StarMessage::where('user_id', $user_id) -> where('is_read', false) -> count();
+        return view('user-center.'.$subPage, ['uid' => $user_id,
+            'tel' => $request -> session() -> get('user.tel'), 'point' => 60, 'newMessageNumber' => $unReads]);
     }
 
     /**
@@ -87,35 +85,12 @@ class UserController extends Controller
 
     public function loadMessages(Request $request) {
         // TODO: 新消息
-        $paginator[0]['is_read'] = false;
-        $paginator[0]['username'] = '匿名用户';
-        $paginator[0]['type'] = 'star';
-        $paginator[0]['commentText'] = 'HHHHH';
-        $paginator[0]['times'] = 1;
-        $paginator[0]['id'] = 1;
-        $paginator[1]['is_read'] = false;
-        $paginator[1]['username'] = '匿名用户';
-        $paginator[1]['type'] = 'comment';
-        $paginator[1]['commentText'] = 'HHHHH';
-        $paginator[1]['id'] = 2;
-        $paginator[2]['is_read'] = true;
-        $paginator[2]['username'] = '匿名用户';
-        $paginator[2]['type'] = 'star';
-        $paginator[2]['commentText'] = 'HHHHH';
-        $paginator[2]['times'] = 2;
-        $paginator[2]['id'] = 3;
-        $paginator[3]['is_read'] = true;
-        $paginator[3]['username'] = '匿名用户';
-        $paginator[3]['type'] = 'comment';
-        $paginator[3]['commentText'] = 'HHHH';
-        $paginator[3]['id'] = 4;
-        $paginator[4]['is_read'] = true;
-        $paginator[4]['username'] = '匿名用户';
-        $paginator[4]['type'] = 'star';
-        $paginator[4]['commentText'] = 'HHHHH';
-        $paginator[4]['times'] = 1;
-        $paginator[4]['id'] = 5;
-        return view('user-center.aMessage', ['paginator' => $paginator]);
+        $k = Comment::all();
+        $paginator = CommentMessage::all();
+        foreach($paginator as $t) {
+            $t -> comment_id = Comment::where('id', $t -> comment_id) -> first();
+        }
+        return view('user-center.aMessage', ['paginator' => $paginator, 'k' => $k]);
     }
 
     function loadAComment(Request $request) {
