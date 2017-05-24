@@ -1,0 +1,6 @@
+.selected {
+    background-color: yellow;
+}
+.notFound {
+    background-color: red;
+}

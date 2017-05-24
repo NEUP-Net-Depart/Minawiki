@@ -10,7 +10,7 @@
     </center>
     <script>
 
-        $.onload(loadMyComments(1));
+        $(document).ready(loadMyComments(1));
 
         function loadMyComments(i) {
             $('#myCommentList .loadmore').remove();

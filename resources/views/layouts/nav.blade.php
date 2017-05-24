@@ -11,8 +11,8 @@
                     <a href="#" data-activates="mobile-demo" class="button-collapse"><i class="material-icons">&#xE5D2;
                             <!--menu--></i></a>
                     <ul id="nav-mobile" class="right hide-on-med-and-down nav-height">
-                        <li>
-                            <form action="http://www.baidu.com" method="get">
+                        <li >
+                            <form action="http://www.baidu.com" method="get" id="search-field">
                                 <div class="input-field">
                                     <input type="hidden" name="page" value="@yield('title')">
                                     <input name="wd" id="search" type="search" placeholder="Search" required class="auto-height">
@@ -43,6 +43,19 @@
             </div>
             @yield('breadcrumb')
         </nav>
+        <script src="/js/search.js"></script>
+        <script>
+            $("#search").bind('input propertychange', (function () {
+                var search_field = $("#search-field");
+                search_field.removeClass('notFound');
+                var text = $("#search").val();
+                // console.log(text);
+                if (highLight(text, $("#content")) === 2) {
+                    search_field.addClass('notFound')
+                }
+
+            }));
+        </script>
     </header>
 
 @endsection
