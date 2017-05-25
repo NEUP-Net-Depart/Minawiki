@@ -85,10 +85,7 @@ class UserController extends Controller
 
     public function loadMessages(Request $request) {
         // TODO: 新消息
-        $paginator = StarMessage::all();
-        foreach($paginator as $t) {
-            $t -> comment_id = Comment::where('id', $t -> comment_id) -> first();
-        }
+        $paginator = StarMessage::where('user_id', 1) -> paginate(1);
         return view('user-center.aMessage', ['paginator' => $paginator]);
     }
 
@@ -99,6 +96,6 @@ class UserController extends Controller
     }
 
     function read(Request $request) {
-        // TODO: 设置某个消息为已读
+        return ($request -> id);
     }
 }

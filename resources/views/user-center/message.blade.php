@@ -20,12 +20,17 @@
         }
 
         function setRead(id) {
-            $('#' + id + '_comment').removeClass('unread').addClass('read');
-            $('#' + id + '_comment' + ' .setRead').remove();
+            $('#' + id).removeClass('unread').addClass('read');
+            $('#' + id  + ' .setRead').remove();
             $.ajax({
-                type: 'post',
-                url: '/user/read',
-                data: '&id=' + id
+                type: 'get',
+                url: '/user/read?id='+ id,
+                success: function(msg) {
+                    console.log(msg);
+                },
+                error: function (xhr) {
+                    Materialize.toast(xhr.status, 3000, 'theme-bg-sec')
+                }
             });
 
             var numberLabel = $('#newMessagesNum');
@@ -36,13 +41,15 @@
                     numberLabel.text(number);
                 } else {
                     numberLabel.remove();
+                    // 不显示, 但是占据原来的空间
+                    $("#setAllReadButton").css('visibility', 'hidden');
                 }
             }
         }
 
         function setAllRead() {
             $('.aMessage').filter('.unread').each(function (index, element) {
-                var id = element.getAttribute('id').split('_')[0];
+                var id = element.getAttribute('id');
                 setRead(id);
             });
         }
@@ -51,7 +58,7 @@
     <div>
         <link rel="stylesheet" href="/css/user-center/messageBox.css">
         <h3 style="text-align: center;">消息盒子</h3>
-        <a href='javascript:setAllRead()' class="setRead">全部标记为已读</a>
+        <a href='javascript:setAllRead()' class="setRead" id = "setAllReadButton">全部标记为已读</a>
         <ul class="collection" id="msgBox">
 
         </ul>
@@ -76,7 +83,7 @@
 </center>\
 ');
             $.ajax({
-                'url' : '/user/loadMessages?startIndex=' + i,
+                'url' : '/user/loadMessages?page=' + i,
                 'type' : 'get',
                 success: function (msg) {
                     $('#msgBox .loading').remove();
