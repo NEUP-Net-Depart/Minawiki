@@ -3,85 +3,74 @@
 namespace App\Http\Controllers;
 
 use App\CommentMessage;
-use App\Star;
 use App\StarMessage;
-use App\User;
-use App\Comment;
+use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\App;
-use Illuminate\Support\Facades\DB;
+use App\Page;
+use App\Comment;
 
 class UserController extends Controller
 {
-    private function userId()
+    public function getMyComments(Request $request)
     {
-        return session('user.id');
+        // TODO: 获得自己的评论
+        $user_id = session('user.id');
+        $comments = Comment::where('user_id', $user_id)
+            ->orderBy('id', 'desc')
+            ->paginate(2);
+
+        foreach ($comments as $c) {
+            $c->page_id = Page::where('id', $c->page_id)->first()->title;
+        }
+        return view('user-center.aComment', ['paginator' => $comments, 'canDelete' => true]);
     }
-    private function userCommentId()
+
+
+    public function loadCommentMe(Request $request)
     {
-        $userId = $this->userId();
-        $contentId = User::find($userId)->comments()->pluck('id');
-        // dd($content_id);
-        return $contentId;
+        // TODO: 收到的评论
+        $user_id = session('user.id');
+        $myComments = CommentMessage::where('user_id', $user_id)
+            ->pluck('comment_id');
+        $comments = Comment::whereIn('id', $myComments)->paginate(10);
+        return view('user-center.aComment', ['paginator' => $comments]);
     }
 
-    private function userCommentContent(){
-        $contentId = $this->userCommentId();
-        $content=null;
-        foreach ($contentId as $value)
-        $content[$value] = Comment::where('id',$value)->pluck('content');
-        //dd($content);
-        return $content;
-    }
-
-    private function userCommentReply(){
-        $commentId = $this->userCommentId();
-        $reply = null;
-        foreach ($commentId as $value)
-            $reply[$value] =Comment::find($value)->replies()->pluck('content');
-      //  dd($reply);
-        return $reply;
-    }
-
-    private function userCommentReplyId(){
-        $commentId = $this->userCommentId();
-        $replyId = null;
-        foreach ($commentId as $value)
-            $replyId[$value] =Comment::find($value)->replies()->pluck('user_id');
-       // dd($replyId);
-        return $replyId;
-    }
-
-    private function userCommentStarNum()
+    public function loadMessages(Request $request)
     {
-        $commentId = $this->userCommentId();
-        $num = null;
-        foreach ($commentId as $value)
-            $num[$value]=Comment::where('id',$value)->value('star_num');
-      //  dd($num);
-        return $num;
+        $list=null;
+        $user_id = session('user.id');
+        $replyComments_id = CommentMessage::where('user_id', $user_id)->pluck('comment_id');
+        $comments = Comment::whereIn('id', $replyComments_id)->get()->toArray();
+        $reply_message= CommentMessage::where('user_id', $user_id)->get()->toArray();
+        $replyCount=count($reply_message);
+        for ($num=0;$num<$replyCount;$num++)
+            $list['comment'.$num]=array_merge($comments[$num],$reply_message[$num]);
+        $starComments_id= StarMessage::where('user_id',$user_id)->pluck('comment_id');
+        $comments = Comment::whereIn('id', $starComments_id)->get()->toArray();
+        $star_message=StarMessage::where('user_id',$user_id)->get()->toArray();
+        $starCount=count($star_message);
+        for($num=0;$num<$starCount;$num++)
+            $list['star'.($num)]=array_merge($comments[$num],$star_message[$num]);
+        array_multisort(array_column($list,'updated_at'),SORT_DESC,$list);
+        $page =$request->get('page',1);
+        $perPage = 10;
+        $offset = ($page * $perPage) - $perPage;
+        $paginator= new LengthAwarePaginator(array_slice($list,$offset,$perPage,true),count($list),$perPage,
+            $page,['path' => $request->url(), 'query' => $request->query()]);
+        return view('user-center.aMessage', ['paginator' => $paginator]);
     }
+    function read(Request $request) {
+        $str=$request->input('id');
+        $type=explode('_',$str)[0];
+        $id=explode('_',$str)[1];
+        if($type=='comment')
+            CommentMessage::where('id',$id)->update(['is_read'=>1]);
+        else
+            StarMessage::where('id',$id)->update(['is_read'=>1]);
+        // TODO: 设置某个消息为已读
 
-    private function userCommentStarUser()
-    {
-        $commentId = $this->userCommentId();
-        $starUser=null;
-        foreach ($commentId as $value)
-        $starUser[$value] = Comment::find($value)->star_messages()->pluck('user_id');
-      //  dd($starUser);
-        return $starUser;
-    }
-    private function userMessage(){
 
-        $message=array('commentId'=>$this->userCommentId(),'content'=>$this->userCommentContent(),
-            'reply'=>$this->userCommentReply(), 'replyId'=>$this->userCommentReplyId(),
-            'starNum'=>$this->userCommentStarNum(),'starUser'=>$this->userCommentStarUser());
-        //dd($message);
-        return $message;
-    }
-    public function visitUser(){
-        $message=$this->userMessage();
-       return view('user',compact('message'));
-    }
 
+    }
 }

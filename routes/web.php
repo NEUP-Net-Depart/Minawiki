@@ -14,7 +14,12 @@
 Route::get('/install', 'InstallController@index');
 Route::post('/install', 'InstallController@install');
 
-Route::get('/user','UserController@visitUser')->middleware('checklogin');
+Route::get('/user/loadMyComments', 'UserController@getMyComments') -> middleware('checklogin');
+Route::get('/user/loadCommentMe', 'UserController@loadCommentMe') -> middleware('checklogin');
+Route::get('/user/loadMessages', 'UserController@loadMessages') -> middleware('checklogin');
+Route::get('/user/read', 'UserController@read');
+
+
 
 Route::get('/{title?}', 'IndexController@index');
 
