@@ -25,7 +25,6 @@ Route::get('/user/loadMyRating', 'UserController@loadMyRating') -> middleware('c
 Route::get('/user/userInfo/loadMyPointDetails', 'UserController@loadMyPointDetails') -> middleware('checklogin');
 Route::get('/user/{subPage}', 'UserController@showUserCenter') -> middleware('checklogin');
 Route::get('/user/', 'UserController@showUserCenter') -> middleware('checklogin');
-
 Route::get('/{title?}', 'IndexController@index');
 
 //Initialize geetest

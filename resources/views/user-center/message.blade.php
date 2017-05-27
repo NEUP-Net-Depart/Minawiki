@@ -65,7 +65,7 @@
     </div>
 
     <script>
-        $.ready(loadMessage(0));
+        $.ready(loadMessage(1));
         function loadMessage(i) {
             $('#msgBox .loadmore').remove();
             $('#msgBox').append('<center class="loading">\

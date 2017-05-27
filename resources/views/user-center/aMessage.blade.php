@@ -1,19 +1,21 @@
-@foreach($paginator as $item)
-
+<!-- texxxx {{ print_r($paginator) }} -->
+@foreach($paginator as $type => $item)
     <!--
-    {{ $type = get_class($item) }}
-    {{ $comment_id = $item -> id }}
+    {{ $comment_id = $item['id']}}
     {{ $item_id = '' }}
-    @if($type == 'App\StarMessage')
-        {{ $item_id = 'star_'.$item -> id }}
-    @elseif($type == 'App\CommentMessage')
-        {{ $item_id = 'comment_'.$item-> id }}
+
+    @if(strncmp($type,'comment', 7) == 0)
+        {{ $item_id = 'comment_'.$item[ 'id' ]}}
+        {{ $type = 'comment' }}
+    @elseif(strncmp($type ,'star', 4) == 0)
+        {{ $item_id = 'star_'.$item[ 'id' ]}}
+        {{ $type = 'star' }}
     @else
         <p>未知类型 {{ $type }}</p>
         @endif
             -->
 
-    @if($item -> is_read == false)
+    @if($item['is_read'] == false)
         <li class="collection-item unread aMessage" id="{{ $item_id }}">
             <a href="javascript: setRead('{{ strval($item_id) }}')" class="setRead">已读</a>
     @else
@@ -21,18 +23,15 @@
             @endif
             <span class="message"> 匿名用户
 
-                @if ($type == 'App\StarMessage')
+                @if ($type == 'star')
 
                     <span id="{{ $item_id }}">
-                赞了你的评论 :{!! $item -> content !!}
-                        @if ($item -> times == 2)
+                赞了你的评论 :{{ $item['content'] }}
+                        @if ($item['star_num'] == 2)
                             两次
                         @endif
                     </span>
-                @elseif ($type == 'App\CommentMessage')
-                    @if ($item['is_read'] == false)
-                        <a href="javascript: setRead('{{ strval($item_id) }}')" class="setRead">已读</a>
-                    @endif
+                @elseif ($type == 'comment')
                     评论了你:
                     <ul class="collection" id="{{ $item_id }}_reply"></ul>
                     <script>
