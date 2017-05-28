@@ -1,4 +1,3 @@
-<!-- texxxx {{ print_r($paginator) }} -->
 @foreach($paginator as $type => $item)
     <!--
     {{ $comment_id = $item['id']}}
@@ -26,7 +25,7 @@
                 @if ($type == 'star')
 
                     <span id="{{ $item_id }}">
-                赞了你的评论 :{{ $item['content'] }}
+                赞了你的评论 :{!!  $item['content'] !!}
                         @if ($item['star_num'] == 2)
                             两次
                         @endif

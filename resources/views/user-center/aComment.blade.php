@@ -1,5 +1,4 @@
 @foreach($paginator as $item)
-
     <li id="{{ $item -> id }}_comment_box" class="collection-item"
         style="text-align: left; list-style: none;" >
         <!-- 第一行显示头像星星和删除按钮 -->
@@ -32,7 +31,7 @@
                     <div class="col s12 reply markdown-body-strict" id="{{ $item -> id }}_reply_content"
                          style=" margin-bottom: 0;">
                         @if(isset($item -> replyTarget) && $item -> replyTarget != null)
-                            <div>{!! $item -> replyTarget -> content !!}</div>
+                            <div class="exciting">{!! $item -> replyTarget -> content !!}</div>
                         @else
                             <div>该评论已被删除</div>
                         @endif

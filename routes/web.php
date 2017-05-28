@@ -23,9 +23,10 @@ Route::get('/user/loadCommentMe', 'UserController@loadCommentMe') -> middleware(
 Route::get('/user/loadMyComments', 'UserController@getMyComments') -> middleware('checklogin');
 Route::get('/user/loadMyRating', 'UserController@loadMyRating') -> middleware('checklogin');
 Route::get('/user/userInfo/loadMyPointDetails', 'UserController@loadMyPointDetails') -> middleware('checklogin');
-Route::get('/user/{subPage}', 'UserController@showUserCenter') -> middleware('checklogin');
-Route::get('/user/', 'UserController@showUserCenter') -> middleware('checklogin');
+Route::get('/user/{subPage?}', 'UserController@showUserCenter') -> middleware('checklogin');
+
 Route::get('/{title?}', 'IndexController@index');
+
 
 //Initialize geetest
 Route::get('auth/geetest','AuthController@getGeetest');

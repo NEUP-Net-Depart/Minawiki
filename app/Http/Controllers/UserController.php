@@ -34,7 +34,6 @@ class UserController extends Controller
      */
     public function getMyComments(Request $request){
         // TODO: 获得自己的评论
-        $this -> validate($request, ['page' => 'required']);
         $comments = Comment::where('user_id', $request -> session() -> get('user.id'))
             -> orderBy('id', 'desc')
             -> paginate(2);
