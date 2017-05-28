@@ -11,7 +11,7 @@
 }
 
 .message > span > p {
-    background-color: #eaeaea;
+    font-style: italic;
     margin: 0;
     white-space: nowrap;
     display: inline;
