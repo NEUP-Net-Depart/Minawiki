@@ -42,13 +42,13 @@ class UserController extends Controller
         $replyComments_id = CommentMessage::where('user_id', $user_id)->pluck('comment_id');
         $comments = Comment::whereIn('id', $replyComments_id)->get()->toArray();
         $reply_message= CommentMessage::where('user_id', $user_id)->get()->toArray();
-        $replyCount=count($reply_message);
+        $replyCount=count($comments);
         for ($num=0;$num<$replyCount;$num++)
             $list['comment'.$num]=array_merge($comments[$num],$reply_message[$num]);
         $starComments_id= StarMessage::where('user_id',$user_id)->pluck('comment_id');
         $comments = Comment::whereIn('id', $starComments_id)->get()->toArray();
         $star_message=StarMessage::where('user_id',$user_id)->get()->toArray();
-        $starCount=count($star_message);
+        $starCount=count($comments);
         for($num=0;$num<$starCount;$num++)
             $list['star'.($num)]=array_merge($comments[$num],$star_message[$num]);
         array_multisort(array_column($list,'updated_at'),SORT_DESC,$list);
