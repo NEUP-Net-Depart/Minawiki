@@ -11,16 +11,15 @@ use App\Comment;
 
 class UserController extends Controller
 {
-    public function getMyComments(Request $request)
-    {
+    public function getMyComments(Request $request){
         // TODO: 获得自己的评论
-        $user_id = session('user.id');
-        $comments = Comment::where('user_id', $user_id)
-            ->orderBy('id', 'desc')
-            ->paginate(2);
 
-        foreach ($comments as $c) {
-            $c->page_id = Page::where('id', $c->page_id)->first()->title;
+        $comments = Comment::where('user_id', $request -> session() -> get('user.id'))
+            -> orderBy('id', 'desc')
+            -> paginate(2);
+
+        foreach($comments as $c) {
+            $c -> page_id = Page::where('id', $c -> page_id) -> first() -> title;
         }
         return view('user-center.aComment', ['paginator' => $comments, 'canDelete' => true]);
     }
