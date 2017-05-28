@@ -164,7 +164,7 @@ class AuthController extends Controller
         if (env('APP_ENV') != 'testing') {
             //Validate text captcha
             if (!isset($request->captcha) || !$request->session()->has('captcha.text') ||
-                !$request->captcha == $request->session()->get('captcha.text')
+                $request->captcha != $request->session()->get('captcha.text')
             )
                 return json_encode(array('result' => 'false', 'msg' => 'invalid captcha'));
             if (!$request->session()->has('captcha.timestamp') ||
@@ -338,7 +338,7 @@ class AuthController extends Controller
 
         $apikey = env('YUNPIAN_KEY');
         $mobile = $request->tel;
-        $text = "【东大水站】您的验证码是" . $captcha;
+        $text = "【东大维基】您的验证码是" . $captcha;
 
         $data = array('text' => $text, 'apikey' => $apikey, 'mobile' => $mobile);
         curl_setopt($ch, CURLOPT_URL, 'https://sms.yunpian.com/v2/sms/single_send.json');
@@ -370,7 +370,7 @@ class AuthController extends Controller
         if (env('APP_ENV') != 'testing') {
             //Validate text captcha
             if (!isset($request->captcha) || !$request->session()->has('captcha.text') ||
-                !$request->captcha == $request->session()->get('captcha.text')
+                $request->captcha != $request->session()->get('captcha.text')
             )
                 return json_encode(array('result' => 'false', 'msg' => 'invalid captcha'));
             if (!$request->session()->has('captcha.timestamp') ||
