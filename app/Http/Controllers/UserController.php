@@ -62,7 +62,7 @@ class UserController extends Controller
     }
 
     public function loadMyRating(Request $request) {
-        // TODO: 获取我的评分
+        // TODO: 获取我的评分(数组仅做前段测试用)
         $paginator[0]['id'] = 1;
         $paginator[0]['page_id'] = 'NEUWIKI';
         $paginator[0]['rateitem'] = 'LALALA';
