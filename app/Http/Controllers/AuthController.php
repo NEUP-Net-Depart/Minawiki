@@ -20,14 +20,14 @@ class AuthController extends Controller
      */
     public function showRegisterView(Request $request)
     {
-        if($request->session()->has('user.id')) {
+        if ($request->session()->has('user.id')) {
             if (isset($request->continue))
                 return redirect($request->continue);
             else
                 return redirect('/');
         }
-        if(isset($request->continue))
-            return view('auth.register', [ 'continue' => $request->continue ]);
+        if (isset($request->continue))
+            return view('auth.register', ['continue' => $request->continue]);
         else
             return view('auth.register');
     }
@@ -38,36 +38,35 @@ class AuthController extends Controller
      */
     public function showLoginView(Request $request)
     {
-        if($request->session()->has('user.id')) {
+        if ($request->session()->has('user.id')) {
             if (isset($request->continue))
                 return redirect($request->continue);
             else
                 return redirect('/');
         }
-        if(isset($request->continue))
-            return view('auth.login', [ 'continue' => $request->continue ]);
+        if (isset($request->continue))
+            return view('auth.login', ['continue' => $request->continue]);
         else
             return view('auth.login');
     }
 
     public function showConfirmView(Request $request)
     {
-        if($request->session()->has('user.sessionReality') && $request->session()->get('user.sessionReality')) {
+        if ($request->session()->has('user.sessionReality') && $request->session()->get('user.sessionReality')) {
             if (isset($request->continue))
                 return redirect($request->continue);
             else
                 return redirect('/');
-        }
-        else if(!$request->session()->has('user.id')) {
+        } else if (!$request->session()->has('user.id')) {
             if (isset($request->continue))
                 return redirect('/auth/login?continue=' . urlencode($request->continue));
             else
                 return redirect('/auth/login');
         }
-        if(isset($request->continue))
-            return view('auth.enterpass', [ 'uid' => $request->session()->get('user.id'), 'continue' => $request->continue ]);
+        if (isset($request->continue))
+            return view('auth.enterpass', ['uid' => $request->session()->get('user.id'), 'continue' => $request->continue]);
         else
-            return view('auth.enterpass', [ 'uid' => $request->session()->get('user.id') ]);
+            return view('auth.enterpass', ['uid' => $request->session()->get('user.id')]);
     }
 
     /**
@@ -76,7 +75,7 @@ class AuthController extends Controller
      */
     public function showForgetView(Request $request)
     {
-        if($request->session()->has('user.id')) {
+        if ($request->session()->has('user.id')) {
             if (isset($request->continue))
                 return redirect($request->continue);
             else
@@ -89,42 +88,44 @@ class AuthController extends Controller
      * @param Request $request
      * @return string(json)
      */
-    public function sendTextCaptcha(Request $request)
+    private function sendTextCaptcha(Request $request)
     {
-        //Check Geetest status
-        if(!$this->geetestValidate($request))
-            return redirect('/');
-        //Check last sent time
-        if($request->session()->has('captcha.timestamp'))
-        {
-            if(time() - intval($request->session()->get('captcha.timestamp')) <= 25)
-                return json_encode(array('result' => 'false', 'msg' => 'send interval too short'));
+        if (env('APP_ENV') != 'testing' && env('APP_ENV') != 'local') {
+            //Check Geetest status
+            if (!$this->geetestValidate($request))
+                return redirect('/');
+            //Check last sent time
+            if ($request->session()->has('captcha.timestamp')) {
+                if (time() - intval($request->session()->get('captcha.timestamp')) <= 25)
+                    return json_encode(array('result' => 'false', 'msg' => 'send interval too short'));
+            }
+
+            //Generate random captcha
+            $captcha = "";
+            for ($i = 0; $i < 6; ++$i)
+                $captcha .= strval(rand(1, 9));
+            //Save info to session
+            $request->session()->put('captcha.tel', $request->tel);
+            $request->session()->put('captcha.text', $captcha);
+            $request->session()->put('captcha.timestamp', time());
+            //Post to Yunpian api
+            $ch = curl_init();
+
+            $apikey = env('YUNPIAN_KEY');
+            $mobile = $request->tel;
+            $text = "【东大维基】您的验证码是" . $captcha . "。如非本人操作，请忽略本短信";
+
+            $data = array('text' => $text, 'apikey' => $apikey, 'mobile' => $mobile);
+            curl_setopt($ch, CURLOPT_URL, 'https://sms.yunpian.com/v2/sms/single_send.json');
+            curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($data));
+            curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+
+            return strval(curl_exec($ch));
         }
-
-        //Check if tel exist
-        if (User::where('tel', $request->tel)->count() > 0)
-            return json_encode(array('result' => 'false', 'msg' => 'telephone already exists'));
-        //Generate random captcha
-        $captcha = "";
-        for ($i = 0; $i < 6; ++$i)
-            $captcha .= strval(rand(1, 9));
-        //Save info to session
-        $request->session()->put('captcha.tel', $request->tel);
-        $request->session()->put('captcha.text', $captcha);
-        $request->session()->put('captcha.timestamp', time());
-        //Post to Yunpian api
-        $ch = curl_init();
-
-        $apikey = env('YUNPIAN_KEY');
-        $mobile = $request->tel;
-        $text = "【东大维基】您的验证码是" . $captcha . "。如非本人操作，请忽略本短信";
-
-        $data = array('text' => $text, 'apikey' => $apikey, 'mobile' => $mobile);
-        curl_setopt($ch, CURLOPT_URL, 'https://sms.yunpian.com/v2/sms/single_send.json');
-        curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($data));
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-
-        return strval(curl_exec($ch));
+        else {
+            $request->session()->put('captcha.tel', $request->tel);
+            return json_encode([]);
+        }
     }
 
     /**
@@ -147,7 +148,7 @@ class AuthController extends Controller
      */
     public function addUser(Request $request)
     {
-        if (env('APP_ENV') != 'testing')
+        if (env('APP_ENV') != 'testing' && env('APP_ENV') != 'local')
             $this->validate($request, [
                 'tel' => 'required',
                 'password' => 'required',
@@ -161,7 +162,7 @@ class AuthController extends Controller
         //Check if tel distorted
         if ($request->tel != $request->session()->get('captcha.tel'))
             return json_encode(array('result' => 'false', 'msg' => 'distorted telephone'));
-        if (env('APP_ENV') != 'testing') {
+        if (env('APP_ENV') != 'testing' && env('APP_ENV') != 'local') {
             //Validate text captcha
             if (!isset($request->captcha) || !$request->session()->has('captcha.text') ||
                 $request->captcha != $request->session()->get('captcha.text')
@@ -235,8 +236,7 @@ class AuthController extends Controller
             $cookie = Cookie::make('user.token', $user->token, 2 * 30 * 24 * 60);
             return response(json_encode(array('result' => 'true', 'msg' => 'success')))
                 ->withCookie($cookie);
-        }
-        else
+        } else
             return json_encode(array('result' => 'false', 'msg' => 'wrong'));
     }
 
@@ -245,9 +245,9 @@ class AuthController extends Controller
      */
     public function confirmLogin(Request $request)
     {
-        if(!$request->session()->has('user.id')) {
+        if (!$request->session()->has('user.id')) {
             if (isset($request->continue))
-                return redirect('/auth/login?continue=' . urlencode($request->continue) );
+                return redirect('/auth/login?continue=' . urlencode($request->continue));
             else
                 return redirect('/auth/login');
         }
@@ -276,8 +276,7 @@ class AuthController extends Controller
             $cookie = Cookie::make('user.token', $user->token, 2 * 30 * 24 * 60);
             return response(json_encode(array('result' => 'true', 'msg' => 'success')))
                 ->withCookie($cookie);
-        }
-        else {
+        } else {
             //Clear cookie and session
             $cookie = Cookie::forget('user.token');
             $request->session()->forget('user.id');
@@ -310,42 +309,27 @@ class AuthController extends Controller
      * @param Request $request
      * @return string(json)
      */
+    public function sendRegTextCaptcha(Request $request)
+    {
+        //Check if tel exist
+        if (User::where('tel', $request->tel)->count() > 0)
+            return json_encode(array('result' => 'false', 'msg' => 'telephone already exists'));
+
+        return $this->sendTextCaptcha($request);
+
+    }
+
+    /**
+     * @param Request $request
+     * @return string(json)
+     */
     public function sendForgetTextCaptcha(Request $request)
     {
-        //Check Geetest status
-        if(!$this->geetestValidate($request))
-            return redirect('/');
-        //Check last sent time
-        if($request->session()->has('captcha.timestamp'))
-        {
-            if(time() - intval($request->session()->get('captcha.timestamp')) <= 25)
-                return json_encode(array('result' => 'false', 'msg' => 'send interval too short'));
-        }
-
         //Check if tel exists
         if (User::where('tel', $request->tel)->count() == 0)
             return json_encode(array('result' => 'false', 'msg' => 'wrong telephone'));
-        //Generate random captcha
-        $captcha = "";
-        for ($i = 0; $i < 6; ++$i)
-            $captcha .= strval(rand(1, 9));
-        //Save info to session
-        $request->session()->put('captcha.tel', $request->tel);
-        $request->session()->put('captcha.text', $captcha);
-        $request->session()->put('captcha.timestamp', time());
-        //Post to Yunpian api
-        $ch = curl_init();
 
-        $apikey = env('YUNPIAN_KEY');
-        $mobile = $request->tel;
-        $text = "【东大维基】您的验证码是" . $captcha;
-
-        $data = array('text' => $text, 'apikey' => $apikey, 'mobile' => $mobile);
-        curl_setopt($ch, CURLOPT_URL, 'https://sms.yunpian.com/v2/sms/single_send.json');
-        curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($data));
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-
-        return strval(curl_exec($ch));
+        return $this->sendTextCaptcha($request);
     }
 
     /**
@@ -353,7 +337,7 @@ class AuthController extends Controller
      */
     public function changePassword(Request $request)
     {
-        if (env('APP_ENV') != 'testing')
+        if (env('APP_ENV') != 'testing' && env('APP_ENV') != 'local')
             $this->validate($request, [
                 'tel' => 'required',
                 'password' => 'required',
@@ -367,7 +351,7 @@ class AuthController extends Controller
         //Check if tel distorted
         if ($request->tel != $request->session()->get('captcha.tel'))
             return json_encode(array('result' => 'false', 'msg' => 'distorted telephone'));
-        if (env('APP_ENV') != 'testing') {
+        if (env('APP_ENV') != 'testing' && env('APP_ENV') != 'local') {
             //Validate text captcha
             if (!isset($request->captcha) || !$request->session()->has('captcha.text') ||
                 $request->captcha != $request->session()->get('captcha.text')

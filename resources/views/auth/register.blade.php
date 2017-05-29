@@ -64,7 +64,7 @@
                         Materialize.toast('验证码已发送！撒花', 3000, 'theme-bg-sec');
                         runCount(30);
                     }
-                    else if(dataObj.code > 0 || dataObj.msg == "send interval too short")
+                    else if(dataObj.code > 0 && dataObj.msg == "send interval too short")
                         Materialize.toast('你发送的太快了，请稍后再试吧', 3000, 'theme-bg-sec');
                     else if(dataObj.result == "false")
                         Materialize.toast('您已注册，请直接登录', 3000, 'theme-bg-sec');
