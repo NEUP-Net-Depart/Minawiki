@@ -3,7 +3,9 @@
 @section('user-center-content')
 
     <h3 style="text-align: center">收到的赞</h3>
-    <a class="setRead" id="setAllReadButton_star" href="javascript: setAllRead('star')">全部设置为已读</a>
+    <span class="star-badge"></span>
+    <a class="setRead" id="setAllReadButton_star" href="javascript: setAllRead('star')">
+        <i class="material-icons">done_all</i></a>
     <ul class="collection messageList" id="starMeList">
     </ul>
 

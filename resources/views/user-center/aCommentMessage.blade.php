@@ -20,7 +20,9 @@
                     <!-- 星星和已读 -->
                     <a class=" secondary-content"><i class="material-icons">star</i><span
                                 class="star-badge">{{ $item -> comment -> star_num }}</span></a>
-                    <a class="setRead" href="javascript: setRead('{{ strval('comment_'.$item -> id) }}')">已读</a>
+                    <a class="setRead" href="javascript: setRead('{{ strval('comment_'.$item -> id) }}')">
+                        <i class="material-icons">done</i>
+                    </a>
                 </div>
             </div>
             <div class="row" style="margin-bottom: 0;">

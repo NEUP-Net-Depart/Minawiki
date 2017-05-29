@@ -3,7 +3,11 @@
 @section('user-center-content')
 
         <h2 class="center">收到的评论</h2>
-    <a class="setRead" href="javascript: setAllRead('comment')">全部标记为已读</a>
+
+        <span class="star-badge"></span>
+    <a class="setRead" href="javascript: setAllRead('comment')">
+        <i class="material-icons">done_all</i></a>
+
         <ul class="collection theme-dark-a messageList" id="commentMeList">
 
         </ul>

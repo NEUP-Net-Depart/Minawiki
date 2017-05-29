@@ -13,7 +13,8 @@
             @endif
             </span>
 
-            <a class="setRead" href="javascript: setRead('{{ 'star_'.strval($item -> id) }}')">已读</a>
+            <a class="setRead" href="javascript: setRead('{{ 'star_'.strval($item -> id) }}')">
+                <i class="material-icons">done</i></a>
 
         </li>
 
