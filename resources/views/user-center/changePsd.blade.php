@@ -52,6 +52,8 @@
                 return ($(this).attr("name") + '=' + $(this).val());
             }).get().join("&");
 
+            console.log(str_data);
+
             if (newPsd != repeat) {
                 Materialize.toast("两次密码不一致", 3000, 'theme-bg-sec');
             } else {

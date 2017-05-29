@@ -51,4 +51,13 @@ class Comment extends Model
     {
         return $this->hasMany('App\StarMessage');
     }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     * 获得该评论的页面模型
+     */
+    public function page()
+    {
+        return $this -> hasOne('App\Page');
+    }
 }

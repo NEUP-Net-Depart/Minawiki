@@ -18,11 +18,16 @@
             <li class="collection-item">
                 <a href="/user/myRate">我的评分</a>
             </li>
+
+            {{--<li class="collection-item">--}}
+                {{--<a href="/user/message">消息盒子</a>--}}
+                {{--@if(isset($newMessageNumber) and $newMessageNumber > 0)--}}
+                {{--<span id="newMessagesNum" class="theme-dark">{{ $newMessageNumber }}</span>--}}
+                    {{--@endif--}}
+            {{--</li>--}}
+
             <li class="collection-item">
-                <a href="/user/message">消息盒子</a>
-                @if(isset($newMessageNumber) and $newMessageNumber > 0)
-                <span id="newMessagesNum" class="theme-dark">{{ $newMessageNumber }}</span>
-                    @endif
+                <a href="/user/starMe">收到的赞</a>
             </li>
             <li class="collection-item" >
                 <a href="/user/changePsd">修改密码</a>

@@ -1,3 +1,4 @@
+<!-- 在天国的消息盒子 -->
 @extends('user-center.layout')
 @section('title', '消息盒子')
 @section('user-center-content')
@@ -60,42 +61,12 @@
         <link rel="stylesheet" href="/css/user-center/messageBox.css">
         <h3 style="text-align: center;">消息盒子</h3>
         <a href='javascript:setAllRead()' class="setRead" id = "setAllReadButton">全部标记为已读</a>
-        <ul class="collection" id="msgBox">
+        <ul class="collection" id="messageList">
 
         </ul>
     </div>
 
-    <script>
-        $.ready(loadMessage(1));
-        function loadMessage(i) {
-            $('#msgBox .loadmore').remove();
-            $('#msgBox').append('<center class="loading">\
-<div class="preloader-wrapper small active center" style="margin-top: 10px; margin-bottom: 10px">\
-<div class="spinner-layer theme-border-dark">\
-<div class="circle-clipper left">\
-<div class="circle"></div>\
-</div><div class="gap-patch">\
-<div class="circle"></div>\
-</div><div class="circle-clipper right">\
-<div class="circle"></div>\
-</div>\
-</div>\
-</div>\
-</center>\
-');
-            $.ajax({
-                'url' : '/user/loadMessages?page=' + i,
-                'type' : 'get',
-                success: function (msg) {
-                    $('#msgBox .loading').remove();
-                    $('#msgBox').append(msg);
-
-                },
-                error: function(xhr) {
-                    Meterialize.toast('服务器错误: ' + xhr.status, 3000, 'theme-bg-sec');
-                }
-            })
-        }
-    </script>
+    <script src="/js/loadMore.js"></script>
+    <script>$.ready(loadMessage("message", 1));</script>
 
 @endsection

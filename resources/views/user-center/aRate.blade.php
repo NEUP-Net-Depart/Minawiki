@@ -39,7 +39,7 @@
     <li class="collection-item" style="text-align: center"> 没有更多评分了 </li>
     @else
     <li class="collection-item loadmore" style="text-align: center">
-        <a href="javascript:loadMyRating('{{  strval($now + 1) }}')" >加载更多评分</a>
+        <a href="javascript:loadMore('{{ "myRating"}}','{{  strval($now + 1) }}')" >加载更多评分</a>
     </li>
     @endif
 

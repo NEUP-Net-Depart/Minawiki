@@ -25,13 +25,14 @@
     </div>
         <hr class="line">
     </div>
+    <script src="/js/loadMore.js"></script>
     <script>
         $("#pointDetail").hover( function () {
             if ($("#pointDetail").hasClass('hover')) {
                 var list = $('#myPointDetailList');
                 list.slideDown(200);
                 if (! $(list).hasClass('loaded')) {
-                    load();
+                    loadMore('myPointDetail', 1);
                     $(list).addClass('loaded');
                 }
 
@@ -45,22 +46,10 @@
             var list = $('#myPointDetailList');
             list.slideDown(200);
             if (! $(list).hasClass('loaded')) {
-                load();
+                loadMore('myPointDetail', 1);
                 $(list).addClass('loaded');
             }
         });
-        function load() {
-            $.ajax({
-                type: 'GET',
-                url: '/user/userInfo/loadMyPointDetails',
-                success: function (msg) {
-                    $("#myPointDetailList").append(msg);
-                },
-                error: function (xhr) {
-                    $("#myPointDetailList").append("<center>服务器出错</center>");
-                }
-            })
-        }
 
     </script>
 

@@ -136,5 +136,11 @@ class UserController extends Controller
             StarMessage::where('id',$id)->update(['is_read'=>1]);
         // TODO: 设置某个消息为已读
     }
+
+    function loadStarMe(Request $request) {
+        $user_id = session('user.id');
+        $paginator = StarMessage::where('user_id', $user_id) -> paginate(1);
+        return view('user-center.aStar', ['paginator' => $paginator]);
+    }
 }
 
