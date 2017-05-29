@@ -1,7 +1,6 @@
 @foreach($paginator as $item)
 
-    <li id="{{ $item['id'] }}_rating_box" class="collection-item"
-        style="text-align: left; list-style: none;" >
+    <li id="{{ $item['id'] }}_rating_box" class="collection-item">
         <div class="row" style="margin-bottom:5px;">
             <div class="col rating_img" style="padding-right: 0;">
                 <!-- 头像 -->

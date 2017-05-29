@@ -22,10 +22,10 @@ class UserController extends Controller
         $user_id = $request -> session() -> get('user.id');
         // TODO: 获得用户的积分
         // TODO: 获得用户的未读消息数
-        $unReads = CommentMessage::where('user_id', $user_id) -> where('is_read', false) -> count();
-        $unReads += StarMessage::where('user_id', $user_id) -> where('is_read', false) -> count();
-        return view('user-center.'.$subPage, ['uid' => $user_id,
-            'tel' => $request -> session() -> get('user.tel'), 'point' => 60, 'newMessageNumber' => $unReads]);
+        $newCommentNumber = CommentMessage::where('user_id', $user_id) -> where('is_read', false) -> count();
+        $newStarNumber = StarMessage::where('user_id', $user_id) -> where('is_read', false) -> count();
+        return view('user-center.'.$subPage, ['point' => 60, 'uid' => $user_id,
+            'newCommentNumber' => $newCommentNumber, 'newStarNumber' => $newStarNumber]);
     }
 
     /**
@@ -37,10 +37,6 @@ class UserController extends Controller
         $comments = Comment::where('user_id', $request -> session() -> get('user.id'))
             -> orderBy('id', 'desc')
             -> paginate(2);
-
-        foreach($comments as $c) {
-            $c -> page_id = Page::where('id', $c -> page_id) -> first() -> title;
-        }
         return view('user-center.aComment', ['paginator' => $comments, 'canDelete' => true]);
     }
 
@@ -75,12 +71,9 @@ class UserController extends Controller
 
     public function loadCommentMe(Request $request) {
         // TODO: 收到的评论
-        $myComments = CommentMessage::where('user_id', $request -> session() -> get('user.id'))
-            -> pluck('comment_id');
+        $comments = CommentMessage::where('user_id', $request -> session() -> get('user.id')) -> paginate(1);
 
-        $comments = Comment::whereIn('reply_id', $myComments) -> paginate(10);
-
-        return view('user-center.aComment', ['paginator' => $comments]);
+        return view('user-center.aCommentMessage', ['paginator' => $comments]);
     }
 
     public function loadMessages(Request $request)

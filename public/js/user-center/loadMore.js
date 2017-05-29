@@ -3,9 +3,16 @@
  * 各种加载更多
  */
 
+/**
+ * 加载更多
+ * 规定容器(列表)标签的id为  title+'List'
+ * 向服务器请求的地址为  'load' + title (遵循驼峰命名, title首字母为大写)
+ * @param title
+ * @param page
+ */
 function loadMore(title, page) {
     var container = title + 'List';
-    title = title.charAt(0).toUpperCase() + title.slice(1);
+    title = title.charAt(0).toUpperCase() + title.slice(1); // 将title的首字母转化成大写
     var url = "load" + title+"?page=" + page;
     console.log(container+"   " + url);
     $("#" + container + " .loadMore").remove();
@@ -35,5 +42,4 @@ function loadMore(title, page) {
             Materialize.toast('服务器错误:'+xhr.status, 3000, 'theme-bg-sec');
         }
     })
-
 }

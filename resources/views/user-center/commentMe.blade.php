@@ -2,13 +2,15 @@
 @section('title', '收到的评论')
 @section('user-center-content')
 
-    <center>
-        <h2>收到的评论</h2>
-        <ul class="collection theme-dark-a" id="myCommentList">
+        <h2 class="center">收到的评论</h2>
+    <a class="setRead" href="javascript: setAllRead('comment')">全部标记为已读</a>
+        <ul class="collection theme-dark-a messageList" id="commentMeList">
 
         </ul>
-    </center>
-    <script src="/js/loadMore.js"></script>
-    <script>$(document).ready(loadMore("myComment", 1));</script>
+
+        <script src="/js/user-center/loadMore.js"></script>
+        <script src="/js/user-center/message.js"></script>
+    <script>$(document).ready(loadMore("commentMe", 1));</script>
+
 
 @stop

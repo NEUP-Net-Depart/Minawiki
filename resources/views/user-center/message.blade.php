@@ -20,41 +20,7 @@
             return t;
         }
 
-        function setRead(id) {
-            $('#' + id).removeClass('unread').addClass('read');
-            $('#' + id  + ' .setRead').remove();
-            $.ajax({
-                type: 'post',
-                url: '/user/read',
-                data: 'id=' + id,
-                success: function(msg) {
-                    console.log(msg);
-                },
-                error: function (xhr) {
-                    Materialize.toast(xhr.status, 3000, 'theme-bg-sec')
-                }
-            });
 
-            var numberLabel = $('#newMessagesNum');
-            if (numberLabel !== []) {
-                var number = Number(numberLabel.text());
-                number -= 1;
-                if (number > 0) {
-                    numberLabel.text(number);
-                } else {
-                    numberLabel.remove();
-                    // 不显示, 但是占据原来的空间
-                    $("#setAllReadButton").css('visibility', 'hidden');
-                }
-            }
-        }
-
-        function setAllRead() {
-            $('.aMessage').filter('.unread').each(function (index, element) {
-                var id = element.getAttribute('id');
-                setRead(id);
-            });
-        }
     </script>
 
     <div>
@@ -66,7 +32,8 @@
         </ul>
     </div>
 
-    <script src="/js/loadMore.js"></script>
+    <script src="/js/user-center/loadMore.js"></script>
+    <script src="/js/user-center/message.js"></script>
     <script>$.ready(loadMessage("message", 1));</script>
 
 @endsection

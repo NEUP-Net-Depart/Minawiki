@@ -25,7 +25,7 @@
     </div>
         <hr class="line">
     </div>
-    <script src="/js/loadMore.js"></script>
+    <script src="/js/user-center/loadMore.js"></script>
     <script>
         $("#pointDetail").hover( function () {
             if ($("#pointDetail").hasClass('hover')) {

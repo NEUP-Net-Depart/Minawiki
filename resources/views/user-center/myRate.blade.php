@@ -9,7 +9,8 @@
 
         </ul>
     </div>
-    <script src="/js/loadMore.js"></script>
+
+    <script src="/js/user-center/loadMore.js"></script>
     <script>
         $(document).ready(loadMore("myRating", 1));
 
