@@ -2,7 +2,7 @@
     @if ($item -> is_read == false)
         <li class="message comment_message collection-item unread" id="comment_{{ $item -> id }}">
     @else
-        <li class="message comment_message collection-item read" id="comment_{{ $item -> id }}" >
+        <li class="message comment_message collection-item read" id="comment_{{ $item -> id }}">
         @endif
         <!-- 第一行显示头像星星和删除按钮 -->
             <div class="row" style="margin-bottom:5px;">
@@ -18,11 +18,34 @@
                 </div>
                 <div class="col right">
                     <!-- 星星和已读 -->
-                    <a class=" secondary-content"><i class="material-icons">star</i><span
-                                class="star-badge">{{ $item -> comment -> star_num }}</span></a>
-                    <a class="setRead" href="javascript: setRead('{{ strval('comment_'.$item -> id) }}')">
+                    <a class="setRead secondary-content"
+                       href="javascript: setRead('{{ strval('comment_'.$item -> id) }}')">
                         <i class="material-icons">done</i>
                     </a>
+
+
+                    @if($item -> user_star_num == 0)
+                        <input id="{{ $item -> comment -> id }}_star_casenum" style="display: none" value="0">
+                        <a class="secondary-content"
+                           href="javascript: star('{{$item -> comment -> page -> title}}', '{{ $item -> comment -> id }}')"><i
+                                    class="material-icons" id="{{$item -> comment -> id}}_star">&#xE83A;</i><span
+                                    class="star-badge" id="{{ $item -> comment ->id }}_star_badge" style="display: none;">0</span></a>
+                    @elseif($item -> user_star_num == 1)
+                        <input id="{{ $item -> comment -> id }}_star_casenum" style="display: none" value="1">
+                        <a class="secondary-content"
+                           href="javascript: star('{{$item -> comment -> page -> title}}', '{{ $item -> comment -> id }}')"><i
+                                    class="material-icons" id="{{$item -> comment -> id}}_star">&#xE838;</i><span
+                                    class="star-badge" id="{{ $item -> comment ->id }}_star_badge">1</span></a>
+                    @elseif($item -> user_star_num == 2)
+                        <input id="{{ $item -> comment -> id }}_star_casenum" style="display: none" value="2">
+                        <a class="secondary-content"
+                           href="javascript: star('{{$item -> comment -> page -> title}}', '{{ $item -> comment -> id }}')"><i
+                                    class="material-icons" id="{{$item -> comment -> id}}_star">&#xE838;</i><span
+                                    class="star-badge" id="{{ $item -> comment ->id }}_star_badge">2</span></a>
+                    @endif
+
+
+                    <a class="secondary-content"><i class="material-icons">&#xE15E;</i></a>
                 </div>
             </div>
             <div class="row" style="margin-bottom: 0;">

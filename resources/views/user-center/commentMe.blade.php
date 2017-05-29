@@ -15,6 +15,7 @@
         <script src="/js/user-center/loadMore.js"></script>
         <script src="/js/user-center/message.js"></script>
     <script>$(document).ready(loadMore("commentMe", 1));</script>
+    <script src="/js/user-center/commentOperate.js"></script>
 
 
 @stop
