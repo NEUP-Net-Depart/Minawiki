@@ -43,7 +43,6 @@
 
         @endforeach
 
-
         @if($paginator -> lastPage() > 1 && $paginator -> currentPage() != $paginator -> lastPage())
             <a href="javascript:loadMessage('{{ strval($paginator -> currentPage() + 1) }}')">
                 <li style="text-align: center" class="collection-item loadMore">加载更多</li>

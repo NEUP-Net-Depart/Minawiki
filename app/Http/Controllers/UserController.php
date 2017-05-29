@@ -121,6 +121,7 @@ class UserController extends Controller
         $comment = Comment::where('id', $request -> comment_id) -> paginate(10);
         foreach($comment as $c) {
             $c -> page_id = Page::where('id', $c -> page_id) -> first() -> title;
+            $c -> replyTarget = null;
         }
         return view('user-center.aComment', ['paginator' => $comment, 'dontShowFooter' => true]);
     }
@@ -134,7 +135,6 @@ class UserController extends Controller
         else
             StarMessage::where('id',$id)->update(['is_read'=>1]);
         // TODO: 设置某个消息为已读
-
     }
 }
 

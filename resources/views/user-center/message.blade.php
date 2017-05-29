@@ -23,8 +23,9 @@
             $('#' + id).removeClass('unread').addClass('read');
             $('#' + id  + ' .setRead').remove();
             $.ajax({
-                type: 'get',
-                url: '/user/read?id='+ id,
+                type: 'post',
+                url: '/user/read',
+                data: 'id=' + id,
                 success: function(msg) {
                     console.log(msg);
                 },

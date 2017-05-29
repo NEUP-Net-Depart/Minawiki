@@ -95,7 +95,7 @@ class AuthTest extends BrowserKitTestCase
         $this->withSession(['user.id' => '1'])
             ->visit('/')
             ->see('#1')
-            ->click('#1');
+            ->click('退出');
         $this->visit('/auth/forget')
             ->see('重置密码')
             ->type('23333333333', 'tel')

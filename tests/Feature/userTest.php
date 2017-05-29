@@ -29,8 +29,14 @@ class userTest extends BrowserKitTestCase
 
     public function testComment()
     {
-        $this->withSession(['user.id'=>'1'])
+        $this->withSession(['user.id'=> 1 ])
             ->visit('/user/loadMyComments')
             ->see('rere1');
+    }
+
+    public function testFrontend() {
+        $this -> withSession(['user.id' => 1])
+            -> visit('/user')
+            -> see('个人中心');
     }
 }
