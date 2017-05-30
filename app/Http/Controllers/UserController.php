@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\CommentMessage;
+use App\User;
 use App\StarMessage;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Http\Request;
@@ -37,26 +38,17 @@ class UserController extends Controller
 
     public function loadMessages(Request $request)
     {
-        $list=null;
+
         $user_id = session('user.id');
-        $replyComments_id = CommentMessage::where('user_id', $user_id)->pluck('comment_id');
-        $comments = Comment::whereIn('id', $replyComments_id)->get()->toArray();
-        $reply_message= CommentMessage::where('user_id', $user_id)->get()->toArray();
-        $replyCount=count($comments);
-        for ($num=0;$num<$replyCount;$num++)
-            $list['comment'.$num]=array_merge($comments[$num],$reply_message[$num]);
-        $starComments_id= StarMessage::where('user_id',$user_id)->pluck('comment_id');
-        $comments = Comment::whereIn('id', $starComments_id)->get()->toArray();
-        $star_message=StarMessage::where('user_id',$user_id)->get()->toArray();
-        $starCount=count($comments);
-        for($num=0;$num<$starCount;$num++)
-            $list['star'.($num)]=array_merge($comments[$num],$star_message[$num]);
-        array_multisort(array_column($list,'updated_at'),SORT_DESC,$list);
-        $page =$request->get('page',1);
-        $perPage = 10;
-        $offset = ($page * $perPage) - $perPage;
-        $paginator= new LengthAwarePaginator(array_slice($list,$offset,$perPage,true),count($list),$perPage,
-            $page,['path' => $request->url(), 'query' => $request->query()]);
+        $starPaginator=StarMessage::with('comment')
+            ->where('user_id',$user_id)
+            -> orderBy('updated_at', 'desc')
+            ->paginate(2);
+        $replyMessage=CommentMessage::with('comment')
+            ->where('user_id',$user_id)
+            -> orderBy('updated_at', 'desc')
+            ->paginate(2);
+        dd($starPaginator,$replyMessage);
         return view('user-center.aMessage', ['paginator' => $paginator]);
     }
     function read(Request $request) {
