@@ -8,7 +8,8 @@
                      class="circle avatar-circle">
             </div>
             <div class="col">
-                <a id="my_comment" href="/{{$item -> page -> title}}">{{ $item -> page -> title }} </a>
+                <a id="comment_page_{{ $item -> id }}"
+                   href="/{{$item -> page -> title}}">{{ $item -> page -> title }} </a>
                 <span id="{{ $item -> id }}_update" style="margin: 0 0 0 0; display: block;"><label>{{ $item -> updated_at }}</label></span>
             </div>
             <div class="col right">

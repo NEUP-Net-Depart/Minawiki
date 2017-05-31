@@ -20,21 +20,16 @@
         </ul>
 
     <script src="/js/user-center/loadMore.js"></script>
+    <script src="/js/user-center/commentOperate.js"></script>
     <script>
         $(document).ready(loadMore("myComment", 1));
 
         function showDeleteCommentModal(id) {
-            $("#del_comment_submit").attr('href', 'javascript: deleteComment(' + id +')');
+            var page_title = $("#comment_page_" + id).html();
+            $("#del_comment_submit").attr('href', 'javascript: deleteComment("'+ page_title + '",' + id +')');
             $("#delete_comment_modal").modal('open');
         }
 
-        // TODO: 删除评论
-        function deleteComment(id) {
-            $.ajax({
-                type: 'delete',
-                url: '/user/delete'
-            })
-        }
     </script>
 
 @stop

@@ -148,3 +148,40 @@ function comment(replyID) {
         }
     });
 }
+
+function deleteComment(page_title, id) {
+    var str_data = $("#Comment_fm input").map(function () {
+        return ($(this).attr("name") + '=' + encodeURIComponent($(this).val()));
+    }).get().join("&");
+    $.ajax({
+        type: "POST",
+        url: "/" + page_title + "/comment/" + id.toString(),
+        data: str_data + '&_method=DELETE',
+        success: function (msg) {
+            var dataObj = eval("(" + msg + ")");
+            if (dataObj.result == "true") {
+                if (dataObj.msg == "delete success") {
+                    Materialize.toast("删除成功！", 3000, 'theme-bg-sec');
+                    $('#' + id.toString() + '_comment_box').remove();
+                }
+                else if (dataObj.msg == "ban success")
+                    Materialize.toast("屏蔽成功！", 3000, 'theme-bg-sec');
+            }
+            else if (dataObj.result == "invalid title")
+                Materialize.toast("页面错误，请刷新页面！", 3000, 'theme-bg-sec');
+            else if (dataObj.result == "invalid comment id")
+                Materialize.toast("评论已不存在！", 3000, 'theme-bg-sec');
+            else if (dataObj.result == "unauthorized")
+                Materialize.toast("权限不足！", 3000, 'theme-bg-sec');
+            else
+                Materialize.toast("有点小问题", 3000, 'theme-bg-sec');
+        },
+        error: function (xhr) {
+            if (xhr.status == 422) {
+                Materialize.toast('请正确填写相关字段！', 3000, 'theme-bg-sec')
+            } else {
+                Materialize.toast('服务器出错了，请刷新重试', 3000, 'theme-bg-sec')
+            }
+        }
+    });
+}
