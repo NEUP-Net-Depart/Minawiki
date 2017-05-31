@@ -30,26 +30,24 @@ class UserController extends Controller
     {
         // TODO: 收到的评论
         $user_id = session('user.id');
-        $myComments = CommentMessage::where('user_id', $user_id)
-            ->pluck('comment_id');
-        $comments = Comment::whereIn('id', $myComments)->paginate(10);
-        return view('user-center.aComment', ['paginator' => $comments]);
+        $Paginator=CommentMessage::with('comment','comment.replyTarget')
+            ->where('user_id',$user_id)
+            -> orderBy('is_read', 'desc')
+            ->paginate(2);
+        dd($Paginator);
+        return view('user-center.aComment', ['paginator' => $Paginator]);
     }
 
-    public function loadMessages(Request $request)
+    public function loadStarMe(Request $request)
     {
 
         $user_id = session('user.id');
-        $starPaginator=StarMessage::with('comment')
+        $Paginator=StarMessage::with('comment')
             ->where('user_id',$user_id)
-            -> orderBy('updated_at', 'desc')
+            -> orderBy('is_read', 'desc')
             ->paginate(2);
-        $replyPaginator=CommentMessage::with('comment')
-            ->where('user_id',$user_id)
-            -> orderBy('updated_at', 'desc')
-            ->paginate(2);
-        dd($starPaginator,$replyPaginator);
-        return view('user-center.aMessage', ['starPaginator' => $starPaginator,'replyPaginator'=>$replyPaginator]);
+        dd($Paginator);
+        return view('user-center.aMessage', ['Paginator' => $Paginator]);
     }
     function read(Request $request) {
          $str=$request->input('id');
