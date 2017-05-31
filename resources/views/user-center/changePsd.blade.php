@@ -59,9 +59,8 @@
             } else {
 
                 $.ajax({
-                        type: "POST",
-                    // TODO: user/changePassword
-                        url: "/auth/changePassword",
+                        type: "post",
+                        url: "/user/changePsd",
                         data: str_data,
                         success: function (msg) {
                             var dataObject = eval('(' + msg + ')');
