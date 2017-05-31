@@ -14,6 +14,8 @@
 Route::get('/install', 'InstallController@index');
 Route::post('/install', 'InstallController@install');
 
+Route::get('/user','UserController@visitUser')->middleware('checklogin');
+
 Route::get('/{title?}', 'IndexController@index');
 
 //Initialize geetest

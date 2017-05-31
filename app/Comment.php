@@ -47,4 +47,8 @@ class Comment extends Model
     {
         return $this->hasMany('App\Star');
     }
+    public function star_messages()
+    {
+        return $this->hasMany('App\StarMessage');
+    }
 }
