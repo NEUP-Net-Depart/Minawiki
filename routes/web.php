@@ -28,7 +28,7 @@ Route::get('/{title?}', 'IndexController@index');
 Route::get('auth/geetest','AuthController@getGeetest');
 //Register
 Route::get('/auth/register', 'AuthController@showRegisterView');
-Route::post('/auth/register/captcha', 'AuthController@sendTextCaptcha');
+Route::post('/auth/register/captcha', 'AuthController@sendRegTextCaptcha');
 Route::post('/auth/register', 'AuthController@addUser');
 //Login
 Route::get('/auth/login', 'AuthController@showLoginView');
