@@ -19,6 +19,8 @@ function setRead(id) {
 
     var token = $("#Comment_fm input").val();
 
+    console.log('id=' + id + "&_token=" + token);
+
     lable.removeClass('unread').addClass('read');
     $('#' + id  + ' .setRead').remove();
     $.ajax({

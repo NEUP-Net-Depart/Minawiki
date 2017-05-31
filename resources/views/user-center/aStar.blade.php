@@ -20,6 +20,10 @@
 
         @endforeach
 
+        <div id="Comment_fm">
+        {!! csrf_field() !!}
+        </div>
+
         @if( $paginator -> lastPage() > 1 && $paginator -> currentPage() != $paginator -> lastPage())
             <li class="collection-item loadMore center"><a
                         href="javascript: loadMore('starMe', '{{ strval($paginator -> currentPage() + 1) }}')"> 加载更多</a></li>

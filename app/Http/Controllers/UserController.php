@@ -87,7 +87,7 @@ class UserController extends Controller
             ->where('user_id',$user_id)
             -> orderBy('is_read', 'desc')
             ->paginate(2);
-        return view('user-center.aStar', ['Paginator' => $Paginator]);
+        return view('user-center.aStar', ['paginator' => $Paginator]);
     }
 
 
