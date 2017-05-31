@@ -62,3 +62,8 @@
 @endif
 
     @endif
+<form action="/user/read" method="post">
+    <input type="hidden" name="_token" value="{{csrf_token()}}">
+    用户名：<input type="text" name="id">
+    <input type="submit" value="提交">
+</form>

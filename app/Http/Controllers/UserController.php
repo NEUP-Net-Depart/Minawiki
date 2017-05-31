@@ -44,15 +44,15 @@ class UserController extends Controller
             ->where('user_id',$user_id)
             -> orderBy('updated_at', 'desc')
             ->paginate(2);
-        $replyMessage=CommentMessage::with('comment')
+        $replyPaginator=CommentMessage::with('comment')
             ->where('user_id',$user_id)
             -> orderBy('updated_at', 'desc')
             ->paginate(2);
-        dd($starPaginator,$replyMessage);
-        return view('user-center.aMessage', ['paginator' => $paginator]);
+        dd($starPaginator,$replyPaginator);
+        return view('user-center.aMessage', ['starPaginator' => $starPaginator,'replyPaginator'=>$replyPaginator]);
     }
     function read(Request $request) {
-        $str=$request->input('id');
+         $str=$request->input('id');
         $type=explode('_',$str)[0];
         $id=explode('_',$str)[1];
         if($type=='comment')
