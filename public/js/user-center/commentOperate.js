@@ -129,7 +129,7 @@ function comment(replyID) {
         success: function (msg) {
             var dataObj = eval("(" + msg + ")");
             if (dataObj.result === "true") {
-                $("#commentMeList li").remove()
+                $("#commentMeList li").remove();
                 loadMore('commentMe', 1);
                 Materialize.toast("发表成功！", 3000, 'theme-bg-sec');
 

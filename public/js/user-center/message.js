@@ -14,17 +14,17 @@ function setRead(id) {
     var type = id.split('_')[0];
     var lable = $('#' + id);
 
-    console.log(id);
-
     if (! lable.hasClass('unread'))
         return false;
+
+    var token = $("#Comment_fm input").val();
 
     lable.removeClass('unread').addClass('read');
     $('#' + id  + ' .setRead').remove();
     $.ajax({
         type: 'post',
         url: '/user/read',
-        data: 'id=' + id,
+        data: 'id=' + id + "&_token=" + token,
         success: function(msg) {
             console.log(msg);
         },
