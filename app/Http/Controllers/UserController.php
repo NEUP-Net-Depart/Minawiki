@@ -12,44 +12,38 @@ use App\Comment;
 
 class UserController extends Controller
 {
-    public function getMyComments(Request $request){
-        // TODO: 获得自己的评论
 
+    public function getMyComments(Request $request){
+        //  获得自己的评论
         $comments = Comment::where('user_id', $request -> session() -> get('user.id'))
             -> orderBy('id', 'desc')
             -> paginate(2);
-
-        foreach($comments as $c) {
-            $c -> page_id = Page::where('id', $c -> page_id) -> first() -> title;
-        }
         return view('user-center.aComment', ['paginator' => $comments, 'canDelete' => true]);
     }
 
 
     public function loadCommentMe(Request $request)
     {
-        // TODO: 收到的评论
+        //获取回复我的信息
         $user_id = session('user.id');
-        $Paginator=CommentMessage::with('comment','comment.replyTarget')
+        $Paginator=CommentMessage::with('comment','comment.replyTarget', 'comment.page')
             ->where('user_id',$user_id)
             -> orderBy('is_read', 'desc')
-            ->paginate(2);
-        dd($Paginator);
-        return view('user-center.aComment', ['paginator' => $Paginator]);
+            ->paginate(10);
+        return view('user-center.aCommentMessage', ['paginator' => $Paginator]);
     }
-
     public function loadStarMe(Request $request)
     {
-
+        //获取点赞的信息
         $user_id = session('user.id');
         $Paginator=StarMessage::with('comment')
             ->where('user_id',$user_id)
             -> orderBy('is_read', 'desc')
-            ->paginate(2);
-        dd($Paginator);
-        return view('user-center.aMessage', ['Paginator' => $Paginator]);
+            ->paginate(10);
+        return view('user-center.aStar', ['paginator' => $Paginator]);
     }
     function read(Request $request) {
+        //  设置某个消息为已读
          $str=$request->input('id');
         $type=explode('_',$str)[0];
         $id=explode('_',$str)[1];
@@ -57,9 +51,6 @@ class UserController extends Controller
             CommentMessage::where('id',$id)->update(['is_read'=>1]);
         else
             StarMessage::where('id',$id)->update(['is_read'=>1]);
-        // TODO: 设置某个消息为已读
-
-
 
     }
 }

@@ -13,6 +13,11 @@ class CommentMessage extends Model
     {
         return $this->belongsTo('App\User');
     }
+
+    /**
+     *获取该回去的Comment()模型
+     */
+
     public function comment()
     {
         return $this->belongsTo('App\Comment');

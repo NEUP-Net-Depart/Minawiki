@@ -18,6 +18,7 @@ Route::get('/user/loadMyComments', 'UserController@getMyComments') -> middleware
 Route::get('/user/loadCommentMe', 'UserController@loadCommentMe') -> middleware('checklogin');
 Route::get('/user/loadStarMe', 'UserController@loadStarMe') -> middleware('checklogin');
 Route::post('/user/read', 'UserController@read');
+Route::get('/user/{subPage?}', 'UserController@showUserCenter') -> middleware('checklogin');
 
 
 

@@ -49,4 +49,14 @@ class Comment extends Model
     }
 
 
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     * 获得该评论的页面模型
+     */
+    public function page()
+    {
+        return $this -> belongsTo('App\Page');
+    }
+
+
 }

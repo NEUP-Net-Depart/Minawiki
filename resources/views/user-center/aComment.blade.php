@@ -1,7 +1,5 @@
 @foreach($paginator as $item)
-
-    <li id="{{ $item -> id }}_comment_box" class="collection-item"
-        style="text-align: left; list-style: none;" >
+    <li id="{{ $item -> id }}_comment_box" class="collection-item">
         <!-- 第一行显示头像星星和删除按钮 -->
         <div class="row" style="margin-bottom:5px;">
             <div class="col" style="padding-right: 0;">
@@ -10,15 +8,14 @@
                      class="circle avatar-circle">
             </div>
             <div class="col">
-                <a id="my_comment" href="/{{$item->page_id}}">{{ $item -> page_id }} </a>
-                <p id="{{ $item -> id }}_update" style="margin: 0 0 0 0;"><label>{{ $item -> updated_at }}</label></p>
+                <a id="comment_page_{{ $item -> id }}"
+                   href="/{{$item -> page -> title}}">{{ $item -> page -> title }} </a>
+                <span id="{{ $item -> id }}_update" style="margin: 0 0 0 0; display: block;"><label>{{ $item -> updated_at }}</label></span>
             </div>
             <div class="col right">
                 <!-- 星星和删除 -->
-                @if(isset($canDelete))
                 <a class="material-icons secondary-content" style="color:red;"
                    href="javascript: showDeleteCommentModal({!! $item -> id !!})">delete</a>
-                @endif
                 <a class=" secondary-content"><i class="material-icons">star</i><span class="star-badge">{{ $item -> star_num }}</span></a>
             </div>
         </div>
@@ -32,7 +29,7 @@
                     <div class="col s12 reply markdown-body-strict" id="{{ $item -> id }}_reply_content"
                          style=" margin-bottom: 0;">
                         @if(isset($item -> replyTarget) && $item -> replyTarget != null)
-                            <div>{!! $item -> replyTarget -> content !!}</div>
+                            <div class="exciting">{!! $item -> replyTarget -> content !!}</div>
                         @else
                             <div>该评论已被删除</div>
                         @endif
@@ -51,7 +48,7 @@
 @if(!isset($dontShowFooter))
 
 @if($paginator->lastPage() > 1 && $paginator->currentPage() != $paginator->lastPage())
-    <a href="javascript: loadMyComments('{{ strval($paginator->currentPage()+1) }}')"
+    <a href="javascript: loadMore('myComment', '{{strval($paginator->currentPage()+1) }}')"
        class="collection-item loadmore">
         <center>加载更多</center>
     </a>
@@ -62,8 +59,3 @@
 @endif
 
     @endif
-<form action="/user/read" method="post">
-    <input type="hidden" name="_token" value="{{csrf_token()}}">
-    用户名：<input type="text" name="id">
-    <input type="submit" value="提交">
-</form>
