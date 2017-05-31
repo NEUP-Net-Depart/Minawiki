@@ -70,17 +70,24 @@ class UserController extends Controller
         return view('user-center.aRate', ['paginator' => $paginator, 'noMore' => false, 'now'=> 1]);
     }
 
-    public function loadCommentMe(Request $request) {
-        // TODO: 收到的评论
-        $comments = CommentMessage::where('user_id', $request -> session() -> get('user.id'))
-            -> orderBy('id', 'desc') -> paginate(2);
-        foreach ($comments as $comment) {
-            if ($request->session()->has('user.id'))
-                $comment->user_star_num = Star::where('comment_id', $comment->comment_id)
-                    ->where('user_id', $request->session()->get('user.id'))->count();
-        }
+    public function loadCommentMe(Request $request)
+    {
+        $user_id = session('user.id');
+        $Paginator=CommentMessage::with('comment','comment.replyTarget', 'comment.page')
+            ->where('user_id',$user_id)
+            -> orderBy('is_read', 'desc')
+            ->paginate(2);
+        return view('user-center.aCommentMessage', ['paginator' => $Paginator]);
+    }
 
-        return view('user-center.aCommentMessage', ['paginator' => $comments]);
+    public function loadStarMe(Request $request)
+    {
+        $user_id = session('user.id');
+        $Paginator=StarMessage::with('comment')
+            ->where('user_id',$user_id)
+            -> orderBy('is_read', 'desc')
+            ->paginate(2);
+        return view('user-center.aStar', ['Paginator' => $Paginator]);
     }
 
 
@@ -103,12 +110,6 @@ class UserController extends Controller
         else
             StarMessage::where('id',$id)->update(['is_read'=>1]);
         // TODO: 设置某个消息为已读
-    }
-
-    function loadStarMe(Request $request) {
-        $user_id = session('user.id');
-        $paginator = StarMessage::where('user_id', $user_id) -> paginate(1);
-        return view('user-center.aStar', ['paginator' => $paginator]);
     }
 
     function testChangePsd(Request $request) {
