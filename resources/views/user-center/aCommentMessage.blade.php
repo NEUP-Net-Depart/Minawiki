@@ -12,11 +12,11 @@
                          class="circle avatar-circle">
                 </div>
                 <div class="col">
-                    <a id="my_comment"
-                       href="/{{$item -> comment -> page -> title}}">{{ $item -> comment -> page -> title }} </a>
+                    <a id="comment_page_{{ $item -> comment -> id }}"
+                       href="/{{$item -> comment -> page -> title}}">{{ $item -> comment -> page -> title }}</a>
                     <span style="margin: 0 0 0 0; display: block;"><label>{{ $item -> updated_at }}</label></span>
                 </div>
-                <div class="col right">
+                <div class="col right theme-dark-a">
                     <!-- 星星和已读 -->
                     <a class="setRead secondary-content"
                        href="javascript: setRead('{{ strval('comment_'.$item -> id) }}')">
@@ -45,7 +45,8 @@
                     @endif
 
 
-                    <a class="secondary-content"><i class="material-icons">&#xE15E;</i></a>
+                    <a class="secondary-content" href="javascript: replying('{{ $item -> id }}', '{{ $item -> comment -> id }}')">
+                        <i class="material-icons">&#xE15E;</i></a>
                 </div>
             </div>
             <div class="row" style="margin-bottom: 0;">

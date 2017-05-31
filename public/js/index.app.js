@@ -233,6 +233,7 @@ function comment() {
         return ($(this).attr("name") + '=' + encodeURIComponent($(this).val()));
     }).get().join("&");
     var str_data = str_data1 + '&' + str_data2;
+    console.log("/" + $("#this_page_title").val() + "/comment" + "       " + str_data);
     $.ajax({
         type: "POST",
         url: "/" + $("#this_page_title").val() + "/comment",

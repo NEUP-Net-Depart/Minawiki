@@ -8,7 +8,7 @@
     <a class="setRead" href="javascript: setAllRead('comment')">
         <i class="material-icons">done_all</i></a>
 
-        <ul class="collection theme-dark-a messageList" id="commentMeList">
+        <ul class="collection messageList" id="commentMeList">
 
         </ul>
 

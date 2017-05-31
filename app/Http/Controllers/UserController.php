@@ -72,7 +72,8 @@ class UserController extends Controller
 
     public function loadCommentMe(Request $request) {
         // TODO: 收到的评论
-        $comments = CommentMessage::where('user_id', $request -> session() -> get('user.id')) -> paginate(2);
+        $comments = CommentMessage::where('user_id', $request -> session() -> get('user.id'))
+            -> orderBy('id', 'desc') -> paginate(2);
         foreach ($comments as $comment) {
             if ($request->session()->has('user.id'))
                 $comment->user_star_num = Star::where('comment_id', $comment->comment_id)
