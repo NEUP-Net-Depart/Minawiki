@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\CommentMessage;
+use App\User;
 use App\StarMessage;
 use function foo\func;
 use Illuminate\Http\Request;
@@ -13,6 +14,7 @@ use Illuminate\Pagination\LengthAwarePaginator;
 
 class UserController extends Controller
 {
+
     /**
      * 显示用户界面
      * @param:Request, $id
@@ -72,48 +74,36 @@ class UserController extends Controller
 
     public function loadCommentMe(Request $request)
     {
+        //获取回复我的信息
         $user_id = session('user.id');
         $Paginator=CommentMessage::with('comment','comment.replyTarget', 'comment.page')
             ->where('user_id',$user_id)
             -> orderBy('is_read', 'desc')
-            ->paginate(2);
+            ->paginate(10);
         return view('user-center.aCommentMessage', ['paginator' => $Paginator]);
     }
-
     public function loadStarMe(Request $request)
     {
+        //获取点赞的信息
         $user_id = session('user.id');
         $Paginator=StarMessage::with('comment')
             ->where('user_id',$user_id)
             -> orderBy('is_read', 'desc')
-            ->paginate(2);
+            ->paginate(10);
         return view('user-center.aStar', ['paginator' => $Paginator]);
-    }
 
-
-    function loadAComment(Request $request) {
-        $this -> validate($request, ['comment_id' => 'required']);
-        $comment = Comment::where('id', $request -> comment_id) -> paginate(10);
-        foreach($comment as $c) {
-            $c -> page_id = Page::where('id', $c -> page_id) -> first() -> title;
-            $c -> replyTarget = null;
-        }
-        return view('user-center.aComment', ['paginator' => $comment, 'dontShowFooter' => true]);
     }
 
     function read(Request $request) {
-        $str=$request->input('id');
+        //  设置某个消息为已读
+         $str=$request->input('id');
         $type=explode('_',$str)[0];
         $id=explode('_',$str)[1];
         if($type=='comment')
             CommentMessage::where('id',$id)->update(['is_read'=>1]);
         else
             StarMessage::where('id',$id)->update(['is_read'=>1]);
-        // TODO: 设置某个消息为已读
-    }
 
-    function testChangePsd(Request $request) {
-        return json_encode('result=true');
     }
 }
 

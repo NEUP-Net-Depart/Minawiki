@@ -20,11 +20,13 @@ Route::post('/user/read', 'UserController@read') -> middleware('checklogin');
 Route::get('/user/loadStarMe', 'UserController@loadStarMe') -> middleware('checklogin');
 Route::get('/user/loadAComment', 'UserController@loadAComment') -> middleware('checklogin');
 Route::get('/user/loadCommentMe', 'UserController@loadCommentMe') -> middleware('checklogin');
+
 Route::get('/user/loadMyComment', 'UserController@getMyComments') -> middleware('checklogin');
 Route::get('/user/loadMyRating', 'UserController@loadMyRating') -> middleware('checklogin');
 Route::get('/user/loadMyPointDetail', 'UserController@loadMyPointDetails') -> middleware('checklogin');
 Route::get('/user/{subPage?}', 'UserController@showUserCenter') -> middleware('checklogin');
 Route::post('/user/changePsd', 'UserController@testChangePsd') -> middleware('checklogin');
+
 
 Route::get('/{title?}', 'IndexController@index');
 
@@ -33,7 +35,7 @@ Route::get('/{title?}', 'IndexController@index');
 Route::get('auth/geetest','AuthController@getGeetest');
 //Register
 Route::get('/auth/register', 'AuthController@showRegisterView');
-Route::post('/auth/register/captcha', 'AuthController@sendTextCaptcha');
+Route::post('/auth/register/captcha', 'AuthController@sendRegTextCaptcha');
 Route::post('/auth/register', 'AuthController@addUser');
 //Login
 Route::get('/auth/login', 'AuthController@showLoginView');

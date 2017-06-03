@@ -47,10 +47,7 @@ class Comment extends Model
     {
         return $this->hasMany('App\Star');
     }
-    public function star_messages()
-    {
-        return $this->hasMany('App\StarMessage');
-    }
+
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
@@ -60,4 +57,6 @@ class Comment extends Model
     {
         return $this -> belongsTo('App\Page');
     }
+
+
 }
