@@ -4,6 +4,8 @@
         <li class="message read collection-item star_message" id="star_{{ $item -> id }}">
     @else
         <li class="message unread collection-item star_message" id="star_{{ $item -> id }}">
+            <a class="setRead" href="javascript: setRead('{{ 'star_'.strval($item -> id) }}')">
+                <i class="material-icons">done</i></a>
             @endif
             <span>
 
@@ -12,9 +14,6 @@
                 两次
             @endif
             </span>
-
-            <a class="setRead" href="javascript: setRead('{{ 'star_'.strval($item -> id) }}')">
-                <i class="material-icons">done</i></a>
 
         </li>
 

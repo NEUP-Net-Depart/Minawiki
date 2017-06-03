@@ -5,8 +5,10 @@
         <h2 class="center">收到的评论</h2>
 
         <span class="star-badge"></span>
+        @if ($newCommentNumber > 1)
     <a class="setRead" href="javascript: setAllRead('comment')">
         <i class="material-icons">done_all</i></a>
+    @endif
 
         <ul class="collection messageList" id="commentMeList">
 

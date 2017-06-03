@@ -1,6 +1,10 @@
 @foreach($paginator as $item)
     @if ($item -> is_read == false)
         <li class="message comment_message collection-item unread" id="comment_{{ $item -> id }}">
+            <a class="setRead secondary-content"
+               href="javascript: setRead('{{ strval('comment_'.$item -> id) }}')">
+                <i class="material-icons">done</i>
+            </a>
     @else
         <li class="message comment_message collection-item read" id="comment_{{ $item -> id }}">
         @endif
@@ -18,12 +22,6 @@
                 </div>
                 <div class="col right theme-dark-a">
                     <!-- 星星和已读 -->
-                    <a class="setRead secondary-content"
-                       href="javascript: setRead('{{ strval('comment_'.$item -> id) }}')">
-                        <i class="material-icons">done</i>
-                    </a>
-
-
                     @if($item -> user_star_num == 0)
                         <input id="{{ $item -> comment -> id }}_star_casenum" style="display: none" value="0">
                         <a class="secondary-content"

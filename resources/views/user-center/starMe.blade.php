@@ -4,8 +4,10 @@
 
     <h3 style="text-align: center">收到的赞</h3>
     <span class="star-badge"></span>
+    @if ($newStarNumber > 0)
     <a class="setRead" id="setAllReadButton_star" href="javascript: setAllRead('star')">
         <i class="material-icons">done_all</i></a>
+    @endif
     <ul class="collection messageList" id="starMeList">
     </ul>
 
