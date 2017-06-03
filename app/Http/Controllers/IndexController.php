@@ -22,8 +22,9 @@ class IndexController extends Controller
             $path->prepend($current_page);
         } else {
             //Check if title exists
-            if (Redirect::where('title', $title)->count() > 0)
+            if (Redirect::where('title', $title)->count() > 0) {
                 return redirect('/' . Redirect::where('title', $title)->first()->destination);
+            }
             $current_page = $pages->where('title', $title)->first();
             if (!isset($current_page))
                 abort(404);

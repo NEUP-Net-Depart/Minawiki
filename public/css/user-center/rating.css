@@ -1,0 +1,26 @@
+.rating_content * {
+    margin: 0;
+}
+.mark_title {
+
+}
+
+.rating_content {
+    width: 80%;
+}
+
+.rating_img {
+    width: 20%;
+}
+
+.markArea {
+
+}
+
+.markNum {
+    font-size: 250%;
+    height: auto;
+    margin-top: 10px;
+    margin-left: 50px;
+}
+

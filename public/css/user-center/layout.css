@@ -1,0 +1,7 @@
+#newMessagesNum {
+    float: right;
+    border-radius: 15px 15px 15px 15px;
+    padding-left: 10px;
+    padding-right: 10px;
+    color: black;
+}

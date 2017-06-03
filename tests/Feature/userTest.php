@@ -45,6 +45,7 @@ class userTest extends BrowserKitTestCase
             ->see($replyText);
     }
 
+
     public function testLoadCommentMe()
     {
         $reply = factory(\App\CommentMessage::class)->create(['user_id' => 9, 'is_read' => 0, 'updated_at' => Carbon::now()]);
@@ -77,5 +78,12 @@ class userTest extends BrowserKitTestCase
 
     }
 
+
+
+    public function testFrontend() {
+        $this -> withSession(['user.id' => 1])
+            -> visit('/user')
+            -> see('个人中心');
+    }
 
 }

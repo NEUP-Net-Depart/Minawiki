@@ -11,18 +11,25 @@
 |
 */
 
+
 Route::get('/install', 'InstallController@index');
 Route::post('/install', 'InstallController@install');
 
-Route::get('/user/loadMyComments', 'UserController@getMyComments') -> middleware('checklogin');
-Route::get('/user/loadCommentMe', 'UserController@loadCommentMe') -> middleware('checklogin');
+//User Center
+Route::post('/user/read', 'UserController@read') -> middleware('checklogin');
 Route::get('/user/loadStarMe', 'UserController@loadStarMe') -> middleware('checklogin');
-Route::post('/user/read', 'UserController@read');
-Route::get('/user/{subPage?}', 'UserController@showUserCenter') -> middleware('checklogin');
+Route::get('/user/loadAComment', 'UserController@loadAComment') -> middleware('checklogin');
+Route::get('/user/loadCommentMe', 'UserController@loadCommentMe') -> middleware('checklogin');
 
+Route::get('/user/loadMyComment', 'UserController@getMyComments') -> middleware('checklogin');
+Route::get('/user/loadMyRating', 'UserController@loadMyRating') -> middleware('checklogin');
+Route::get('/user/loadMyPointDetail', 'UserController@loadMyPointDetails') -> middleware('checklogin');
+Route::get('/user/{subPage?}', 'UserController@showUserCenter') -> middleware('checklogin');
+Route::post('/user/changePsd', 'UserController@testChangePsd') -> middleware('checklogin');
 
 
 Route::get('/{title?}', 'IndexController@index');
+
 
 //Initialize geetest
 Route::get('auth/geetest','AuthController@getGeetest');
@@ -39,6 +46,7 @@ Route::get('/auth/logout', 'AuthController@logout');
 Route::get('/auth/forget', 'AuthController@showForgetView');
 Route::post('/auth/forget/captcha', 'AuthController@sendForgetTextCaptcha');
 Route::post('/auth/forget', 'AuthController@changePassword');
+Route::post('/auth/forget/changePasswordCaptcha', 'AuthController@sendChangePasswordTextCaptcha');
 //Confirm password
 Route::get('/auth/confirm', 'AuthController@showConfirmView');
 Route::post('/auth/confirm', 'AuthController@confirmLogin');

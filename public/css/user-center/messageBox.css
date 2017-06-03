@@ -1,0 +1,22 @@
+.unread *, .unread{
+    background-color: rgb(250, 255, 162) !important;
+}
+
+.setRead {
+    float: right;
+}
+
+.messageList {
+    width: 100%;
+}
+
+.message > span > p {
+    font-style: italic;
+    margin: 0;
+    white-space: nowrap;
+    display: inline;
+}
+
+.messageNumber {
+    float: right;
+}
