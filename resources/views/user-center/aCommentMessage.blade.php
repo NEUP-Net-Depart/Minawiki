@@ -16,12 +16,18 @@
                          class="circle avatar-circle">
                 </div>
                 <div class="col">
+                    @if ($item -> comment -> page != null)
                     <a id="comment_page_{{ $item -> comment -> id }}"
                        href="/{{$item -> comment -> page -> title}}">{{ $item -> comment -> page -> title }}</a>
+                    @else
+                        <a id="comment_page_{{ $item -> comment -> id }}"
+                           href="#">该页面已被删除</a>
+                    @endif
                     <span style="margin: 0 0 0 0; display: block;"><label>{{ $item -> updated_at }}</label></span>
                 </div>
                 <div class="col right theme-dark-a">
                     <!-- 星星和已读 -->
+                    @if ($item -> comment -> page != null)
                     @if($item -> user_star_num == 0)
                         <input id="{{ $item -> comment -> id }}_star_casenum" style="display: none" value="0">
                         <a class="secondary-content"
@@ -41,8 +47,7 @@
                                     class="material-icons" id="{{$item -> comment -> id}}_star">&#xE838;</i><span
                                     class="star-badge" id="{{ $item -> comment ->id }}_star_badge">2</span></a>
                     @endif
-
-
+                    @endif
                     <a class="secondary-content" href="javascript: replying('{{ $item -> id }}', '{{ $item -> comment -> id }}')">
                         <i class="material-icons">&#xE15E;</i></a>
                 </div>

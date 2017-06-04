@@ -8,8 +8,12 @@
                      class="circle avatar-circle">
             </div>
             <div class="col">
+                @if ($item -> page != null)
                 <a id="comment_page_{{ $item -> id }}"
                    href="/{{$item -> page -> title}}">{{ $item -> page -> title }} </a>
+                @else
+                    <a id="comment_page_{{ $item -> id }}" href="#">该页面已被删除</a>
+                @endif
                 <span id="{{ $item -> id }}_update" style="margin: 0 0 0 0; display: block;"><label>{{ $item -> updated_at }}</label></span>
             </div>
             <div class="col right">
