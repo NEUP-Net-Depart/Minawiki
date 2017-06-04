@@ -25,8 +25,8 @@ class userTest extends BrowserKitTestCase
     public function testNoSession()
     {
         $this->withSession(['user.id' => null])
-            ->visit('/user/loadMyComments')
-            ->seePageIs('/auth/login?continue=%2Fuser%2FloadMyComments')
+            ->visit('/user/loadMyComment')
+            ->seePageIs('/auth/login?continue=%2Fuser%2FloadMyComment')
             ->visit('/user/loadCommentMe')
             ->seePageIs('/auth/login?continue=%2Fuser%2FloadCommentMe')
             ->visit('/user/loadStarMe')
@@ -39,7 +39,7 @@ class userTest extends BrowserKitTestCase
         $commentTest = factory(\App\Comment::class)->create(['user_id' => 9, 'page_id' => 1, 'reply_id' => 18, 'star_num' => 5, 'updated_at' => Carbon::now()]);
         $replyText = Comment::where('id', $commentTest->reply)->value('content');
         $this->withSession(['user.id' => 9])
-            ->visit('/user/loadMyComments')
+            ->visit('/user/loadMyComment')
             ->see($commentTest->content)
             ->see($commentTest->star_num)
             ->see($replyText);
@@ -69,6 +69,7 @@ class userTest extends BrowserKitTestCase
 
     public function testRead()
     {
+        $this -> withSession(['user.id' => 1]);
         $this->json('POST', '/user/read', ['id' => 'comment_2']);
         $read=CommentMessage::find(2)->is_read;
         $this->assertEquals(1,$read);
