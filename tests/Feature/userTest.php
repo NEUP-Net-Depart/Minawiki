@@ -87,7 +87,9 @@ class userTest extends BrowserKitTestCase
             -> see('个人中心');
         $this -> visit('/user/changePsd')
             ->visit('/user/myRate')
-            ->visit('/user/userInfo');
+            ->visit('/user/userInfo')
+            ->visit('/user/loadMyRating')
+            ->visit('/user/loadMyPointDetail');
     }
 
 }
