@@ -85,6 +85,9 @@ class userTest extends BrowserKitTestCase
         $this -> withSession(['user.id' => 1])
             -> visit('/user')
             -> see('个人中心');
+        $this -> visit('/user/changePsd')
+            ->visit('/user/myRate')
+            ->visit('/user/userInfo');
     }
 
 }
