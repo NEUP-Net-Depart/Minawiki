@@ -20,7 +20,7 @@ class UserController extends Controller
      * @param:Request, $id
      * @return view
      */
-    public function ShowUserCenter(Request $request, $subPage = 'userInfo') {
+    public function showUserCenter(Request $request, $subPage = 'userInfo') {
         // 获得登录的用户并跳转
         $user_id = $request -> session() -> get('user.id');
         // TODO: 获得用户的积分
@@ -39,12 +39,8 @@ class UserController extends Controller
         // TODO: 获得自己的评论
         $comments = Comment::where('user_id', $request -> session() -> get('user.id'))
             -> orderBy('id', 'desc')
-            -> paginate(2);
+            -> paginate(15);
         return view('user-center.aComment', ['paginator' => $comments, 'canDelete' => true]);
-    }
-
-    public function getMyInformation(Request $request) {
-        return view('user-center.userInfo');
     }
 
     public function loadMyPointDetails(Request $request) {
@@ -76,27 +72,28 @@ class UserController extends Controller
     {
         //获取回复我的信息
         $user_id = session('user.id');
-        $Paginator=CommentMessage::with('comment','comment.replyTarget', 'comment.page')
+        $paginator=CommentMessage::with('comment','comment.replyTarget', 'comment.page')
             ->where('user_id',$user_id)
-            -> orderBy('is_read', 'desc')
-            ->paginate(10);
-        return view('user-center.aCommentMessage', ['paginator' => $Paginator]);
+            ->orderBy('id', 'desc')
+            ->paginate(15);
+        return view('user-center.aCommentMessage', ['paginator' => $paginator]);
     }
+
     public function loadStarMe(Request $request)
     {
         //获取点赞的信息
         $user_id = session('user.id');
-        $Paginator=StarMessage::with('comment')
+        $paginator=StarMessage::with('comment')
             ->where('user_id',$user_id)
-            -> orderBy('is_read', 'desc')
+            ->orderBy('id', 'desc')
             ->paginate(10);
-        return view('user-center.aStar', ['paginator' => $Paginator]);
+        return view('user-center.aStar', ['paginator' => $paginator]);
 
     }
 
     function read(Request $request) {
         //  设置某个消息为已读
-         $str=$request->input('id');
+        $str=$request->input('id');
         $type=explode('_',$str)[0];
         $id=explode('_',$str)[1];
         if($type=='comment')

@@ -8,13 +8,11 @@
                 <i class="material-icons">done</i></a>
             @endif
             <span>
-
-            匿名用户赞了你的评论 {!!$item -> comment -> content!!}
-            @if($item -> times == 2)
-                两次
-            @endif
+                匿名用户赞了你的评论@if($item -> times == 2)两次@endif
+                <div class="markdown-body-strict" id="{{ $item->id }}_comment_content">
+                    {!!$item -> comment -> content!!}
+                </div>
             </span>
-
         </li>
 
         @endforeach

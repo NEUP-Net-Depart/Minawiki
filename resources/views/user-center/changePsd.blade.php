@@ -7,7 +7,7 @@
 
         {!!Form::Open(['url' => '#'])!!}
 
-        <div class="input-field col s12" >
+        <div class="input-field col s12">
             <div>
                 {!! Form::label('oldPsd', '旧密码') !!}
                 {!! Form::password('oldPsd') !!}
@@ -29,12 +29,9 @@
             </div>
         </div>
 
-        <div class="row" >
-            <div class="col s6" style="margin-top: 18px;">
-                {!! Geetest::render() !!}
-            </div>
+        <div class="row">
 
-            <div class="col s6" style="text-align: center;">
+            <div class="col s12" style="text-align: center;">
                 <button onclick="changePsd()" type="button" class='btn btn-large theme-dark'>
                     提交
                 </button>
